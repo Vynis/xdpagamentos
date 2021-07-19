@@ -7,6 +7,6 @@ namespace XdPagamentosApi.WebApi.Configuracao.Token
 {
     public static class SettingsToken
     {
-        public static string Secret => "2069d9107c24d10a44bda90fc05d90d6";
+        public static string Secret => "NcsdT$HdBbuwLG#VrsnBLHS6taigrddL0";
     }
 }

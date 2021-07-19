@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using XdPagamentosApi.Services.Class;
+using XdPagamentosApi.Services.Interfaces;
 
 namespace XdPagamentosApi.IOC.Services
 {
@@ -9,7 +11,8 @@ namespace XdPagamentosApi.IOC.Services
     {
         public static void Register(IServiceCollection service)
         {
-
+            service.AddScoped(typeof(IBaseService<>), typeof(BaseService<>));
+            service.AddScoped<IUsuarioService, UsuarioService>();
         }
     }
 }

@@ -1,16 +1,59 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using XdPagamentosApi.Services.Class;
+using XdPagamentosApi.Services.Interfaces;
+using XdPagamentosApi.WebApi.Configuracao.Swagger;
+using XdPagamentosApi.WebApi.Configuracao.Token;
+using XdPagamentosApi.WebApi.Dtos;
+using XdPagamentosApi.WebApi.Shared;
 
 namespace XdPagamentosApi.WebApi.Controllers
 {
-    public class AutenticacaoController : Controller
+    [ApiController]
+    [Route("api/[controller]")]
+    public class AutenticacaoController : BaseController
     {
-        public IActionResult Index()
+        private readonly IUsuarioService _usuarioService;
+        private readonly IMapper _mapper;
+
+        public AutenticacaoController(IUsuarioService usuarioService, IMapper mapper)
         {
-            return View();
+            _usuarioService = usuarioService;
+            _mapper = mapper;
+        }
+
+        [HttpPost]
+        [SwaggerGroup("AutenticacaoSistema")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Autenticar(DtoParamLoginUsuario param)
+        {
+            try
+            {
+                param.Senha = SenhaHashService.CalculateMD5Hash(param.Senha.Trim());
+
+                var resposta = await _usuarioService.BuscarExpressao(x => x.CPF.Trim().ToUpper().Equals(param.CPF.Trim().ToUpper())
+                                                                    && x.Senha.Equals(param.Senha) && x.Status.Equals("A"));
+
+
+                var usuario = _mapper.Map<DtoUsuarioLogado>(resposta.FirstOrDefault());
+
+                if (usuario == null)
+                    return Response("Usuário ou senha incorreto!", false);
+
+                var token = TokenService.GenerateToken(usuario);
+
+                return Response(new { usuario, token });
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }
