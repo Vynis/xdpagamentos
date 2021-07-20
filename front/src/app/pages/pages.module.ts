@@ -7,6 +7,8 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { ECommerceModule } from './e-commerce/e-commerce.module';
 import { PagesRoutingModule } from './pages-routing.module';
 import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
+import { InterceptService } from '../@core/utils/intercept.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @NgModule({
   imports: [
@@ -20,6 +22,14 @@ import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
   declarations: [
     PagesComponent,
   ],
+  providers: [
+    InterceptService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: InterceptService,
+      multi: true
+    },
+  ]
 })
 export class PagesModule {
 }
