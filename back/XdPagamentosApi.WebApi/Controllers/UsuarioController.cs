@@ -40,5 +40,26 @@ namespace XdPagamentosApi.WebApi.Controllers
                 return Response(ex.Message, false);
             }
         }
+
+        [HttpGet("buscar-usuarios-filtro")]
+        [SwaggerGroup("Usuario")]
+        public async Task<IActionResult> BuscarFiltro(string nome = "")
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(nome))
+                    return Response(await _usuarioService.ObterTodos());
+
+                return Response(await _usuarioService.BuscarExpressao(x => x.Nome.Contains(nome)));
+            }
+            catch (Exception ex)
+            {
+
+                return Response(ex.Message, false);
+            }
+        }
+
+
+
     }
 }

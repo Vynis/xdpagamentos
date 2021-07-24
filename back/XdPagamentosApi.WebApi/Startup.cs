@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using XdPagamentosApi.IOC;
 using XdPagamentosApi.Repository.Persistence.Context;
 using XdPagamentosApi.WebApi.Configuracao.Swagger;
@@ -69,6 +70,27 @@ namespace XdPagamentosApi.WebApi
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
+            });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                 {
+                    {new OpenApiSecurityScheme{ Reference = new OpenApiReference
+                        {
+                            Id = "Bearer",
+                            Type = ReferenceType.SecurityScheme
+                        }
+                    }, new List<string>() }
+                 });
             });
 
             //Ignora refencia circuloar

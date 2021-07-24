@@ -25,7 +25,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
       },
       {
         title: 'Usuários do Sistema',
-        link: '/pages/layout/accordion',
+        link: '/pages/usuario',
       },
       {
         title: 'Contas Caixa',
