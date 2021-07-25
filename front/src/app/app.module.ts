@@ -41,7 +41,7 @@ import { InterceptService } from './@core/utils/intercept.service';
       messageGoogleMapKey: 'AIzaSyA_wNuCzia92MAmdLRzmqitRGvCF7wCZPY',
     }),
     CoreModule.forRoot(),
-    ThemeModule.forRoot(),
+    ThemeModule.forRoot()
   ],
   providers: [AuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: NbAuthJWTInterceptor, multi: true },

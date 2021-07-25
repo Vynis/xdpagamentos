@@ -1,3 +1,4 @@
+import { UsuarioModel } from './../models/usuario.model';
 import { ModeloBase } from './../models/modelo-balse';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -14,5 +15,17 @@ export class UsuarioService {
 
   buscar(nome: string = '') {
     return this.http.get<ModeloBase>(`${this.caminhoApi}/buscar-usuarios-filtro?nome=${nome}`);
+  }
+
+  buscaPorId(id: number) {
+    return this.http.get<ModeloBase>(`${this.caminhoApi}/buscar-por-id/${id}`);
+  }
+
+  inserir(model : UsuarioModel) {
+    return this.http.post<ModeloBase>(`${this.caminhoApi}/inserir`, model);
+  }
+
+  alterar(model : UsuarioModel) {
+    return this.http.put<ModeloBase>(`${this.caminhoApi}/alterar`, model);
   }
 }

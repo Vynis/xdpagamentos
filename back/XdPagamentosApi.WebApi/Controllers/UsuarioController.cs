@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using XdPagamentosApi.Domain.Models;
+using XdPagamentosApi.Services.Class;
 using XdPagamentosApi.Services.Interfaces;
 using XdPagamentosApi.WebApi.Configuracao.Swagger;
+using XdPagamentosApi.WebApi.Dtos;
 using XdPagamentosApi.WebApi.Shared;
 using XdPagamentosApi.WebApi.Shared.Extensions;
 
@@ -15,10 +19,12 @@ namespace XdPagamentosApi.WebApi.Controllers
     public class UsuarioController : BaseController
     {
         private readonly IUsuarioService _usuarioService;
+        private readonly IMapper _mapper;
 
-        public UsuarioController(IUsuarioService usuarioService)
+        public UsuarioController(IUsuarioService usuarioService, IMapper mapper)
         {
             _usuarioService = usuarioService;
+            _mapper = mapper;
         }
 
         [HttpGet("buscar-dados-usuario")]
@@ -59,7 +65,95 @@ namespace XdPagamentosApi.WebApi.Controllers
             }
         }
 
+        [HttpGet("buscar-por-id/{id}")]
+        [SwaggerGroup("Usuario")]
+        public async Task<IActionResult> BuscarPorId(int id)
+        {
+            try
+            {
+                return Response(await _usuarioService.ObterPorId(id));
+            }
+            catch (Exception ex)
+            {
 
+                return Response(ex.Message, false);
+            }
+        }
+
+        [HttpPost("inserir")]
+        [SwaggerGroup("Usuario")]
+        public async Task<IActionResult> Inserir(DtoUsuario dtoUsuario)
+        {
+            try
+            {
+                //valida cpf
+                var validacaoCpf = await _usuarioService.BuscarExpressao(x => x.CPF.Equals(dtoUsuario.CPF));
+
+                if (validacaoCpf.Any())
+                    return Response("Cpf já cadastrado", false);
+
+                //valida email
+                var validacaoEmail = await _usuarioService.BuscarExpressao(x => x.Email.Equals(dtoUsuario.Email));
+
+                if (validacaoEmail.Any())
+                    return Response("Email já cadastrado", false);
+
+
+                dtoUsuario.Senha = SenhaHashService.CalculateMD5Hash(dtoUsuario.Senha.Trim());
+
+                var response = await _usuarioService.Adicionar(_mapper.Map<Usuario>(dtoUsuario));
+
+                if (!response)
+                    return Response("Erro ao cadastrar", false);
+
+                return Response("Cadastro com sucesso!");
+
+            }
+            catch (Exception ex)
+            {
+                return Response(ex.Message, false);
+            }
+        }
+
+        [HttpPut("alterar")]
+        [SwaggerGroup("Usuario")]
+        public async Task<IActionResult> Alterar(DtoUsuario dtoUsuario)
+        {
+            try
+            {
+                var dados = await _usuarioService.ObterPorId(dtoUsuario.Id);
+
+                if (!dados.CPF.Equals(dtoUsuario.CPF))
+                {
+                    //valida cpf
+                    var validacaoCpf = await _usuarioService.BuscarExpressao(x => x.CPF.Equals(dtoUsuario.CPF));
+
+                    if (validacaoCpf.Any())
+                        return Response("Cpf já cadastrado", false);
+                }
+
+                if (!dados.Email.Equals(dtoUsuario.Email))
+                {
+                    //valida email
+                    var validacaoEmail = await _usuarioService.BuscarExpressao(x => x.Email.Equals(dtoUsuario.Email));
+
+                    if (validacaoEmail.Any())
+                        return Response("Email já cadastrado", false);
+                }
+
+                var response = await _usuarioService.Atualizar(_mapper.Map<Usuario>(dtoUsuario));
+
+                if (!response)
+                    return Response("Erro ao alterar", false);
+
+                return Response("Alteração com sucesso!");
+
+            }
+            catch (Exception ex)
+            {
+                return Response(ex.Message, false);
+            }
+        }
 
     }
 }

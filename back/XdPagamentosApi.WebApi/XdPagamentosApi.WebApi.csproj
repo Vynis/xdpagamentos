@@ -14,10 +14,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="AutoMapper\" />
-  </ItemGroup>
-
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>

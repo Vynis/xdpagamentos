@@ -1,8 +1,9 @@
+import { Router } from '@angular/router';
 import { UsuarioService } from './../../../@core/services/usuario.service';
 import { SettingsTableModel } from '../../../@core/models/configuracao/table/settings.table.model';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
-import { AcoesPadrao } from '../../../@core/constantes/acoes.cons';
+import { AcoesPadrao } from '../../../@core/enums/acoes.enum';
 
 @Component({
   selector: 'ngx-usuario-lista',
@@ -36,7 +37,7 @@ export class UsuarioListaComponent implements OnInit {
   settings: SettingsTableModel = new SettingsTableModel();
   source: LocalDataSource = new LocalDataSource();
   
-  constructor(private usuarioService: UsuarioService) { 
+  constructor(private usuarioService: UsuarioService, private route: Router) { 
     this.configuracaoesGrid();
     this.buscaDados();
   }
@@ -53,7 +54,13 @@ export class UsuarioListaComponent implements OnInit {
   }
 
   onCustom(event) {
-    alert(`Custom event '${event.action}' fired on row №: ${event.data.id}`)
+    switch (event.action) {
+      case AcoesPadrao.EDITAR:
+        this.route.navigateByUrl(`/pages/usuario/cadastro/edit/${event.data.id}`);
+        break;
+      default:
+        break;
+    }
   }
 
   buscaDados(nome = '') {

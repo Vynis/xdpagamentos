@@ -13,6 +13,7 @@ namespace XdPagamentosApi.WebApi
         public AutoMapperProfiles()
         {
             CreateMap<Usuario, DtoUsuarioLogado>().ReverseMap();
+            CreateMap<Usuario, DtoUsuario>().ReverseMap();
         }
     }
 }
