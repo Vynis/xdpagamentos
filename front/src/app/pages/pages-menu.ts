@@ -13,7 +13,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
     children: [
       {
         title: 'Clientes',
-        link: '/pages/layout/stepper',
+        link: '/pages/cliente',
       },
       {
         title: 'POS/Terminais',

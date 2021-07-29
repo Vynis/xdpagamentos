@@ -13,6 +13,7 @@ namespace XdPagamentosApi.IOC.Services
         {
             service.AddScoped(typeof(IBaseService<>), typeof(BaseService<>));
             service.AddScoped<IUsuarioService, UsuarioService>();
+            service.AddScoped<IClienteService, ClienteService>();
         }
     }
 }

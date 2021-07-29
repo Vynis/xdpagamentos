@@ -15,6 +15,9 @@ namespace XdPagamentosApi.Repository.Persistence.Context
         }
 
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Cliente> Clientes { get; set; }
+        public DbSet<Banco> Bancos { get; set; }
+        public DbSet<Estabelecimento> Estabelecimentos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,6 +29,9 @@ namespace XdPagamentosApi.Repository.Persistence.Context
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new UsuarioMap());
+            modelBuilder.ApplyConfiguration(new ClienteMap());
+            modelBuilder.ApplyConfiguration(new BancoMap());
+            modelBuilder.ApplyConfiguration(new EstabelecimentoMap());
         }
     }
 }
