@@ -14,6 +14,7 @@ namespace XdPagamentosApi.WebApi
         {
             CreateMap<Usuario, DtoUsuarioLogado>().ReverseMap();
             CreateMap<Usuario, DtoUsuario>().ReverseMap();
+            CreateMap<Cliente, DtoCliente>().ReverseMap();
         }
     }
 }

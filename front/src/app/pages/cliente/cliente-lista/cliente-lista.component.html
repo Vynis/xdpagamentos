@@ -1,1 +1,62 @@
-<p>cliente-lista works!</p>
+<nb-card>
+    <nb-card-header>
+        Filtro
+    </nb-card-header>
+    <nb-card-body>
+      <div class="row">
+          <div class="col-md-2">
+            <label for="tipo" class="label">Tipo do Filtro</label><br>
+            <nb-select placeholder="Tipo do Filtro"  status="primary">
+                <nb-option value="1">Nome</nb-option>
+                <nb-option value="2">CPF ou CNPJ</nb-option>
+              </nb-select>
+          </div>
+          <div class="col-md-10"> 
+            <label for="descricao" class="label">Descrição</label><br>
+            <input type="text" nbInput fullWidth placeholder="">
+          </div>
+      </div> <br />
+      <div class="row">
+        <div class="col-md-4">
+            <label for="estabelecimento" class="label">Estabelecimento</label><br>
+            <nb-select placeholder="Estabelecimento"  status="primary">
+                <nb-option value="1">Nome</nb-option>
+                <nb-option value="2">CPF ou CNPJ</nb-option>
+              </nb-select>
+        </div>
+        <div class="col-md-4">
+            <label for="status" class="label">Status</label><br>
+            <nb-select placeholder="Status"  status="primary">
+                <nb-option value="A">Ativo</nb-option>
+                <nb-option value="I">Inativo</nb-option>
+              </nb-select>
+        </div>
+      </div>
+    </nb-card-body>
+    <nb-card-footer>
+        <button type="submit" nbButton status="primary">Filtrar</button>
+    </nb-card-footer>
+</nb-card>
+
+<nb-card>
+    <nb-card-header>
+        <div class="row">
+            <div class="col-sm-10" style="padding-top: 15px;">
+                Lista de Usuarios
+            </div>
+            <div class="col-sm-2" style="text-align: right">
+                <a  nbButton status="primary" routerLink="../cadastro/add" >Novo</a>
+            </div>
+        </div>
+      
+    </nb-card-header>
+  
+    <nb-card-body>
+      <ng2-smart-table 
+      [settings]="settings" 
+      [source]="source" 
+      (custom)="onCustom($event)"
+      >
+      </ng2-smart-table>
+    </nb-card-body>
+  </nb-card>

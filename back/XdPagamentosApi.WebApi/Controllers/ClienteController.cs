@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using XdPagamentosApi.Domain.Models;
 using XdPagamentosApi.Services.Interfaces;
 using XdPagamentosApi.WebApi.Configuracao.Swagger;
+using XdPagamentosApi.WebApi.Dtos;
 using XdPagamentosApi.WebApi.Shared;
 
 namespace XdPagamentosApi.WebApi.Controllers
@@ -51,6 +52,63 @@ namespace XdPagamentosApi.WebApi.Controllers
             catch (Exception ex)
             {
 
+                return Response(ex.Message, false);
+            }
+        }
+
+        [HttpPost("inserir")]
+        [SwaggerGroup("Cliente")]
+        public async Task<IActionResult> Inserir(DtoCliente dtoCliente)
+        {
+            try
+            {
+                var validaCpfCnpjExistente = await _clienteService.BuscarExpressao(x => x.CnpjCpf.Equals(dtoCliente.CnpjCpf));
+
+                if (validaCpfCnpjExistente.Any())
+                    return Response("Cpf/Cnpj já cadastrado", false);
+
+                var response = await _clienteService.Adicionar(_mapper.Map<Cliente>(dtoCliente));
+
+                if (!response)
+                    return Response("Erro ao cadastrar", false);
+
+                return Response("Cadastro com sucesso!");
+
+            }
+            catch (Exception ex)
+            {
+                return Response(ex.Message, false);
+            }
+        }
+
+        [HttpPut("alterar")]
+        [SwaggerGroup("Cliente")]
+        public async Task<IActionResult> Alterar(DtoCliente dtoCliente)
+        {
+            try
+            {
+                var dados = await _clienteService.ObterPorId(dtoCliente.Id);
+
+                if (!dados.CnpjCpf.Equals(dtoCliente.CnpjCpf))
+                {
+                    var validaCpfCnpjExistente = await _clienteService.BuscarExpressao(x => x.CnpjCpf.Equals(dtoCliente.CnpjCpf));
+
+                    if (validaCpfCnpjExistente.Any())
+                        return Response("Cpf/Cnpj já cadastrado", false);
+
+                }
+
+
+                var response = await _clienteService.Atualizar(_mapper.Map<Cliente>(dtoCliente));
+
+                if (!response)
+                    return Response("Erro ao alterar", false);
+
+                return Response("Alteração com sucesso!");
+
+            }
+            catch (Exception ex)
+            {
                 return Response(ex.Message, false);
             }
         }
