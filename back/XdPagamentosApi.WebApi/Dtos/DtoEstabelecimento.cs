@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace XdPagamentosApi.Domain.Models
+namespace XdPagamentosApi.WebApi.Dtos
 {
-    public class Estabelecimento
+    public class DtoEstabelecimento
     {
         public int Id { get; set; }
         public string NumEstabelecimento { get; set; }
@@ -21,7 +22,5 @@ namespace XdPagamentosApi.Domain.Models
         public string NumConta { get; set; }
         public string Status { get; set; }
         public string Tipo { get; set; }
-
-        public List<Cliente> ListaClientes { get; set; }
     }
 }

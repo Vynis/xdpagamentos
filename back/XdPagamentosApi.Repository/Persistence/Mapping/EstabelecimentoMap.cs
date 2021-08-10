@@ -16,6 +16,22 @@ namespace XdPagamentosApi.Repository.Persistence.Mapping
             builder.HasKey(c => c.Id);
 
             builder.Property(c => c.Id).HasColumnName("est_id");
+            builder.Property(c => c.NumEstabelecimento).HasColumnName("est_num_estabelecimento");
+            builder.Property(c => c.CnpjCpf).HasColumnName("est_cnpj_cpf");
+            builder.Property(c => c.Nome).HasColumnName("est_nome");
+            builder.Property(c => c.Endereco).HasColumnName("est_endereco");
+            builder.Property(c => c.Bairro).HasColumnName("est_bairro");
+            builder.Property(c => c.Cidade).HasColumnName("est_cidade");
+            builder.Property(c => c.Estado).HasColumnName("est_estado");
+            builder.Property(c => c.Cep).HasColumnName("est_cep");
+            builder.Property(c => c.SaldoInicial).HasColumnName("est_saldo_inicial");
+            builder.Property(c => c.NumBanco).HasColumnName("est_num_banco");
+            builder.Property(c => c.NumAgencia).HasColumnName("est_num_agencia");
+            builder.Property(c => c.NumConta).HasColumnName("est_num_conta");
+            builder.Property(c => c.Status).HasColumnName("est_status");
+            builder.Property(c => c.Tipo).HasColumnName("est_tipo");
+
+
         }
     }
 }

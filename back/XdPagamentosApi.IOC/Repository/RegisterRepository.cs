@@ -18,6 +18,7 @@ namespace XdPagamentosApi.IOC.Repository
             service.AddScoped<IFilterInterpreterFactory, FilterInterpreterFactory>();
             service.AddScoped<IUsuarioRepository, UsuarioRepository>();
             service.AddScoped<IClienteRepository, ClienteRepository>();
+            service.AddScoped<IEstabelecimentoRepository, EstabelecimentoRepository>();
         }
     }
 }

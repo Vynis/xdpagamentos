@@ -17,8 +17,7 @@
                         <div class="col-sm-8">
                             <label for="estId" class="label">*Estabelecimento</label><br>
                             <nb-select id="estId" placeholder="Selecione" formControlName="estId">
-                              <nb-option value="PF">Pessoa Física</nb-option>
-                              <nb-option value="PJ">Pessoa Jurídica</nb-option>
+                              <nb-option *ngFor="let estabelecimento of listaEstabelecimentos" [value]="estabelecimento.id">{{estabelecimento.numEstabelecimento}} - {{estabelecimento.nome}} ({{estabelecimento.id}} )</nb-option>
                             </nb-select>
                         </div>
                     </div> <br>
@@ -123,7 +122,7 @@
                                 <label for="fone2" class="label">Telefone Celular</label>
                                 <input type="text" class="form-control" maxlength="15"
                                 [ngClass]="{'is-invalid': formulario.get('fone2').errors  && formulario.get('fone2').touched}"
-                                  nbInput fullWidth placeholder="Telefone Celular" formControlName="fone1" />
+                                  nbInput fullWidth placeholder="Telefone Celular" formControlName="fone2" />
                                   <div *ngIf="formulario.get('fone2').hasError('required')  && formulario.get('fone2').touched" class="invalid-feedback">
                                     Campo é obrigatório.
                                   </div>

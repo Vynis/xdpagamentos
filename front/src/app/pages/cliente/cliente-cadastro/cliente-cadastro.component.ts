@@ -1,7 +1,13 @@
+import { EstabelecimentoModel } from './../../../@core/models/estabelecimento.model';
+import { EstabelecimentoService } from './../../../@core/services/estabelecimento.service';
 import { ClienteModel } from './../../../@core/models/cliente.model';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { EstadosBrasileiros } from '../../../@core/enums/estados-brasileiros.enum';
+import { ClienteService } from '../../../@core/services/cliente.service';
+import { ToastService } from '../../../@core/services/toast.service';
+import { ToastPadrao } from '../../../@core/enums/toast.enum';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'ngx-cliente-cadastro',
@@ -15,13 +21,33 @@ export class ClienteCadastroComponent implements OnInit {
   formulario: FormGroup;
   clienteOld: ClienteModel;
   listaestadosBrasileiros: any[];
-  
+  listaEstabelecimentos: EstabelecimentoModel[];
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private route : Router,
+    private activatedRoute: ActivatedRoute,
+    private estabelecimentoService: EstabelecimentoService,
+    private clienteService: ClienteService,
+    private toastService : ToastService
+    ) { }
 
   ngOnInit(): void {
     this.listaestadosBrasileiros = EstadosBrasileiros;
-    this.createForm(new ClienteModel());
+    this.buscarListaEstabelecimentos();
+
+    this.activatedRoute.params.subscribe(params => {
+      const id = params.id;
+      if (id && id > 0) {
+        this.tituloPagina = `Editar Cliente - Nº ${id}`;
+        this.buscaPorId(id);
+      }
+      else {
+        const model = new ClienteModel();
+        this.createForm(model);
+      }
+    });
+    
   }
 
   createForm(_cliente: ClienteModel) {
@@ -50,8 +76,137 @@ export class ClienteCadastroComponent implements OnInit {
     });
   }
 
-  submit(){}
+  buscarListaEstabelecimentos() {
+    this.estabelecimentoService.buscarAtivos().subscribe(
+      res => {
+        
+        if (!res.success) {
+          this.toastService.showToast(ToastPadrao.DANGER, 'Erro ao buscar dados');
+          console.log(res.data);
+          return;
+        }
 
-  voltar(){}
+        this.listaEstabelecimentos = res.data;
+
+      },
+      error => {
+        console.log(error);
+        this.toastService.showToast(ToastPadrao.DANGER, 'Erro ao buscar dados');
+      }
+      
+    )
+  }
+
+  buscaPorId(id: number) {
+    this.clienteService.buscaPorId(id).subscribe(
+      res => {
+        if (!res.success) {
+          this.toastService.showToast(ToastPadrao.DANGER, 'Erro ao buscar dados');
+          console.log(res.data);
+          return;
+        }
+
+        this.createForm(res.data);
+      },
+      error => {
+        console.log(error);
+        this.toastService.showToast(ToastPadrao.DANGER, 'Erro ao buscar dados');
+      }
+    )
+  }
+
+  submit(){
+    if (this.validacao() === false)
+    return;
+
+    let conteudoModelPreparado = this.prepararModel();
+
+    if (conteudoModelPreparado.id > 0) {
+      this.alterar(conteudoModelPreparado);
+      return;
+    }
+
+    this.inserir(conteudoModelPreparado);
+  }
+
+  voltar(){
+    this.route.navigateByUrl('/pages/cliente');
+  }
+
+  validacao() : boolean {
+    this.existeErro = false;
+    const controls = this.formulario.controls;
+
+    if (this.formulario.invalid){
+      Object.keys(controls).forEach(controlName => 
+        controls[controlName].markAllAsTouched()
+      );
+
+      this.existeErro = true;
+      return false;
+    }
+
+    return true;
+  }
+
+
+  prepararModel() : ClienteModel {
+    const controls = this.formulario.controls;
+    const _cliente = new ClienteModel();
+
+    _cliente.id = controls.id.value == null ? 0 : controls.id.value;
+    _cliente.tipoPessoa = controls.tipoPessoa.value;
+    _cliente.estId = controls.estId.value;
+    _cliente.cnpjCpf = controls.cnpjCpf.value;
+    _cliente.nome = controls.nome.value;
+    _cliente.cep = controls.cep.value;
+    _cliente.endereco = controls.endereco.value;
+    _cliente.bairro = controls.bairro.value;
+    _cliente.cidade = controls.cidade.value;
+    _cliente.estado = controls.estado.value;
+    _cliente.fone1 = controls.fone1.value;
+    _cliente.fone2 = controls.fone2.value;
+    _cliente.email = controls.email.value;
+    _cliente.status = controls.status.value;
+
+    return _cliente;
+  }
+
+
+  inserir(model : ClienteModel) {
+    this.clienteService.inserir(model).subscribe(
+      res => {
+        if (!res.success) {
+          this.toastService.showToast(ToastPadrao.DANGER, 'Erro ao realizar o cadastro', res.data);
+          return;
+        }
+
+        this.toastService.showToast(ToastPadrao.SUCCESS, 'Cadastro realizado com sucesso!');
+        this.route.navigateByUrl('/pages/cliente');
+      },
+      erro => {
+        console.log(erro);
+        this.toastService.showToast(ToastPadrao.DANGER, 'Erro ao realizar o cadastro');
+      }
+    )
+  }
+
+  alterar(model: ClienteModel) {
+    this.clienteService.alterar(model).subscribe(
+      res => {
+        if (!res.success) {
+          this.toastService.showToast(ToastPadrao.DANGER, 'Erro ao realizar alteração', res.data);
+          return;
+        }
+
+        this.toastService.showToast(ToastPadrao.SUCCESS, 'Alteração realizado com sucesso!');
+        this.route.navigateByUrl('/pages/cliente');
+      },
+      erro => {
+        console.log(erro);
+        this.toastService.showToast(ToastPadrao.DANGER, 'Erro ao realizar o alteração');
+      }
+    )
+  }
 
 }

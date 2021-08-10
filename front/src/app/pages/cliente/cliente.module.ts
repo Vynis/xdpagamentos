@@ -1,3 +1,4 @@
+import { EstabelecimentoService } from './../../@core/services/estabelecimento.service';
 import { ClienteService } from './../../@core/services/cliente.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -40,7 +41,8 @@ import { InterceptService } from '../../@core/utils/intercept.service';
         useClass: InterceptService,
       multi: true
     },
-    ClienteService
+    ClienteService,
+    EstabelecimentoService
   ]
 })
 export class ClienteModule { }

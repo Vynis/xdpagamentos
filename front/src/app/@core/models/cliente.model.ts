@@ -31,5 +31,6 @@ export class ClienteModel {
     constructor() {
         this.tipoPessoa = 'PF';
         this.estado = 'GO';
+        this.status = 'A';
     }
 }
