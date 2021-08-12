@@ -1,6 +1,6 @@
 <nb-card> 
     <nb-card-header>{{tituloPagina}} </nb-card-header>
-    <nb-card-body>
+    <nb-card-body *ngIf="clienteOld">
         <nb-alert *ngIf="existeErro" status="danger" closable>Favor preencher todos os campos obrigatorios!</nb-alert>
         <form  [formGroup]="formulario">
             <nb-tabset>
@@ -155,7 +155,7 @@
                 <nb-tab tabTitle="Dados Bancários">
                     <div  class="row">
                         <div class="col-sm-12">
-                            <nb-toggle formControlName="possuiDadosBancario" status="basic">Possui conta bancária</nb-toggle>
+                            <nb-toggle  (checkedChange)="selecaoPossuiContaBancaria($event)" formControlName="possuiDadosBancario" status="basic">Possui conta bancária</nb-toggle>
                         </div>
                     </div> <br>
 
@@ -164,7 +164,7 @@
                         <div class="col-sm-3">
                             <label for="banId" class="label">*Banco</label><br>
                             <nb-select id="banId" placeholder="Selecione" formControlName="banId" >
-                              <nb-option value="A">Ativo</nb-option>
+                              <nb-option *ngFor="let banco of listaBancos" [value]="banco.id">{{banco.nome}}</nb-option>
                             </nb-select>
                         </div>
 
@@ -194,15 +194,19 @@
 
 
                         <div class="col-sm-3">
-                            <div class="form-group">
+                            
                                 <label for="tipoConta" class="label">*Tipo da Conta</label>
-                                <input type="text" class="form-control" maxlength="10"
+                                <nb-select id="status"
                                 [ngClass]="{'is-invalid': formulario.get('tipoConta').errors  && formulario.get('tipoConta').touched}"
-                                  nbInput fullWidth placeholder="Tipo da Conta" formControlName="tipoConta" />
-                                  <div *ngIf="formulario.get('tipoConta').hasError('required')  && formulario.get('tipoConta').touched" class="invalid-feedback">
-                                    Campo é obrigatório.
-                                  </div>
-                            </div>
+                                 formControlName="tipoConta" [selected]="null"  >
+                                  <nb-option [value]="null">Selecione</nb-option>
+                                  <nb-option value="C">CORRENTE</nb-option>
+                                  <nb-option value="P">POUPANÇA</nb-option>
+                                </nb-select>
+                              <div *ngIf="formulario.get('tipoConta').hasError('required')  && formulario.get('tipoConta').touched" class="invalid-feedback">
+                                Campo é obrigatório.
+                              </div>
+                            
                         </div>
 
 

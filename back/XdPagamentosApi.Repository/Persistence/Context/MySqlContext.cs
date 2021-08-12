@@ -32,6 +32,8 @@ namespace XdPagamentosApi.Repository.Persistence.Context
             modelBuilder.ApplyConfiguration(new ClienteMap());
             modelBuilder.ApplyConfiguration(new BancoMap());
             modelBuilder.ApplyConfiguration(new EstabelecimentoMap());
+
+            
         }
     }
 }

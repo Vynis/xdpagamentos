@@ -31,12 +31,26 @@ namespace XdPagamentosApi.Repository.Class
             if (paginationFilter.Filtro.Count() > 0)
                 expressionDynamic = _filtroDinamico.FromFiltroItemList<Cliente>(paginationFilter.Filtro.ToList());
 
-            IQueryable<Cliente> query = _mySqlContext.Clientes.Where(expressionDynamic).Include(c => c.Banco).Include(c => c.Estabelecimento);
+            IQueryable<Cliente> query = _mySqlContext.Clientes.Where(expressionDynamic);
 
             if (paginationFilter.Filtro.Count() > 0)
                 return await query.AsNoTracking().ToArrayAsync();
 
             return await query.AsNoTracking().OrderBy(c => c.Nome).ToArrayAsync();
+        }
+
+        public async override Task<IEnumerable<Cliente>> BuscarExpressao(Expression<Func<Cliente, bool>> predicado)
+        {
+            IQueryable<Cliente> query = _mySqlContext.Clientes.Where(predicado);
+
+            return await query.AsNoTracking().ToArrayAsync();
+        }
+
+        public async override Task<Cliente> ObterPorId(int Id)
+        {
+            IQueryable<Cliente> query = _mySqlContext.Clientes.Where(c => c.Id.Equals(Id));
+
+            return await query.AsNoTracking().FirstOrDefaultAsync();
         }
     }
 }

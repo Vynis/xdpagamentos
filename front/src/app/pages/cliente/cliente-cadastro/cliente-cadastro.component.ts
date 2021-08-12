@@ -1,3 +1,5 @@
+import { BancoModel } from './../../../@core/models/banco.model';
+import { BancoService } from './../../../@core/services/banco.service';
 import { EstabelecimentoModel } from './../../../@core/models/estabelecimento.model';
 import { EstabelecimentoService } from './../../../@core/services/estabelecimento.service';
 import { ClienteModel } from './../../../@core/models/cliente.model';
@@ -22,6 +24,7 @@ export class ClienteCadastroComponent implements OnInit {
   clienteOld: ClienteModel;
   listaestadosBrasileiros: any[];
   listaEstabelecimentos: EstabelecimentoModel[];
+  listaBancos: BancoModel[];
 
   constructor(
     private fb: FormBuilder,
@@ -29,12 +32,14 @@ export class ClienteCadastroComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private estabelecimentoService: EstabelecimentoService,
     private clienteService: ClienteService,
+    private bancoService: BancoService,
     private toastService : ToastService
     ) { }
 
   ngOnInit(): void {
     this.listaestadosBrasileiros = EstadosBrasileiros;
     this.buscarListaEstabelecimentos();
+    this.buscarListaBancos();
 
     this.activatedRoute.params.subscribe(params => {
       const id = params.id;
@@ -65,11 +70,11 @@ export class ClienteCadastroComponent implements OnInit {
       cidade: [_cliente.cidade, Validators.required],
       estado: [_cliente.estado, Validators.required],
       fone1: [_cliente.fone1, Validators.required],
-      fone2: [_cliente.fone2, Validators.required],
+      fone2: [_cliente.fone2],
       email: [_cliente.email, [Validators.email]],
       status: [_cliente.status, Validators.required],
-      possuiDadosBancario: [false, Validators.required],
-      bandId: [_cliente.banId],
+      possuiDadosBancario: [ _cliente.banId > 0 ? true : false , Validators.required],
+      banId: [_cliente.banId],
       numAgencia: [_cliente.numAgencia],
       numConta: [_cliente.numConta],
       tipoConta: [_cliente.tipoConta]
@@ -97,6 +102,24 @@ export class ClienteCadastroComponent implements OnInit {
     )
   }
 
+  buscarListaBancos() {
+    this.bancoService.buscarAtivos().subscribe(
+      res => {
+        if (!res.success) {
+          this.toastService.showToast(ToastPadrao.DANGER, 'Erro ao buscar dados');
+          console.log(res.data);
+          return;
+        }
+
+        this.listaBancos = res.data;
+      },
+      error => {
+        console.log(error);
+        this.toastService.showToast(ToastPadrao.DANGER, 'Erro ao buscar dados');
+      }
+    )
+  }
+
   buscaPorId(id: number) {
     this.clienteService.buscaPorId(id).subscribe(
       res => {
@@ -116,6 +139,8 @@ export class ClienteCadastroComponent implements OnInit {
   }
 
   submit(){
+    this.existeErro = false;
+
     if (this.validacao() === false)
     return;
 
@@ -169,6 +194,15 @@ export class ClienteCadastroComponent implements OnInit {
     _cliente.email = controls.email.value;
     _cliente.status = controls.status.value;
 
+    if (controls.possuiDadosBancario.value) {
+
+      _cliente.banId = controls.banId.value;
+      _cliente.numAgencia = controls.numAgencia.value;
+      _cliente.numConta = controls.numConta.value;
+      _cliente.tipoConta = controls.tipoConta.value;
+
+    }
+
     return _cliente;
   }
 
@@ -207,6 +241,35 @@ export class ClienteCadastroComponent implements OnInit {
         this.toastService.showToast(ToastPadrao.DANGER, 'Erro ao realizar o alteração');
       }
     )
+  }
+
+  selecaoPossuiContaBancaria(dados){
+
+    const controls = this.formulario.controls;
+
+    controls.banId.setValue('');
+    controls.numAgencia.setValue('');
+    controls.numConta.setValue('');
+    controls.tipoConta.setValue('');
+
+    if (dados) {
+      controls.banId.setValidators(Validators.required);
+      controls.numAgencia.setValidators(Validators.required);
+      controls.numConta.setValidators(Validators.required);
+      controls.tipoConta.setValidators(Validators.required);
+    }
+    else {
+      controls.banId.clearValidators();
+      controls.numAgencia.clearValidators();
+      controls.numConta.clearValidators();
+      controls.tipoConta.clearValidators();
+    }
+
+    controls.banId.updateValueAndValidity();
+    controls.numAgencia.updateValueAndValidity();
+    controls.numConta.updateValueAndValidity();
+    controls.tipoConta.updateValueAndValidity();
+
   }
 
 }

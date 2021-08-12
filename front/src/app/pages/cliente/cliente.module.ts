@@ -12,6 +12,7 @@ import { ClienteListaComponent } from './cliente-lista/cliente-lista.component';
 import { ClienteCadastroComponent } from './cliente-cadastro/cliente-cadastro.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptService } from '../../@core/utils/intercept.service';
+import { BancoService } from '../../@core/services/banco.service';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { InterceptService } from '../../@core/utils/intercept.service';
       multi: true
     },
     ClienteService,
-    EstabelecimentoService
+    EstabelecimentoService,
+    BancoService
   ]
 })
 export class ClienteModule { }

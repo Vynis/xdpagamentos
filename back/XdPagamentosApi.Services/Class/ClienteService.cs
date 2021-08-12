@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using XdPagamentosApi.Domain.Models;
@@ -19,6 +20,9 @@ namespace XdPagamentosApi.Services.Class
 
         public async Task<Cliente[]> BuscarComFiltro(PaginationFilter paginationFilter)
         {
+            if (paginationFilter.Filtro.Count() == 0)
+                return _clienteRepository.ObterTodos().Result.ToArray();
+
             return await _clienteRepository.BuscarComFiltro(paginationFilter);
         }
     }
