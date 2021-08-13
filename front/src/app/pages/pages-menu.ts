@@ -17,7 +17,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
       },
       {
         title: 'POS/Terminais',
-        link: '/pages/layout/list',
+        link: '/pages/terminal',
       },
       {
         title: 'Estabelecimentos',

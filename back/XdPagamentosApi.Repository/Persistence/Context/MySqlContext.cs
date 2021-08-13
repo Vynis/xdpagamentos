@@ -18,6 +18,8 @@ namespace XdPagamentosApi.Repository.Persistence.Context
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Banco> Bancos { get; set; }
         public DbSet<Estabelecimento> Estabelecimentos { get; set; }
+        public DbSet<Terminal> Terminais { get; set; }
+        public DbSet<RelClienteTerminal> RelClienteTerminais { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,8 +34,9 @@ namespace XdPagamentosApi.Repository.Persistence.Context
             modelBuilder.ApplyConfiguration(new ClienteMap());
             modelBuilder.ApplyConfiguration(new BancoMap());
             modelBuilder.ApplyConfiguration(new EstabelecimentoMap());
+            modelBuilder.ApplyConfiguration(new TerminalMap());
+            modelBuilder.ApplyConfiguration(new RelClienteTerminalMap());
 
-            
         }
     }
 }

@@ -23,5 +23,6 @@ namespace XdPagamentosApi.Domain.Models
         public string Tipo { get; set; }
 
         public List<Cliente> ListaClientes { get; set; }
+        public List<Terminal> ListaTerminais { get; set; }
     }
 }

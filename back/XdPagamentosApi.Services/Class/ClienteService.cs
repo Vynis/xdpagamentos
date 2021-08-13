@@ -20,9 +20,6 @@ namespace XdPagamentosApi.Services.Class
 
         public async Task<Cliente[]> BuscarComFiltro(PaginationFilter paginationFilter)
         {
-            if (paginationFilter.Filtro.Count() == 0)
-                return _clienteRepository.ObterTodos().Result.ToArray();
-
             return await _clienteRepository.BuscarComFiltro(paginationFilter);
         }
     }

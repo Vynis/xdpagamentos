@@ -22,6 +22,7 @@ export const routes: Routes = [
     loadChildren: () => import('./auth/auth.module').then(m => m.NgxAuthModule),
   },
   { path: '', redirectTo: 'pages', pathMatch: 'full' },
+  { path: 'terminal', loadChildren: () => import('./pages/terminal/terminal.module').then(m => m.TerminalModule) },
   { path: '**', redirectTo: 'pages' },
 ];
 

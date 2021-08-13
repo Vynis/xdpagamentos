@@ -77,6 +77,10 @@ const routes: Routes = [{
       loadChildren: () => import('./cliente/cliente.module').then(m => m.ClienteModule) 
     },
     {
+      path: 'terminal',
+      loadChildren: () => import('./terminal/terminal.module').then(m => m.TerminalModule)
+    },
+    {
       path: '',
       redirectTo: 'dashboard',
       pathMatch: 'full',
