@@ -30,7 +30,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
       {
         title: 'Contas Caixa',
         pathMatch: 'prefix',
-        link: '/pages/layout/tabs',
+        link: '/pages/conta',
       },
     ],
   },

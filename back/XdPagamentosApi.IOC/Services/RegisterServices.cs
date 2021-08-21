@@ -17,6 +17,7 @@ namespace XdPagamentosApi.IOC.Services
             service.AddScoped<IEstabelecimentoService, EstabelecimentoService>();
             service.AddScoped<IBancoService, BancoService>();
             service.AddScoped<ITerminalService, TerminalService>();
+            service.AddScoped<IContaCaixaService, ContaCaixaService>();
         }
     }
 }

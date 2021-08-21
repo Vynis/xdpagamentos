@@ -12,5 +12,7 @@ namespace XdPagamentosApi.WebApi.Dtos
         public string Status { get; set; }
         public int EstId { get; set; }
         public DtoEstabelecimento Estabelecimento { get; set; }
+
+        public List<DtoRelClienteTerminal> ListaRelClienteTerminal { get; set; }
     }
 }

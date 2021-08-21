@@ -1,21 +1,20 @@
-import { PaginationFilterModel } from './../models/configuracao/paginationfilter.model';
-import { ClienteModel } from './../models/cliente.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
+import { ContaCaixaModel } from '../models/contacaixa.model';
 import { ModeloBase } from '../models/modelo-balse';
 
 @Injectable()
-export class ClienteService {
+export class ContaCaixaService {
 
   caminhoApi: string = '';
 
   constructor(private http: HttpClient) { 
-    this.caminhoApi =  `${environment.api}/Cliente`;
+    this.caminhoApi =  `${environment.api}/ContaCaixa`;
   }
 
-  buscar(filtro: PaginationFilterModel) {
-    return this.http.post<ModeloBase>(`${this.caminhoApi}/buscar-cliente-filtro`, filtro);
+  buscarTodos() {
+    return this.http.get<ModeloBase>(`${this.caminhoApi}/buscar-todos`);
   }
 
   buscaPorId(id: number) {
@@ -26,11 +25,11 @@ export class ClienteService {
     return this.http.get<ModeloBase>(`${this.caminhoApi}/buscar-por-ativos`);
   }
 
-  inserir(model : ClienteModel) {
+  inserir(model : ContaCaixaModel) {
     return this.http.post<ModeloBase>(`${this.caminhoApi}/inserir`, model);
   }
 
-  alterar(model : ClienteModel) {
+  alterar(model : ContaCaixaModel) {
     return this.http.put<ModeloBase>(`${this.caminhoApi}/alterar`, model);
   }
 }

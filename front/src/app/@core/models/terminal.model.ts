@@ -1,3 +1,4 @@
+import { RelClienteTerminalModel } from './relclienteterminal.mode';
 import { EstabelecimentoModel } from './estabelecimento.model';
 export class TerminalModel {
     id: number;
@@ -5,4 +6,11 @@ export class TerminalModel {
     status: string;
     estId: number;
     estabelecimento: EstabelecimentoModel;
+
+    listaRelClienteTerminal: RelClienteTerminalModel[] = [];
+
+    constructor() {
+        this.status = 'A';
+    }
+
 }

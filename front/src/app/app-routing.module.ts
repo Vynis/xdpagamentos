@@ -23,6 +23,7 @@ export const routes: Routes = [
   },
   { path: '', redirectTo: 'pages', pathMatch: 'full' },
   { path: 'terminal', loadChildren: () => import('./pages/terminal/terminal.module').then(m => m.TerminalModule) },
+  { path: 'contaCaixa', loadChildren: () => import('./pages/conta-caixa/conta-caixa.module').then(m => m.ContaCaixaModule) },
   { path: '**', redirectTo: 'pages' },
 ];
 

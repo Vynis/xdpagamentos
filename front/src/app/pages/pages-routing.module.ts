@@ -81,6 +81,10 @@ const routes: Routes = [{
       loadChildren: () => import('./terminal/terminal.module').then(m => m.TerminalModule)
     },
     {
+      path: 'conta',
+      loadChildren: () => import('./conta-caixa/conta-caixa.module').then(m => m.ContaCaixaModule)
+    },
+    {
       path: '',
       redirectTo: 'dashboard',
       pathMatch: 'full',

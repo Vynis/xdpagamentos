@@ -1,3 +1,5 @@
+import { ClienteService } from './../../../@core/services/cliente.service';
+import { ClienteModel } from './../../../@core/models/cliente.model';
 import { TerminalService } from './../../../@core/services/terminal.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -20,6 +22,7 @@ export class TerminalCadastroComponent implements OnInit {
   formulario: FormGroup;
   terminalOld: TerminalModel;
   listaEstabelecimentos: EstabelecimentoModel[];
+  listaClientes: ClienteModel[];
 
   constructor(
     private fb: FormBuilder,
@@ -27,11 +30,13 @@ export class TerminalCadastroComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private estabelecimentoService: EstabelecimentoService,
     private terminalService: TerminalService,
+    private clienteService: ClienteService,
     private toastService : ToastService
   ) { }
 
   ngOnInit(): void {
     this.buscarListaEstabelecimentos();
+    this.buscaListaClientes();
 
     this.activatedRoute.params.subscribe(params => {
       const id = params.id;
@@ -53,7 +58,8 @@ export class TerminalCadastroComponent implements OnInit {
       id: [_terminal.id],
       numTerminal: [_terminal.numTerminal, Validators.required],
       estId: [_terminal.estId, Validators.required],
-      status: [_terminal.status, Validators.required]
+      status: [_terminal.status, Validators.required],
+      cliId: [ _terminal.listaRelClienteTerminal.length > 0 ? _terminal.listaRelClienteTerminal[0].cliId : 0, Validators.required]
     });
   }
 
@@ -75,6 +81,26 @@ export class TerminalCadastroComponent implements OnInit {
         this.toastService.showToast(ToastPadrao.DANGER, 'Erro ao buscar dados');
       }
       
+    )
+  }
+
+  buscaListaClientes() {
+    this.clienteService.buscarAtivos().subscribe(
+      res => {
+
+        if (!res.success) {
+          this.toastService.showToast(ToastPadrao.DANGER, 'Erro ao buscar dados');
+          console.log(res.data);
+          return;
+        }
+        
+        this.listaClientes = res.data;
+
+      },
+      error => {
+        console.log(error);
+        this.toastService.showToast(ToastPadrao.DANGER, 'Erro ao buscar dados');
+      }
     )
   }
 
@@ -140,6 +166,7 @@ export class TerminalCadastroComponent implements OnInit {
     _terminal.numTerminal = controls.numTerminal.value;
     _terminal.estId = controls.estId.value;
     _terminal.status = controls.status.value;
+    _terminal.listaRelClienteTerminal.push({ id:0, cliId: controls.cliId.value, terId: 0 });
 
     return _terminal;
   }

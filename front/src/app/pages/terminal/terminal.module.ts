@@ -1,3 +1,4 @@
+import { ClienteService } from './../../@core/services/cliente.service';
 import { EstabelecimentoService } from './../../@core/services/estabelecimento.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -41,7 +42,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
       multi: true
     },
     TerminalService,
-    EstabelecimentoService
+    EstabelecimentoService,
+    ClienteService
   ]
 })
 export class TerminalModule { }

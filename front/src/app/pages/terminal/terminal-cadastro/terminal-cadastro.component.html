@@ -1,6 +1,6 @@
 <nb-card> 
     <nb-card-header>{{tituloPagina}} </nb-card-header>
-    <nb-card-body >
+    <nb-card-body *ngIf="terminalOld" >
         <nb-alert *ngIf="existeErro" status="danger" closable>Favor preencher todos os campos obrigatorios!</nb-alert>
         <form [formGroup]="formulario">
             <div  class="row">
@@ -31,9 +31,9 @@
                     </nb-select>
                 </div>
                 <div class="col-sm-8">
-                    <label for="estId" class="label">*Clientes</label><br>
-                    <nb-select placeholder="Selecione">
-                      <nb-option *ngFor="let estabelecimento of listaEstabelecimentos" [value]="estabelecimento.id">{{estabelecimento.numEstabelecimento}} - {{estabelecimento.nome}} ({{estabelecimento.id}} )</nb-option>
+                    <label for="cliId" class="label">*Cliente</label><br>
+                    <nb-select  id="cliId" placeholder="Selecione" formControlName="cliId">
+                      <nb-option *ngFor="let cliente of listaClientes" [value]="cliente.id">{{cliente.nome}} - ({{ cliente.tipoPessoa == 'PF' ? 'CPF' :  'CNPJ' }}: {{cliente.cnpjCpf}})</nb-option>
                     </nb-select>
                 </div>
             </div>

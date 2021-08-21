@@ -14,26 +14,26 @@ namespace XdPagamentosApi.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ClienteController : BaseController
+    public class ContaCaixaController : BaseController
     {
-        private readonly IClienteService _clienteService;
+        private readonly IContaCaixaService _contaCaixaService;
         private readonly IMapper _mapper;
 
-        public ClienteController(IClienteService clienteService, IMapper mapper)
+        public ContaCaixaController(IContaCaixaService contaCaixaService, IMapper mapper)
         {
-            _clienteService = clienteService;
+            _contaCaixaService = contaCaixaService;
             _mapper = mapper;
         }
 
         [HttpGet("buscar-por-ativos")]
-        [SwaggerGroup("Cliente")]
+        [SwaggerGroup("ContaCaixa")]
         public async Task<IActionResult> BuscarPorAtivos()
         {
             try
             {
-                var response = await _clienteService.BuscarExpressao(x => x.Status.Equals("A"));
+                var response = await _contaCaixaService.BuscarExpressao(x => x.Status.Equals("A"));
 
-                return Response(response.ToList().OrderBy(c => c.Nome));
+                return Response(response.ToList().OrderBy(c => c.Descricao));
             }
             catch (Exception ex)
             {
@@ -42,13 +42,16 @@ namespace XdPagamentosApi.WebApi.Controllers
             }
         }
 
-        [HttpPost("buscar-cliente-filtro")]
-        [SwaggerGroup("Cliente")]
-        public async Task<IActionResult> BuscarFiltro(PaginationFilter filtro)
+
+        [HttpGet("buscar-todos")]
+        [SwaggerGroup("ContaCaixa")]
+        public async Task<IActionResult> BuscarTodos()
         {
             try
             {
-                return Response(await _clienteService.BuscarComFiltro(filtro));
+                var response = await _contaCaixaService.ObterTodos();
+
+                return Response(response.ToList().OrderBy(c => c.Descricao));
             }
             catch (Exception ex)
             {
@@ -57,14 +60,13 @@ namespace XdPagamentosApi.WebApi.Controllers
             }
         }
 
-
         [HttpGet("buscar-por-id/{id}")]
-        [SwaggerGroup("Cliente")]
+        [SwaggerGroup("ContaCaixa")]
         public async Task<IActionResult> BuscarPorId(int id)
         {
             try
             {
-                return Response(await _clienteService.ObterPorId(id));
+                return Response(await _contaCaixaService.ObterPorId(id));
             }
             catch (Exception ex)
             {
@@ -74,17 +76,12 @@ namespace XdPagamentosApi.WebApi.Controllers
         }
 
         [HttpPost("inserir")]
-        [SwaggerGroup("Cliente")]
-        public async Task<IActionResult> Inserir(DtoCliente dtoCliente)
+        [SwaggerGroup("ContaCaixa")]
+        public async Task<IActionResult> Inserir(DtoContaCaixa dto)
         {
             try
             {
-                var validaCpfCnpjExistente = await _clienteService.BuscarExpressao(x => x.CnpjCpf.Equals(dtoCliente.CnpjCpf));
-
-                if (validaCpfCnpjExistente.Any())
-                    return Response("Cpf/Cnpj já cadastrado", false);
-
-                var response = await _clienteService.Adicionar(_mapper.Map<Cliente>(dtoCliente));
+                var response = await _contaCaixaService.Adicionar(_mapper.Map<ContaCaixa>(dto));
 
                 if (!response)
                     return Response("Erro ao cadastrar", false);
@@ -98,25 +95,15 @@ namespace XdPagamentosApi.WebApi.Controllers
             }
         }
 
+
         [HttpPut("alterar")]
-        [SwaggerGroup("Cliente")]
-        public async Task<IActionResult> Alterar(DtoCliente dtoCliente)
+        [SwaggerGroup("ContaCaixa")]
+        public async Task<IActionResult> Alterar(DtoContaCaixa dto)
         {
             try
             {
-                var dados = await _clienteService.ObterPorId(dtoCliente.Id);
 
-                if (!dados.CnpjCpf.Equals(dtoCliente.CnpjCpf))
-                {
-                    var validaCpfCnpjExistente = await _clienteService.BuscarExpressao(x => x.CnpjCpf.Equals(dtoCliente.CnpjCpf));
-
-                    if (validaCpfCnpjExistente.Any())
-                        return Response("Cpf/Cnpj já cadastrado", false);
-
-                }
-
-
-                var response = await _clienteService.Atualizar(_mapper.Map<Cliente>(dtoCliente));
+                var response = await _contaCaixaService.Atualizar(_mapper.Map<ContaCaixa>(dto));
 
                 if (!response)
                     return Response("Erro ao alterar", false);
@@ -129,6 +116,5 @@ namespace XdPagamentosApi.WebApi.Controllers
                 return Response(ex.Message, false);
             }
         }
-
     }
 }
