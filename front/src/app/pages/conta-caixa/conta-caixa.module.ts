@@ -1,3 +1,4 @@
+import { EstabelecimentoService } from './../../@core/services/estabelecimento.service';
 import { ContaCaixaService } from './../../@core/services/conta-caixa.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -40,7 +41,8 @@ import { InterceptService } from '../../@core/utils/intercept.service';
         useClass: InterceptService,
       multi: true
     },
-    ContaCaixaService
+    ContaCaixaService,
+    EstabelecimentoService
   ]
 })
 export class ContaCaixaModule { }

@@ -18,6 +18,8 @@ namespace XdPagamentosApi.WebApi
             CreateMap<Estabelecimento, DtoEstabelecimento>().ReverseMap();
             CreateMap<Terminal, DtoTerminal>().ReverseMap();
             CreateMap<RelClienteTerminal, DtoRelClienteTerminal>().ReverseMap();
+            CreateMap<ContaCaixa, DtoContaCaixa>().ReverseMap();
+            CreateMap<RelContaEstabelecimento, DtoRelContaEstabelecimento>().ReverseMap();
         }
     }
 }

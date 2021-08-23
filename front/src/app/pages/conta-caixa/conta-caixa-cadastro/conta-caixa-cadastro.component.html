@@ -1,1 +1,67 @@
-<p>conta-caixa-cadastro works!</p>
+<nb-card> 
+    <nb-card-header>{{tituloPagina}} </nb-card-header>
+    <nb-card-body *ngIf="contaOld">
+        <nb-alert *ngIf="existeErro" status="danger" closable>Favor preencher todos os campos obrigatorios!</nb-alert>
+        <form  [formGroup]="formulario">
+            <nb-tabset>
+                <nb-tab tabTitle="Dados">
+                    <div  class="row ">
+
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <label for="descricao" class="label">*Nome Conta Caixa</label>
+                                <input type="text" class="form-control" maxlength="100"
+                                [ngClass]="{'is-invalid': formulario.get('descricao').errors  && formulario.get('descricao').touched}"
+                                  nbInput fullWidth placeholder="Conta Caixa" formControlName="descricao" />
+                                  <div *ngIf="formulario.get('descricao').hasError('required')  && formulario.get('descricao').touched" class="invalid-feedback">
+                                    Campo é obrigatório.
+                                  </div>
+                              </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <label for="status" class="label">*Status</label><br>
+                            <nb-select id="status" placeholder="Selecione" formControlName="status"  selected="A">
+                              <nb-option value="A">Ativo</nb-option>
+                              <nb-option value="I">Inativo</nb-option>
+                            </nb-select>
+                        </div>
+                    </div>
+                </nb-tab>
+                <nb-tab tabTitle="Estabelecimento">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <label for="estabelecimento" class="label">*Estabelecimentos</label><br>
+                            <nb-select formControlName="estabelecimento" id="estabelecimento" placeholder="Selecione">
+                                <nb-option *ngFor="let estabelecimento of listaEstabelecimentos" [value]="estabelecimento">{{estabelecimento.nome}}</nb-option>
+                            </nb-select>
+                        </div>
+                        
+                        <div class="col-sm-4" style="padding-top: 27px;">
+                            <button nbButton (click)="addEstabelecimento()" status="success" >Adicionar</button>
+                        </div>
+                    </div> <br>
+
+                    <div class="row">
+                        <ul>
+                            <li *ngFor="let est of listaEstablecimentoConta; let i = index"> {{est.nome}} <a (click)="excluirEstabelecimento(i)" outline  size="small" status="danger" nbButton >Excluir</a></li>
+                        </ul>
+                    </div>
+
+                </nb-tab>
+            </nb-tabset>
+        </form>
+    </nb-card-body>
+
+    <nb-card-footer>
+        <div class="row">
+            <div class="col-sm-1">
+                <button nbButton (click)="submit()" status="success" >Salvar</button>
+            </div>
+            <div class="col-sm-1">
+                <button nbButton (click)="voltar()" >Voltar</button>
+            </div>
+        </div>
+    </nb-card-footer>
+    
+</nb-card>
