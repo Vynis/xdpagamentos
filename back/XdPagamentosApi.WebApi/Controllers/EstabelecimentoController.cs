@@ -42,6 +42,21 @@ namespace XdPagamentosApi.WebApi.Controllers
             }
         }
 
+        [HttpPost("buscar-por-filtro")]
+        [SwaggerGroup("Estabelecimento")]
+        public async Task<IActionResult> BuscarPorFiltro(PaginationFilter filtro)
+        {
+            try
+            {
+                return Response(await _estabelecimentoService.BuscarComFiltro(filtro));
+            }
+            catch (Exception ex)
+            {
+
+                return Response(ex.Message, false);
+            }
+        }
+
 
         [HttpGet("buscar-por-id/{id}")]
         [SwaggerGroup("Estabelecimento")]

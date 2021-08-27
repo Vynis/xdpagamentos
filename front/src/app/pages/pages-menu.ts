@@ -21,7 +21,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
       },
       {
         title: 'Estabelecimentos',
-        link: '/pages/layout/infinite-list',
+        link: '/pages/estabelecimento',
       },
       {
         title: 'Usuários do Sistema',
