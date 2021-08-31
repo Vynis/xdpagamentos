@@ -5,5 +5,5 @@
  */
 export const environment = {
   production: true,
-  api: ''
+  api: 'http://api.xdpayment.sis-pro.net/api'
 };

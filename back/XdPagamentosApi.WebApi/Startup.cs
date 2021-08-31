@@ -40,7 +40,15 @@ namespace XdPagamentosApi.WebApi
             services.AddSwaggerConfig();
             services.AddDIConfiguration();
             var key = Encoding.ASCII.GetBytes(SettingsToken.Secret);
-            var con = Configuration["MYSQL_CON:MSQL_CONNECTIONSTRING"];
+
+
+            var con =  Configuration["MYSQL_CON:MSQL_CONNECTIONSTRING"];
+
+#if DEBUG
+            con = Configuration["MYSQL_CON_DEBUG:MSQL_CONNECTIONSTRING"];
+#endif
+
+
             services.AddDbContext<MySqlContext>(options =>
             {
                 options.UseMySql(con);
