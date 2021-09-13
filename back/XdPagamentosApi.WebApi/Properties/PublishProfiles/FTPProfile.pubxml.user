@@ -8,14 +8,14 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAHmBYwCLQv0OWaIfYcsP7dgAAAAACAAAAAAAQZgAAAAEAACAAAADWPzM3bKVo/Xa0LzIPfgrqEo7WZ6k72af4lOZCiMNpUAAAAAAOgAAAAAIAACAAAACUpLUbFIGvVpMYsZuyneSUmS98IjWm+HO1CABgz3mxDiAAAAAY0ttdN3eWuWWadf2zs13sSRQRhe6uMpnGTHrH9lCotEAAAABmN+Pe70T8Hkb7TJpvgSAJ3X2TbTABba9VNUdv+mCaltlibidm3Br6+nJ0riKmfJQD/ptC/GCKTYr4ZtdPl3pP</EncryptedPassword>
     <_PublishTargetUrl>ftp://ftp.api.xdpayment.sis-pro.net/www</_PublishTargetUrl>
-    <History>True|2021-08-30T23:33:38.7840365Z;True|2021-08-30T20:29:14.9492569-03:00;</History>
+    <History>True|2021-09-13T02:15:01.6549467Z;False|2021-09-12T23:14:00.3092084-03:00;True|2021-08-30T20:33:38.7840365-03:00;True|2021-08-30T20:29:14.9492569-03:00;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include="appsettings.Development.json">
       <publishTime>07/17/2021 20:07:42</publishTime>
     </File>
     <File Include="appsettings.json">
-      <publishTime>08/30/2021 20:23:27</publishTime>
+      <publishTime>09/12/2021 23:12:12</publishTime>
     </File>
     <File Include="AutoMapper.dll">
       <publishTime>10/16/2020 15:36:54</publishTime>
@@ -66,7 +66,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/20/2020 23:49:38</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Configuration.Binder.dll">
-      <publishTime>08/20/2020 23:50:00</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Configuration.dll">
       <publishTime>08/20/2020 23:49:38</publishTime>
@@ -144,7 +144,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/24/2019 19:49:50</publishTime>
     </File>
     <File Include="web.config">
-      <publishTime>08/30/2021 20:30:57</publishTime>
+      <publishTime>09/12/2021 23:14:12</publishTime>
     </File>
     <File Include="XdPagamentosApi.Domain.dll">
       <publishTime>08/30/2021 20:26:55</publishTime>
@@ -171,16 +171,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/30/2021 20:26:56</publishTime>
     </File>
     <File Include="XdPagamentosApi.WebApi.deps.json">
-      <publishTime>08/30/2021 20:30:53</publishTime>
+      <publishTime>12/09/2021 23:13:10</publishTime>
     </File>
     <File Include="XdPagamentosApi.WebApi.dll">
-      <publishTime>08/30/2021 20:30:52</publishTime>
+      <publishTime>12/09/2021 23:13:09</publishTime>
     </File>
     <File Include="XdPagamentosApi.WebApi.exe">
-      <publishTime>08/30/2021 20:30:52</publishTime>
+      <publishTime>12/09/2021 23:13:10</publishTime>
     </File>
     <File Include="XdPagamentosApi.WebApi.pdb">
-      <publishTime>08/30/2021 20:30:52</publishTime>
+      <publishTime>12/09/2021 23:13:09</publishTime>
     </File>
     <File Include="XdPagamentosApi.WebApi.runtimeconfig.json">
       <publishTime>08/30/2021 20:26:59</publishTime>
