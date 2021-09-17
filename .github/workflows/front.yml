@@ -33,7 +33,7 @@ jobs:
       run: npm install
 
     - name: Build Project
-      run: npm run build
+      run: npm run build:prod2
     
     - name: Sync Files
       uses: SamKirkland/FTP-Deploy-Action@4.0.0
