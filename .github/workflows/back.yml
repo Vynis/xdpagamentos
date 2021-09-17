@@ -41,6 +41,5 @@ jobs:
         server: ${{ secrets.ftp_host_api }}
         username: ${{ secrets.ftp_user_api }}
         password: ${{ secrets.ftp_password_api }}
-        local-dir: ./back/publishdddd/
-        server-dir: ./www/teste/
+        local-dir: ./back/publish/
         dangerous-clean-slate: true      
