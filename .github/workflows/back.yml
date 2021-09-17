@@ -38,7 +38,7 @@ jobs:
     - name: Sync Files
       uses: SamKirkland/FTP-Deploy-Action@4.1.0
       with:
-        server: ftp://ftp.api.xdpayment.sis-pro.net
+        server: ftp.api.xdpayment.sis-pro.net
         username: api
         password: seit19790520
         local-dir: ./back/publish/
