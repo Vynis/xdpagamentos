@@ -33,7 +33,7 @@ jobs:
       run: npm install
 
     - name: Build Project
-      run: npm run build
+      run: ng build --base-href /teste/
     
     - name: Sync Files
       uses: SamKirkland/FTP-Deploy-Action@4.0.0
@@ -41,6 +41,6 @@ jobs:
         server: ${{ secrets.ftp_host }}
         username: ${{ secrets.ftp_user }}
         password: ${{ secrets.ftp_password }}
-        local-dir: .front/dist/
+        local-dir: ./dist/
         server-dir: ./home/app/teste/
         dangerous-clean-slate: true
