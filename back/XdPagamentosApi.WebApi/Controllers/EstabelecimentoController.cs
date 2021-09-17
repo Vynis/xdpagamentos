@@ -106,7 +106,7 @@ namespace XdPagamentosApi.WebApi.Controllers
         {
             try
             {
-                //teste
+                //testes
                 var dados = await _estabelecimentoService.ObterPorId(dto.Id);
 
                 if (!dados.CnpjCpf.Equals(dto.CnpjCpf))
