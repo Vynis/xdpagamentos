@@ -1,0 +1,46 @@
+name: Front
+
+on:
+  push:
+    branches: 
+      - master
+    paths: 
+      - front/**
+  pull_request:  # [master, next]
+    paths: 
+      - front/**
+
+jobs:
+  web-deploy:
+
+    name: Deploy Angular App
+    runs-on: windows-latest
+    
+    defaults:
+      run:
+        working-directory: front
+
+    steps:
+    - name: Get latest code
+      uses: actions/checkout@v2.3.2
+
+    - name: Use Node.js 14 LTS
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+      
+    - name: Install NPM Modules
+      run: npm install
+
+    - name: Build Project
+      run: npm run build
+    
+    - name: Sync Files
+      uses: SamKirkland/FTP-Deploy-Action@4.0.0
+      with:
+        server: ${{ secrets.ftp_host }}
+        username: ${{ secrets.ftp_user }}
+        password: ${{ secrets.ftp_password }}
+        local-dir: .front/dist/
+        server-dir: ./home/app/teste
+        dangerous-clean-slate: true
