@@ -46,7 +46,6 @@ namespace XdPagamentosApi.WebApi
 
 #if DEBUG
             con = Configuration["MYSQL_CON_DEBUG:MSQL_CONNECTIONSTRING"];
-            //con = Configuration["MYSQL_CON:MSQL_CONNECTIONSTRING"];
 #endif
 
 

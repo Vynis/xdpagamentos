@@ -39,5 +39,19 @@ namespace XdPagamentosApi.Repository.Class
 
             return await query.AsNoTracking().OrderBy(c => c.Nome).ToArrayAsync();
         }
+
+        public async override Task<IEnumerable<Estabelecimento>> BuscarExpressao(Expression<Func<Estabelecimento, bool>> predicado)
+        {
+            IQueryable<Estabelecimento> query = _mySqlContext.Estabelecimentos.Where(predicado);
+
+            return await query.AsNoTracking().ToArrayAsync();
+        }
+
+        public async override Task<Estabelecimento> ObterPorId(int Id)
+        {
+            IQueryable<Estabelecimento> query = _mySqlContext.Estabelecimentos.Where(c => c.Id.Equals(Id));
+
+            return await query.AsNoTracking().FirstOrDefaultAsync();
+        }
     }
 }

@@ -11,6 +11,8 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { EstabelecimentoService } from '../../@core/services/estabelecimento.service';
 import { InterceptService } from '../../@core/utils/intercept.service';
+import { ContaCaixaService } from '../../@core/services/conta-caixa.service';
+import { OperadoraService } from '../../@core/services/operadora.service';
 
 
 @NgModule({
@@ -40,7 +42,9 @@ import { InterceptService } from '../../@core/utils/intercept.service';
         useClass: InterceptService,
       multi: true
     },
-    EstabelecimentoService
+    EstabelecimentoService,
+    ContaCaixaService,
+    OperadoraService
   ]
 })
 export class EstabelecimentoModule { }

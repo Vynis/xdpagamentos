@@ -14,4 +14,12 @@ export class EstabelecimentoModel {
     numConta: string;
     status: string;
     tipo: string;
+    opeId: number;
+    cocId: number;
+
+    constructor() {
+        this.estado = 'GO';
+        this.status = 'A';
+    }
+
 }

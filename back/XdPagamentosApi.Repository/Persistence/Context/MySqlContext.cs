@@ -22,6 +22,7 @@ namespace XdPagamentosApi.Repository.Persistence.Context
         public DbSet<RelClienteTerminal> RelClienteTerminais { get; set; }
         public DbSet<ContaCaixa> ContaCaixas { get; set; }
         public DbSet<RelContaEstabelecimento> RelContaEstabelecimentos { get; set; }
+        public DbSet<Operadora> Operadoras { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,6 +41,7 @@ namespace XdPagamentosApi.Repository.Persistence.Context
             modelBuilder.ApplyConfiguration(new RelClienteTerminalMap());
             modelBuilder.ApplyConfiguration(new ContaCaixaMap());
             modelBuilder.ApplyConfiguration(new RelContaEstabelecimentoMap());
+            modelBuilder.ApplyConfiguration(new OperadoraMap());
 
         }
     }

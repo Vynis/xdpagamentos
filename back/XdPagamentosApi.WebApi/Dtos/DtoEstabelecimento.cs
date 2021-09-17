@@ -22,5 +22,8 @@ namespace XdPagamentosApi.WebApi.Dtos
         public string NumConta { get; set; }
         public string Status { get; set; }
         public string Tipo { get; set; }
+
+        public int OpeId { get; set; }
+        public int CocId { get; set; }
     }
 }
