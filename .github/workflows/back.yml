@@ -38,9 +38,9 @@ jobs:
     - name: Sync Files
       uses: SamKirkland/FTP-Deploy-Action@4.0.0
       with:
-        server: ${{ secrets.ftp_host }}
-        username: ${{ secrets.ftp_user }}
-        password: ${{ secrets.ftp_password }}
+        server: ${{ secrets.ftp_host_api }}
+        username: ${{ secrets.ftp_user_api }}
+        password: ${{ secrets.ftp_password_api }}
         local-dir: ./back/publish/
         server-dir: ./www/
         dangerous-clean-slate: true      
