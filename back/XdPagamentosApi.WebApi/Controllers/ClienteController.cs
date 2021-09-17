@@ -130,5 +130,25 @@ namespace XdPagamentosApi.WebApi.Controllers
             }
         }
 
+        [HttpDelete("deletar")]
+        [SwaggerGroup("Cliente")]
+        public async Task<IActionResult> Deletar(DtoCliente dtoCliente)
+        {
+            try
+            {
+
+                var response = await _clienteService.Excluir(_mapper.Map<Cliente>(dtoCliente));
+
+                if (!response)
+                    return Response("Erro ao excluir", false);
+
+                return Response("Exclusão com sucesso!");
+            }
+            catch (Exception ex)
+            {
+                return Response(ex.Message, false);
+            }
+        }
+
     }
 }

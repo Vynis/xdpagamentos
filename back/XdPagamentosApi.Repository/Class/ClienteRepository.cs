@@ -54,5 +54,15 @@ namespace XdPagamentosApi.Repository.Class
 
             return await query.AsNoTracking().FirstOrDefaultAsync();
         }
+
+        public async override Task<bool> Excluir(Cliente obj)
+        {
+            var validaRelClienteTerminais = _mySqlContext.RelClienteTerminais.Where(c => c.CliId.Equals(obj.Id)).AsNoTracking().ToList();
+
+            if (validaRelClienteTerminais.Any())
+                return false;
+
+            return await base.Excluir(obj);
+        }
     }
 }

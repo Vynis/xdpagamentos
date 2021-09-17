@@ -1,3 +1,4 @@
+import { SweetalertService } from './../../../@core/services/sweetalert.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { PaginationFilterModel } from './../../../@core/models/configuracao/paginationfilter.model';
 import { Component, OnInit } from '@angular/core';
@@ -58,7 +59,8 @@ export class ClienteListaComponent implements OnInit {
     private estabelecimentoService: EstabelecimentoService,
     private toastService : ToastService,
     private route: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private sweetAlertService: SweetalertService
     ) {
     this.configuracaoesGrid();
     this.buscaDados(new PaginationFilterModel);
@@ -124,6 +126,16 @@ export class ClienteListaComponent implements OnInit {
     switch (event.action) {
       case AcoesPadrao.EDITAR:
         this.route.navigateByUrl(`/pages/cliente/cadastro/edit/${event.data.id}`);
+        break;
+      case AcoesPadrao.REMOVER:
+
+        this.sweetAlertService.msgDeletarRegistro().then(
+          res => {
+            if (res.isConfirmed){
+              this.sweetAlertService.msgAvulsa('Deletado','success','');
+            } 
+          }
+        )
         break;
       default:
         break;
