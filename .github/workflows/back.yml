@@ -44,4 +44,5 @@ jobs:
         password: seit19790520
         protocol: ftp
         port: 21
+        security: loose
         log-level: verbose
