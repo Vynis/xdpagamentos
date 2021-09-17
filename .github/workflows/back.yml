@@ -42,5 +42,4 @@ jobs:
         username: api
         password: seit19790520
         local-dir: ./back/publish/
-        server-dir: www/teste/
-        dangerous-clean-slate: true      
+        server-dir: www/teste/     
