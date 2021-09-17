@@ -13,6 +13,7 @@ import { EstabelecimentoModel } from '../../../@core/models/estabelecimento.mode
 import { EstabelecimentoService } from '../../../@core/services/estabelecimento.service';
 import { ToastService } from '../../../@core/services/toast.service';
 import { ToastPadrao } from '../../../@core/enums/toast.enum';
+import { SweetAlertIcons } from '../../../@core/enums/sweet-alert-icons-enum';
 
 @Component({
   selector: 'ngx-cliente-lista',
@@ -128,11 +129,10 @@ export class ClienteListaComponent implements OnInit {
         this.route.navigateByUrl(`/pages/cliente/cadastro/edit/${event.data.id}`);
         break;
       case AcoesPadrao.REMOVER:
-
         this.sweetAlertService.msgDeletarRegistro().then(
           res => {
             if (res.isConfirmed){
-              this.sweetAlertService.msgAvulsa('Deletado','success','');
+              this.sweetAlertService.msgAvulsa('Deletado', SweetAlertIcons.SUCESS ,'');
             } 
           }
         )
