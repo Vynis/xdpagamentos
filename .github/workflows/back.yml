@@ -1,0 +1,43 @@
+name: Back
+
+on:
+  push:
+    branches: 
+      - master
+    paths: 
+      - back/**
+  pull_request:  # [master, next]
+    paths: 
+      - back/**
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+    
+    defaults:
+      run:
+        working-directory: back
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+      
+    - name: Sync Files
+      uses: SamKirkland/FTP-Deploy-Action@4.0.0
+      with:
+        server: ${{ secrets.ftp_host }}
+        username: ${{ secrets.ftp_user }}
+        password: ${{ secrets.ftp_password }}
+        local-dir: ./back/dist/
+        server-dir: ./www/
+        dangerous-clean-slate: true      
