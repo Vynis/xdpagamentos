@@ -117,7 +117,6 @@ namespace XdPagamentosApi.WebApi.Controllers
 
                 }
 
-
                 var response = await _estabelecimentoService.Atualizar(_mapper.Map<Estabelecimento>(dto));
 
                 if (!response)

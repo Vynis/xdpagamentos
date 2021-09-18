@@ -22,14 +22,14 @@
           <div class="col-md-4">
               <label for="estabelecimento" class="label">Estabelecimento</label><br>
               <nb-select placeholder="Estabelecimento"  status="primary" formControlName="estabelecimento">
-                <nb-option [value]="null"></nb-option>
+                <nb-option [value]="null">Todos</nb-option>
                 <nb-option *ngFor="let estabelecimento of listaEstabelecimentos" [value]="estabelecimento.id">{{estabelecimento.numEstabelecimento}} - {{estabelecimento.nome}} ({{estabelecimento.id}} )</nb-option>
                 </nb-select>
           </div>
           <div class="col-md-4">
               <label for="status" class="label">Status</label><br>
               <nb-select placeholder="Status"  status="primary" formControlName="status" >
-                  <nb-option [value]="null"></nb-option>
+                  <nb-option [value]="null">Todos</nb-option>
                   <nb-option value="A">Ativo</nb-option>
                   <nb-option value="I">Inativo</nb-option>
                 </nb-select>
