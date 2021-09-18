@@ -37,9 +37,11 @@ jobs:
       run: dotnet publish -c Release -r win-x64 --output ./publish XdPagamentosApi.sln
       
     - name: Sync Files
-      uses: SamKirkland/FTP-Deploy-Action@4.1.0
+      uses: SamKirkland/FTP-Deploy-Action@4.0.0
       with:
-        server: ftp.cursoigrejacristobrasil.kinghost.net
-        username: cursoigrejacristobra
-        password: vs130986
-        log-level: verbose
+        server: ${{ secrets.ftp_host_api }}
+        username: ${{ secrets.ftp_user_api }}
+        password: ${{ secrets.ftp_password_api }}
+        local-dir: ./back/publish/
+        server-dir: www/
+        dangerous-clean-slate: true
