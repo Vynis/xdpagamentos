@@ -21,13 +21,7 @@ jobs:
         working-directory: front
 
     steps:
-    - name: send message ini
-      uses: appleboy/discord-action@master
-      with:
-        webhook_id: ${{ secrets.WEBHOOK_ID }}
-        webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
-        message: Iniciando a publicação do front admin da xdpayment.    
-    
+  
     - name: Get latest code
       uses: actions/checkout@v2.3.2
 
@@ -50,12 +44,4 @@ jobs:
         password: ${{ secrets.ftp_password }}
         local-dir: ./front/dist/
         server-dir: www/admin/
-        dangerous-clean-slate: true
-        
-    - name: send message fim
-      uses: appleboy/discord-action@master
-      with:
-        webhook_id: ${{ secrets.WEBHOOK_ID }}
-        webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
-        message: Finalizado a publicação do front admin da xdpayment.            
-       
+        dangerous-clean-slate: true      
