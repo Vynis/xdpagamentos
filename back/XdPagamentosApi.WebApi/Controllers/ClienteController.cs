@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using XdPagamentosApi.Domain.Models;
+using XdPagamentosApi.Services.Class;
 using XdPagamentosApi.Services.Interfaces;
 using XdPagamentosApi.WebApi.Configuracao.Swagger;
 using XdPagamentosApi.WebApi.Dtos;
@@ -165,7 +166,7 @@ namespace XdPagamentosApi.WebApi.Controllers
                 if (dados == null)
                     return Response("Cliente não localizado!", false);
 
-                dados.Senha = "cli102030";
+                dados.Senha = SenhaHashService.CalculateMD5Hash("cli102030");
 
                 var response = await _clienteService.Atualizar(dados);
 
