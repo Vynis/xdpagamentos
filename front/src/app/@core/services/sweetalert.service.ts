@@ -9,11 +9,11 @@ export class SweetalertService {
 
   constructor() { }
 
-  msgDeletarRegistro(msgTitulo = '', msgTexto = '') {
+  msgPadrao(msgTitulo = '', msgTexto = '', icons = SweetAlertIcons.WARNING) {
    return Swal.fire({
       title: msgTitulo == '' ?  'Tem certeza que deseja excluir este registro?' : msgTitulo,
       text: msgTexto == '' ? 'Apos excluir este registro ele não sera capaz de recupera-lo' : msgTexto ,
-      icon: SweetAlertIcons.WARNING,
+      icon: icons,
       showCancelButton: true,
       confirmButtonText: 'Sim',
       cancelButtonText: 'Não'

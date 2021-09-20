@@ -85,7 +85,8 @@ export class ClienteListaComponent implements OnInit {
     this.settings.columns = this.columns;
     this.settings.actions.custom = [
       { name: AcoesPadrao.EDITAR, title: '<i title="Editar" class="nb-edit"></i>'},
-      { name: AcoesPadrao.REMOVER, title: '<i title="Remover" class="nb-trash"></i>'}
+      { name: AcoesPadrao.REMOVER, title: '<i title="Remover" class="nb-trash"></i>'},
+      { name: 'Senha', title: '<i title="Alterar Senha" class="nb-arrow-retweet"></i>' }
     ];
   }
 
@@ -129,7 +130,7 @@ export class ClienteListaComponent implements OnInit {
         this.route.navigateByUrl(`/pages/cliente/cadastro/edit/${event.data.id}`);
         break;
       case AcoesPadrao.REMOVER:
-        this.sweetAlertService.msgDeletarRegistro().then(
+        this.sweetAlertService.msgPadrao().then(
           res => {
             if (res.isConfirmed){
               this.sweetAlertService.msgAvulsa('Deletado', SweetAlertIcons.SUCESS ,'');
@@ -137,6 +138,20 @@ export class ClienteListaComponent implements OnInit {
           }
         )
         break;
+      case 'Senha':
+        this.sweetAlertService.msgPadrao('Tem certeza que deseja alterar a senha?', 'Será alterado para senha: cli102030', SweetAlertIcons.QUESTION).then(
+          res => {
+            if (res.isConfirmed) {
+              this.clienteService.alterarSenhaPadrao(event.data.id).subscribe(
+                res => {
+                  if (res.success) 
+                   this.sweetAlertService.msgAvulsa('Senha alterada com sucesso!', SweetAlertIcons.SUCESS, '');
+                }
+              )
+            }
+          }
+        )
+        break; 
       default:
         break;
     }

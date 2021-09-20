@@ -84,6 +84,8 @@ namespace XdPagamentosApi.WebApi.Controllers
                 if (validaCpfCnpjExistente.Any())
                     return Response("Cpf/Cnpj já cadastrado", false);
 
+                dtoCliente.Senha = "cli102030";
+
                 var response = await _clienteService.Adicionar(_mapper.Map<Cliente>(dtoCliente));
 
                 if (!response)
@@ -130,6 +132,7 @@ namespace XdPagamentosApi.WebApi.Controllers
             }
         }
 
+
         [HttpDelete("deletar")]
         [SwaggerGroup("Cliente")]
         public async Task<IActionResult> Deletar(DtoCliente dtoCliente)
@@ -143,6 +146,34 @@ namespace XdPagamentosApi.WebApi.Controllers
                     return Response("Erro ao excluir", false);
 
                 return Response("Exclusão com sucesso!");
+            }
+            catch (Exception ex)
+            {
+                return Response(ex.Message, false);
+            }
+        }
+
+
+        [HttpPut("alterar-senha-padrao/{id}")]
+        [SwaggerGroup("Cliente")]
+        public async Task<IActionResult> AlterarSenha(int id)
+        {
+            try
+            {
+                var dados = await _clienteService.ObterPorId(id);
+
+                if (dados == null)
+                    return Response("Cliente não localizado!", false);
+
+                dados.Senha = "cli102030";
+
+                var response = await _clienteService.Atualizar(dados);
+
+                if (!response)
+                    return Response("Erro ao alterar", false);
+
+                return Response("Alteração com sucesso!");
+
             }
             catch (Exception ex)
             {

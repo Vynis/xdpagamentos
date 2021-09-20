@@ -33,4 +33,8 @@ export class ClienteService {
   alterar(model : ClienteModel) {
     return this.http.put<ModeloBase>(`${this.caminhoApi}/alterar`, model);
   }
+
+  alterarSenhaPadrao(id: number) {
+    return this.http.put<ModeloBase>(`${this.caminhoApi}/alterar-senha-padrao/${id}`, { id });
+  }
 }
