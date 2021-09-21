@@ -11,6 +11,7 @@ using XdPagamentosApi.WebApi.Configuracao.Swagger;
 using XdPagamentosApi.WebApi.Configuracao.Token;
 using XdPagamentosApi.WebApi.Dtos;
 using XdPagamentosApi.WebApi.Shared;
+using XdPagamentosApi.WebApi.Shared.Extensions;
 
 namespace XdPagamentosApi.WebApi.Controllers
 {
@@ -49,11 +50,11 @@ namespace XdPagamentosApi.WebApi.Controllers
 
                 return Response(new { usuario, token });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                return Response(ex.Message, false);
             }
         }
+
     }
 }

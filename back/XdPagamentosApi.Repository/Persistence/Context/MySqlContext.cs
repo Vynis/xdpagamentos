@@ -23,6 +23,8 @@ namespace XdPagamentosApi.Repository.Persistence.Context
         public DbSet<ContaCaixa> ContaCaixas { get; set; }
         public DbSet<RelContaEstabelecimento> RelContaEstabelecimentos { get; set; }
         public DbSet<Operadora> Operadoras { get; set; }
+        public DbSet<Sessao> Sessoes { get; set; }
+        public DbSet<Permissao> Permissoes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -33,6 +35,12 @@ namespace XdPagamentosApi.Repository.Persistence.Context
 
             base.OnModelCreating(modelBuilder);
 
+            ConfiguracaoMap(modelBuilder);
+
+        }
+
+        private static void ConfiguracaoMap(ModelBuilder modelBuilder)
+        {
             modelBuilder.ApplyConfiguration(new UsuarioMap());
             modelBuilder.ApplyConfiguration(new ClienteMap());
             modelBuilder.ApplyConfiguration(new BancoMap());
@@ -42,7 +50,8 @@ namespace XdPagamentosApi.Repository.Persistence.Context
             modelBuilder.ApplyConfiguration(new ContaCaixaMap());
             modelBuilder.ApplyConfiguration(new RelContaEstabelecimentoMap());
             modelBuilder.ApplyConfiguration(new OperadoraMap());
-
+            modelBuilder.ApplyConfiguration(new SessaoMap());
+            modelBuilder.ApplyConfiguration(new PermissaoMap());
         }
     }
 }

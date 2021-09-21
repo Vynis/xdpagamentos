@@ -12,5 +12,7 @@ namespace XdPagamentosApi.Domain.Models
         public string Senha { get; set; }
         public string Email { get; set; }
         public string Status { get; set; }
+
+        public List<Permissao> ListaPermissao { get; set; }
     }
 }

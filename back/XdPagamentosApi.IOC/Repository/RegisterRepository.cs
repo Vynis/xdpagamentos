@@ -23,6 +23,7 @@ namespace XdPagamentosApi.IOC.Repository
             service.AddScoped<ITerminalRepository, TerminalRepository>();
             service.AddScoped<IContaCaixaRepository, ContaCaixaRepository>();
             service.AddScoped<IOperadoraRepository, OperadoraRepository>();
+            service.AddScoped<ISessaoRepository, SessaoRepository>();
         }
     }
 }
