@@ -11,6 +11,7 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { InterceptService } from '../../@core/utils/intercept.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { UsuarioCadastroComponent } from './usuario-cadastro/usuario-cadastro.component';
+import { SessaoService } from '../../@core/services/sessao.service';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { UsuarioCadastroComponent } from './usuario-cadastro/usuario-cadastro.co
         useClass: InterceptService,
       multi: true
     },
-    UsuarioService
+    UsuarioService,
+    SessaoService
   ]
 })
 export class UsuarioModule { }

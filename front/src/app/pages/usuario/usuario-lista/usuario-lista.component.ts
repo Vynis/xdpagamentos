@@ -79,5 +79,6 @@ export class UsuarioListaComponent implements OnInit {
   pesquisar() {
     this.buscaDados(this.filtroNome.nativeElement.value);
   }
+  
 
 }

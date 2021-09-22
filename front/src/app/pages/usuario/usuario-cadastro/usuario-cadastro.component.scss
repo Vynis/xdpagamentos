@@ -2,3 +2,15 @@ nb-select{
     max-width: 100% !important;
     width: 100%; 
 }
+
+::ng-deep {
+    ng2-st-tbody-edit-delete {
+      display: none;
+      height: 0 !important;
+    }
+  
+    ng2-st-tbody-custom {
+      display: flex;
+      text-align: center;
+    }
+  }

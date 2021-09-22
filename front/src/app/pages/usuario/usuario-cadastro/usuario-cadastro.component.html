@@ -1,6 +1,6 @@
 <nb-card> 
     <nb-card-header>{{tituloPagina}} </nb-card-header>
-    <nb-card-body>
+    <nb-card-body *ngIf="usuarioOld">
         <nb-alert *ngIf="existeErro" status="danger" closable>Favor preencher todos os campos obrigatorios!</nb-alert>
         <form  [formGroup]="formulario">
             <input type="hidden" formControlName="id">
@@ -60,8 +60,34 @@
                         </div>
                     </div>
                 </nb-tab>
-                <nb-tab [disabled]="!ehEdicao" tabTitle="Permissões">
-                  Permissoes
+                <nb-tab tabTitle="Permissões">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="sessao" class="label">Sessões sistema</label><br>
+                            <nb-select id="sessao" placeholder="Selecione" formControlName="sessao" >
+                              <nb-option *ngFor="let sessao of listaSessao" [value]="sessao">{{sessao.descricao}} - ({{sessao.id}}) </nb-option>
+                            </nb-select>
+                        </div>
+                        <div class="col-sm-2" style="padding-top: 30px">
+                            <button nbButton (click)="addSessao()" status="success" size="small" >Adicionar</button>
+                        </div>
+                        <div class="col-sm-2" style="padding-top: 30px;">
+                            <button nbButton (click)="addTodasSessoes()" status="info" size="small" >Adicionar Todos</button>
+                        </div>
+                        <div class="col-sm-2" style="padding-top: 30px;">
+                            <button nbButton (click)="removerTodasSessoes()" status="danger" size="small" >Remover Todos</button>
+                        </div>
+                    </div> <br />
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <ng2-smart-table 
+                            [settings]="settings" 
+                            [source]="source" 
+                            (custom)="onCustom($event)"
+                            >
+                            </ng2-smart-table>
+                        </div>
+                    </div>
                 </nb-tab>
                 <nb-tab [disabled]="!ehEdicao" tabTitle="Estabelecimentos">
                    Estabelecimentos

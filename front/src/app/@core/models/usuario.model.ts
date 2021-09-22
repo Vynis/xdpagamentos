@@ -1,3 +1,5 @@
+import { PermissaoModel } from "./permissao.model";
+
 export class UsuarioModel {
     id: number;
     nome: string;
@@ -5,4 +7,5 @@ export class UsuarioModel {
     senha: string;
     email: string;
     status: string;
+    listaPermissao: PermissaoModel[] = [];
 }

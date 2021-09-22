@@ -35,5 +35,15 @@ namespace XdPagamentosApi.Repository.Class
             return await query.AsNoTracking().FirstOrDefaultAsync();
         }
 
+        public async override Task<bool> Atualizar(Usuario obj)
+        {
+            var permissao = _mySqlContext.Permissoes.Where(c => c.UsuId.Equals(obj.Id)).AsNoTracking().ToList();
+
+            if (permissao.Count() > 0)
+                _mySqlContext.RemoveRange(permissao);
+
+            return await base.Atualizar(obj);
+        }
+
     }
 }
