@@ -12,6 +12,7 @@ import { InterceptService } from '../../@core/utils/intercept.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { UsuarioCadastroComponent } from './usuario-cadastro/usuario-cadastro.component';
 import { SessaoService } from '../../@core/services/sessao.service';
+import { EstabelecimentoService } from '../../@core/services/estabelecimento.service';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import { SessaoService } from '../../@core/services/sessao.service';
       multi: true
     },
     UsuarioService,
-    SessaoService
+    SessaoService,
+    EstabelecimentoService
   ]
 })
 export class UsuarioModule { }

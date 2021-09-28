@@ -1,3 +1,5 @@
+import { EstabelecimentoService } from './../../../@core/services/estabelecimento.service';
+import { EstabelecimentoModel } from './../../../@core/models/estabelecimento.model';
 import { SessaoModel } from './../../../@core/models/sessao.model';
 import { SessaoService } from './../../../@core/services/sessao.service';
 import { ToastPadrao } from './../../../@core/enums/toast.enum';
@@ -22,9 +24,14 @@ export class UsuarioCadastroComponent implements OnInit {
   usuarioOld: UsuarioModel;
   existeErro: boolean = false;
   ehEdicao: boolean = false;
+
   listaSessao: SessaoModel[];
   listaSessaoCopia: SessaoModel[];
   listaGridSessao: SessaoModel[] = [];
+
+  listaEstabelecimento: EstabelecimentoModel[];
+  listaEstabelecimentoCopia: EstabelecimentoModel[];
+  listaGridEstabelecimento: EstabelecimentoModel[] = [];
   
   columns = {
     id: {
@@ -41,8 +48,31 @@ export class UsuarioCadastroComponent implements OnInit {
     },
   }
 
+  columnsEst = {
+    id: {
+      title: 'ID',
+      type: 'number',
+    },
+    nome: {
+      title: 'Estabelecimento',
+      type: 'string',
+    },
+    cnpjCpf: {
+      title: 'CNPJ/CPF',
+      type: 'string',
+    },
+    numEstabelecimento: {
+      title: 'Num. Estabelecimento',
+      type: 'string',
+    },
+  }
+
   settings: SettingsTableModel = new SettingsTableModel();
   source: LocalDataSource = new LocalDataSource();
+
+
+  settingsEst: SettingsTableModel = new SettingsTableModel();
+  sourceEst: LocalDataSource = new LocalDataSource();
 
   constructor(
     private fb: FormBuilder,
@@ -50,12 +80,18 @@ export class UsuarioCadastroComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private usuarioService: UsuarioService,
     private sessaoService: SessaoService,
-    private toastService : ToastService
+    private toastService : ToastService,
+    private estabelecimentoService: EstabelecimentoService
   ) { }
 
   ngOnInit(): void {
     this.settings.columns = this.columns;
     this.settings.actions.custom = [
+      { name: AcoesPadrao.REMOVER, title: '<i title="Remover" class="nb-trash"></i>'}
+    ];
+
+    this.settingsEst.columns = this.columnsEst;
+    this.settingsEst.actions.custom = [
       { name: AcoesPadrao.REMOVER, title: '<i title="Remover" class="nb-trash"></i>'}
     ];
 
@@ -77,6 +113,7 @@ export class UsuarioCadastroComponent implements OnInit {
   createForm(_usuario: UsuarioModel) {
     this.usuarioOld = Object.assign({},_usuario);
     this.buscarSessao();
+    this.buscarEstabelecimento();
 
     this.formulario = this.fb.group({
       id: [_usuario.id],
@@ -84,7 +121,8 @@ export class UsuarioCadastroComponent implements OnInit {
       cpf: [_usuario.cpf, Validators.required],
       email: [_usuario.email, [Validators.required, Validators.email]],
       status: [ _usuario.id == null ? 'A' : _usuario.status, Validators.required],
-      sessao: ['']
+      sessao: [''],
+      estabelecimento: ['']
     });
   }
 
@@ -122,6 +160,37 @@ export class UsuarioCadastroComponent implements OnInit {
     )
   }
 
+  buscarEstabelecimento() {
+    this.estabelecimentoService.buscarAtivos().subscribe(res => {
+      if (!res.success) {
+        this.toastService.showToast(ToastPadrao.DANGER, 'Erro ao buscar dados');
+        console.log(res.data);
+        return;
+      }
+
+      this.listaEstabelecimento = res.data;
+      this.listaEstabelecimentoCopia = res.data;
+
+      
+      if (this.usuarioOld.listaPermissao !== undefined)
+        if (this.usuarioOld.listaUsuarioEstabelecimentos.length > 0)  {
+          this.listaEstabelecimento = [];
+          const lista = this.usuarioOld.listaUsuarioEstabelecimentos;
+          
+          res.data.forEach(res => {
+            
+            const item = lista.filter(x => x.estId == res.id);
+
+            if (item.length == 0)
+              this.listaEstabelecimento.push(res);
+
+          });
+        
+      }
+
+    })
+  }
+
   buscaPorId(id: number) {
     this.usuarioService.buscaPorId(id).subscribe(
       res => {
@@ -144,6 +213,16 @@ export class UsuarioCadastroComponent implements OnInit {
         this.listaGridSessao= listaSessaoUsuario;
 
         this.source.load(listaSessaoUsuario);
+
+        let listaEstabelecimentoUsuario: EstabelecimentoModel[] = [];
+
+        resUsuario.listaUsuarioEstabelecimentos.forEach(res => {
+          listaEstabelecimentoUsuario.push(res.estabelecimento);
+        });
+
+        this.listaGridEstabelecimento = listaEstabelecimentoUsuario;
+        this.sourceEst.load(listaEstabelecimentoUsuario);
+
       },
       error => {
         console.log(error);
@@ -181,6 +260,10 @@ export class UsuarioCadastroComponent implements OnInit {
 
     this.listaGridSessao.forEach(res => {
       _usuario.listaPermissao.push({ id: 0, sesId: res.id, usuId: 0, sessao: null });
+    });
+
+    this.listaGridEstabelecimento.forEach(res => {
+      _usuario.listaUsuarioEstabelecimentos.push({ id: 0, estId: res.id, usuId: 0, estabelecimento: null });
     });
 
     return _usuario;
@@ -303,6 +386,71 @@ export class UsuarioCadastroComponent implements OnInit {
     this.listaGridSessao = [];
 
     this.source.load(this.listaGridSessao);
+  }
+
+
+  onCustomEst(event) {
+    switch (event.action) {
+      case AcoesPadrao.REMOVER:
+        this.removerEst(event.data.id);
+        break;
+      default:
+        break;
+    }
+  }
+
+  addTodasEst() {
+    this.listaEstabelecimento = [];
+    this.listaGridEstabelecimento = this.listaEstabelecimentoCopia;
+
+    this.sourceEst.load(this.listaGridEstabelecimento);
+    this.formulario.controls.estabelecimento.setValue(null);
+  }
+
+  addEst() {
+    const est = this.formulario.controls.estabelecimento.value;
+
+    if (est === '')
+      return;
+    
+    this.listaGridEstabelecimento.push(est);
+    this.sourceEst.load(this.listaGridEstabelecimento);
+
+
+    this.listaEstabelecimento = [];
+
+    this.listaEstabelecimentoCopia.forEach(res => {
+      const item = this.listaGridEstabelecimento.filter(x => x.id == res.id);
+
+      if (item.length == 0)
+        this.listaEstabelecimento.push(res);
+    })
+
+    this.formulario.controls.estabelecimento.setValue(null);
+
+  }
+
+  removerTodasEst() {
+    this.listaEstabelecimento = this.listaEstabelecimentoCopia;
+    this.listaGridEstabelecimento = [];
+
+    this.sourceEst.load(this.listaGridEstabelecimento);
+  }
+
+  removerEst(id) {
+    let index = this.listaGridEstabelecimento.findIndex(x => x.id === id);
+
+    this.listaGridEstabelecimento.splice(index,1);
+    this.sourceEst.load(this.listaGridEstabelecimento);
+
+    this.listaEstabelecimento = [];
+
+    this.listaEstabelecimentoCopia.forEach(res => {
+      const item = this.listaGridEstabelecimento.filter(x => x.id == res.id);
+
+      if (item.length == 0)
+        this.listaEstabelecimento.push(res);
+    })
   }
 
 }

@@ -89,8 +89,34 @@
                         </div>
                     </div>
                 </nb-tab>
-                <nb-tab [disabled]="!ehEdicao" tabTitle="Estabelecimentos">
-                   Estabelecimentos
+                <nb-tab tabTitle="Estabelecimentos">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="estabelecimento" class="label">Estabelcimenbto</label><br>
+                            <nb-select id="estabelecimento" placeholder="Selecione" formControlName="estabelecimento" >
+                              <nb-option *ngFor="let est of listaEstabelecimento" [value]="est">{{est.nome}} </nb-option>
+                            </nb-select>
+                        </div>
+                        <div class="col-sm-2" style="padding-top: 30px">
+                            <button nbButton (click)="addEst()" status="success" size="small" >Adicionar</button>
+                        </div>
+                        <div class="col-sm-2" style="padding-top: 30px;">
+                            <button nbButton (click)="addTodasEst()" status="info" size="small" >Adicionar Todos</button>
+                        </div>
+                        <div class="col-sm-2" style="padding-top: 30px;">
+                            <button nbButton (click)="removerTodasEst()" status="danger" size="small" >Remover Todos</button>
+                        </div>
+                    </div> <br />
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <ng2-smart-table 
+                            [settings]="settingsEst" 
+                            [source]="sourceEst" 
+                            (custom)="onCustomEst($event)"
+                            >
+                            </ng2-smart-table>
+                        </div>
+                    </div>
                 </nb-tab>
             </nb-tabset>
         </form>

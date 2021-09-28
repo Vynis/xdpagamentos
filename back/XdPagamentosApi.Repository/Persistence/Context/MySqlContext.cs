@@ -25,6 +25,7 @@ namespace XdPagamentosApi.Repository.Persistence.Context
         public DbSet<Operadora> Operadoras { get; set; }
         public DbSet<Sessao> Sessoes { get; set; }
         public DbSet<Permissao> Permissoes { get; set; }
+        public DbSet<RelUsuarioEstabelecimento> RelUsuarioEstabelecimentos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -52,6 +53,7 @@ namespace XdPagamentosApi.Repository.Persistence.Context
             modelBuilder.ApplyConfiguration(new OperadoraMap());
             modelBuilder.ApplyConfiguration(new SessaoMap());
             modelBuilder.ApplyConfiguration(new PermissaoMap());
+            modelBuilder.ApplyConfiguration(new RelUsuarioEstabelecimentoMap());
         }
     }
 }

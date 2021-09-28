@@ -14,5 +14,6 @@ namespace XdPagamentosApi.Domain.Models
         public string Status { get; set; }
 
         public List<Permissao> ListaPermissao { get; set; }
+        public List<RelUsuarioEstabelecimento> ListaUsuarioEstabelecimentos { get; set; }
     }
 }

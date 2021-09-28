@@ -1,3 +1,4 @@
+import { RelUsuarioEstabelecimentoModel } from './rel-usuario-estabelecimento.model';
 import { PermissaoModel } from "./permissao.model";
 
 export class UsuarioModel {
@@ -8,4 +9,5 @@ export class UsuarioModel {
     email: string;
     status: string;
     listaPermissao: PermissaoModel[] = [];
+    listaUsuarioEstabelecimentos: RelUsuarioEstabelecimentoModel[] = [];
 }

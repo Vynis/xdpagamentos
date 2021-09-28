@@ -21,5 +21,6 @@ namespace XdPagamentosApi.WebApi.Dtos
         public string Status { get; set; }
 
         public List<DtoPermissao> ListaPermissao { get; set; }
+        public List<DtoRelUsuarioEstabelecimento> ListaUsuarioEstabelecimentos { get; set; }
     }
 }

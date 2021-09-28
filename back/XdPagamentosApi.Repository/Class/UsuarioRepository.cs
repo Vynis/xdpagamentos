@@ -23,14 +23,14 @@ namespace XdPagamentosApi.Repository.Class
 
         public async override Task<IEnumerable<Usuario>> BuscarExpressao(Expression<Func<Usuario, bool>> predicado)
         {
-            IQueryable<Usuario> query = _mySqlContext.Usuarios.Where(predicado).Include(c => c.ListaPermissao).Include("ListaPermissao.Sessao");
+            IQueryable<Usuario> query = _mySqlContext.Usuarios.Where(predicado).Include(c => c.ListaPermissao).Include("ListaPermissao.Sessao").Include(c => c.ListaUsuarioEstabelecimentos).Include("ListaUsuarioEstabelecimentos.Estabelecimento");
 
             return await query.AsNoTracking().ToListAsync();
         }
 
         public async override Task<Usuario> ObterPorId(int Id)
         {
-            IQueryable<Usuario> query = _mySqlContext.Usuarios.Where(c => c.Id.Equals(Id)).Include(c => c.ListaPermissao).Include("ListaPermissao.Sessao");
+            IQueryable<Usuario> query = _mySqlContext.Usuarios.Where(c => c.Id.Equals(Id)).Include(c => c.ListaPermissao).Include("ListaPermissao.Sessao").Include(c => c.ListaUsuarioEstabelecimentos).Include("ListaUsuarioEstabelecimentos.Estabelecimento"); ;
 
             return await query.AsNoTracking().FirstOrDefaultAsync();
         }
@@ -41,6 +41,11 @@ namespace XdPagamentosApi.Repository.Class
 
             if (permissao.Count() > 0)
                 _mySqlContext.RemoveRange(permissao);
+
+            var estabelecimento = _mySqlContext.RelUsuarioEstabelecimentos.Where(c => c.UsuId.Equals(obj.Id)).AsNoTracking().ToList();
+
+            if (estabelecimento.Count() > 0)
+                _mySqlContext.RemoveRange(estabelecimento);
 
             return await base.Atualizar(obj);
         }
