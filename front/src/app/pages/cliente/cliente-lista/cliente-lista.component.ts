@@ -1,3 +1,5 @@
+import { SessoesEnum } from './../../../@core/enums/sessoes.enum';
+import { AuthServiceService } from './../../../@core/services/auth-service.service';
 import { SweetalertService } from './../../../@core/services/sweetalert.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { PaginationFilterModel } from './../../../@core/models/configuracao/paginationfilter.model';
@@ -14,6 +16,7 @@ import { EstabelecimentoService } from '../../../@core/services/estabelecimento.
 import { ToastService } from '../../../@core/services/toast.service';
 import { ToastPadrao } from '../../../@core/enums/toast.enum';
 import { SweetAlertIcons } from '../../../@core/enums/sweet-alert-icons-enum';
+import { RSA_NO_PADDING } from 'constants';
 
 @Component({
   selector: 'ngx-cliente-lista',
@@ -54,6 +57,8 @@ export class ClienteListaComponent implements OnInit {
   source: LocalDataSource = new LocalDataSource();
   formulario: FormGroup;
   listaEstabelecimentos: EstabelecimentoModel[];
+  validaNovo: boolean = false;
+  carregaPagina: boolean = false;
 
   constructor(
     private clienteService: ClienteService,
@@ -61,12 +66,31 @@ export class ClienteListaComponent implements OnInit {
     private toastService : ToastService,
     private route: Router,
     private fb: FormBuilder,
-    private sweetAlertService: SweetalertService
+    private sweetAlertService: SweetalertService,
+    private authService: AuthServiceService
     ) {
-    this.configuracaoesGrid();
-    this.buscaDados(new PaginationFilterModel);
+
+    this.validaPermissao();
     this.buscarListaEstabelecimentos();
    }
+
+  private validaPermissao() {
+    this.authService.validaPermissaoTela(SessoesEnum.LISTA_CLIENTES);
+    this.authService.permissaoUsuario().subscribe(res => {
+      if (!res.success)
+        return;
+
+      const validaExclusao = this.authService.validaPermissaoAvulsa(res.data, SessoesEnum.EXCLUIR_CLIENTES);
+      const validaAlteracao = this.authService.validaPermissaoAvulsa(res.data, SessoesEnum.ALTERAR_CLIENTES);
+      const validaAlteracaoSenha = this.authService.validaPermissaoAvulsa(res.data, SessoesEnum.ALTERAR_SENHA_CLIENTES);
+      this.validaNovo = this.authService.validaPermissaoAvulsa(res.data, SessoesEnum.CADASTRO_CLIENTES);
+      this.carregaPagina = true;
+
+      this.buscaDados(new PaginationFilterModel);
+      this.configuracaoesGrid(validaExclusao,validaAlteracao,validaAlteracaoSenha );
+
+    });
+  }
 
   ngOnInit(): void {
     this.createForm();
@@ -81,13 +105,18 @@ export class ClienteListaComponent implements OnInit {
     })
   }
 
-  configuracaoesGrid(){
+  configuracaoesGrid(validaExclusao: boolean = false, validaAlteracao: boolean = false, validaAlteracaoSenha: boolean = false){
     this.settings.columns = this.columns;
-    this.settings.actions.custom = [
-      { name: AcoesPadrao.EDITAR, title: '<i title="Editar" class="nb-edit"></i>'},
-      { name: AcoesPadrao.REMOVER, title: '<i title="Remover" class="nb-trash"></i>'},
-      { name: 'Senha', title: '<i title="Alterar Senha" class="nb-arrow-retweet"></i>' }
-    ];
+    this.settings.actions.custom = [];
+
+    if (validaAlteracao)
+      this.settings.actions.custom.push({ name: AcoesPadrao.EDITAR, title: '<i title="Editar" class="nb-edit"></i>'});
+
+    if (validaExclusao)
+      this.settings.actions.custom.push({ name: AcoesPadrao.REMOVER, title: '<i title="Remover" class="nb-trash"></i>'});
+
+    if (validaAlteracaoSenha)
+      this.settings.actions.custom.push({ name: 'Senha', title: '<i title="Alterar Senha" class="nb-arrow-retweet"></i>' });
   }
 
   buscaDados(filtro: PaginationFilterModel) {

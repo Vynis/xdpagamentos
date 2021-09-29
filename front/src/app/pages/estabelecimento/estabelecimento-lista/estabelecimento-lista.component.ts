@@ -9,6 +9,8 @@ import { AcoesPadrao } from '../../../@core/enums/acoes.enum';
 import { PaginationFilterModel } from '../../../@core/models/configuracao/paginationfilter.model';
 import { FiltroItemModel } from '../../../@core/models/configuracao/filtroitem.model';
 import { FilterTypeConstants } from '../../../@core/enums/filter-type.enum';
+import { AuthServiceService } from '../../../@core/services/auth-service.service';
+import { SessoesEnum } from '../../../@core/enums/sessoes.enum';
 
 @Component({
   selector: 'ngx-estabelecimento-lista',
@@ -52,27 +54,49 @@ export class EstabelecimentoListaComponent implements OnInit {
   settings: SettingsTableModel = new SettingsTableModel();
   source: LocalDataSource = new LocalDataSource();
   formulario: FormGroup;
+  carregaPagina: boolean = false;
+  validaNovo: boolean = false;
 
   constructor(
     private estabelecimentoService: EstabelecimentoService,
     private toastService : ToastService,
     private route: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private authService: AuthServiceService
   ) { 
-    this.configuracaoesGrid();
-    this.buscaDados(new PaginationFilterModel);
+      this.validaPermissao();
   }
 
   ngOnInit(): void {
     this.createForm();
   }
 
-  configuracaoesGrid(){
+  private validaPermissao() {
+    this.authService.validaPermissaoTela(SessoesEnum.LISTA_ESTABELECIMENTO);
+    this.authService.permissaoUsuario().subscribe(res => {
+      if (!res.success)
+        return;
+
+      const validaExclusao = this.authService.validaPermissaoAvulsa(res.data, SessoesEnum.EXCLUIR_ESTABELECIMENTO);
+      const validaAlteracao = this.authService.validaPermissaoAvulsa(res.data, SessoesEnum.ALTERAR_ESTABELECIMENTO);
+      this.validaNovo = this.authService.validaPermissaoAvulsa(res.data, SessoesEnum.CADASTRO_ESTABELECIMENTO);
+      this.carregaPagina = true;
+
+      this.buscaDados(new PaginationFilterModel);
+      this.configuracaoesGrid(validaExclusao,validaAlteracao );
+
+    });
+  }
+
+  configuracaoesGrid(validaExclusao: boolean = false, validaAlteracao: boolean = false){
     this.settings.columns = this.columns;
-    this.settings.actions.custom = [
-      { name: AcoesPadrao.EDITAR, title: '<i title="Editar" class="nb-edit"></i>'},
-      { name: AcoesPadrao.REMOVER, title: '<i title="Remover" class="nb-trash"></i>'}
-    ];
+    this.settings.actions.custom = [];
+
+    if (validaAlteracao)
+    this.settings.actions.custom.push({ name: AcoesPadrao.EDITAR, title: '<i title="Editar" class="nb-edit"></i>'});
+
+    if (validaExclusao)
+      this.settings.actions.custom.push({ name: AcoesPadrao.REMOVER, title: '<i title="Remover" class="nb-trash"></i>'});
   }
 
   createForm() {

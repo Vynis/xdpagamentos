@@ -1,4 +1,4 @@
-<nb-card>
+<nb-card *ngIf="carregaPagina">
     <nb-card-header>
         Filtro
     </nb-card-header>
@@ -42,7 +42,7 @@
     </nb-card-footer>
 </nb-card>
 
-<nb-card>
+<nb-card *ngIf="carregaPagina">
     <nb-card-header>
         <div class="row">
             <div class="col-sm-8" style="padding-top: 15px;">
@@ -51,7 +51,7 @@
             <div class="col-sm-2" style="text-align: right">
               <a  nbButton status="primary" routerLink="../cadastro/add" >Agrupamento</a>
             </div>
-            <div class="col-sm-2" style="text-align: right">
+            <div *ngIf="validaNovo" class="col-sm-2" style="text-align: right">
                 <a  nbButton status="primary" routerLink="../cadastro/add" >Novo</a>
             </div>
         </div>

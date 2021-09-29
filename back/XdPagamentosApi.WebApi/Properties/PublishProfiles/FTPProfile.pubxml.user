@@ -8,14 +8,14 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAHmBYwCLQv0OWaIfYcsP7dgAAAAACAAAAAAAQZgAAAAEAACAAAADWPzM3bKVo/Xa0LzIPfgrqEo7WZ6k72af4lOZCiMNpUAAAAAAOgAAAAAIAACAAAACUpLUbFIGvVpMYsZuyneSUmS98IjWm+HO1CABgz3mxDiAAAAAY0ttdN3eWuWWadf2zs13sSRQRhe6uMpnGTHrH9lCotEAAAABmN+Pe70T8Hkb7TJpvgSAJ3X2TbTABba9VNUdv+mCaltlibidm3Br6+nJ0riKmfJQD/ptC/GCKTYr4ZtdPl3pP</EncryptedPassword>
     <_PublishTargetUrl>ftp://ftp.api.xdpayment.sis-pro.net/www</_PublishTargetUrl>
-    <History>True|2021-09-22T02:06:34.9857768Z;True|2021-09-20T17:37:03.1083021-03:00;False|2021-09-20T17:35:23.9714633-03:00;True|2021-09-18T18:11:40.2439785-03:00;False|2021-09-18T18:10:46.9106822-03:00;True|2021-09-18T18:06:52.6952967-03:00;True|2021-09-18T15:35:30.0304810-03:00;False|2021-09-18T15:34:25.3115355-03:00;True|2021-09-12T23:15:01.6549467-03:00;False|2021-09-12T23:14:00.3092084-03:00;True|2021-08-30T20:33:38.7840365-03:00;True|2021-08-30T20:29:14.9492569-03:00;</History>
+    <History>True|2021-09-28T18:38:17.3328946Z;False|2021-09-28T15:35:51.5057253-03:00;True|2021-09-21T23:06:34.9857768-03:00;True|2021-09-20T17:37:03.1083021-03:00;False|2021-09-20T17:35:23.9714633-03:00;True|2021-09-18T18:11:40.2439785-03:00;False|2021-09-18T18:10:46.9106822-03:00;True|2021-09-18T18:06:52.6952967-03:00;True|2021-09-18T15:35:30.0304810-03:00;False|2021-09-18T15:34:25.3115355-03:00;True|2021-09-12T23:15:01.6549467-03:00;False|2021-09-12T23:14:00.3092084-03:00;True|2021-08-30T20:33:38.7840365-03:00;True|2021-08-30T20:29:14.9492569-03:00;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include="appsettings.Development.json">
       <publishTime>09/17/2021 13:48:04</publishTime>
     </File>
     <File Include="appsettings.json">
-      <publishTime>09/18/2021 18:09:58</publishTime>
+      <publishTime>09/28/2021 14:49:58</publishTime>
     </File>
     <File Include="AutoMapper.dll">
       <publishTime>10/16/2020 15:36:54</publishTime>
@@ -144,43 +144,43 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/24/2019 19:49:50</publishTime>
     </File>
     <File Include="web.config">
-      <publishTime>09/21/2021 23:05:46</publishTime>
+      <publishTime>09/28/2021 15:37:27</publishTime>
     </File>
     <File Include="XdPagamentosApi.Domain.dll">
-      <publishTime>09/21/2021 23:05:30</publishTime>
+      <publishTime>09/28/2021 15:35:04</publishTime>
     </File>
     <File Include="XdPagamentosApi.Domain.pdb">
-      <publishTime>09/21/2021 23:05:30</publishTime>
+      <publishTime>09/28/2021 15:35:04</publishTime>
     </File>
     <File Include="XdPagamentosApi.IOC.dll">
-      <publishTime>09/21/2021 23:05:34</publishTime>
+      <publishTime>09/28/2021 15:35:06</publishTime>
     </File>
     <File Include="XdPagamentosApi.IOC.pdb">
-      <publishTime>09/21/2021 23:05:34</publishTime>
+      <publishTime>09/28/2021 15:35:06</publishTime>
     </File>
     <File Include="XdPagamentosApi.Repository.dll">
-      <publishTime>09/21/2021 23:05:33</publishTime>
+      <publishTime>09/28/2021 15:35:05</publishTime>
     </File>
     <File Include="XdPagamentosApi.Repository.pdb">
-      <publishTime>09/21/2021 23:05:33</publishTime>
+      <publishTime>09/28/2021 15:35:05</publishTime>
     </File>
     <File Include="XdPagamentosApi.Services.dll">
-      <publishTime>09/21/2021 23:05:34</publishTime>
+      <publishTime>09/28/2021 15:35:05</publishTime>
     </File>
     <File Include="XdPagamentosApi.Services.pdb">
-      <publishTime>09/21/2021 23:05:34</publishTime>
+      <publishTime>09/28/2021 15:35:05</publishTime>
     </File>
     <File Include="XdPagamentosApi.WebApi.deps.json">
-      <publishTime>09/21/2021 23:05:39</publishTime>
+      <publishTime>09/28/2021 15:37:24</publishTime>
     </File>
     <File Include="XdPagamentosApi.WebApi.dll">
-      <publishTime>09/21/2021 23:05:38</publishTime>
+      <publishTime>09/28/2021 15:37:23</publishTime>
     </File>
     <File Include="XdPagamentosApi.WebApi.exe">
-      <publishTime>09/21/2021 23:05:38</publishTime>
+      <publishTime>09/28/2021 15:37:23</publishTime>
     </File>
     <File Include="XdPagamentosApi.WebApi.pdb">
-      <publishTime>09/21/2021 23:05:38</publishTime>
+      <publishTime>09/28/2021 15:37:23</publishTime>
     </File>
     <File Include="XdPagamentosApi.WebApi.runtimeconfig.json">
       <publishTime>09/17/2021 17:21:36</publishTime>

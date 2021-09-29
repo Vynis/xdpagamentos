@@ -9,6 +9,8 @@ import { EstabelecimentoModel } from '../../../@core/models/estabelecimento.mode
 import { TerminalModel } from '../../../@core/models/terminal.model';
 import { EstabelecimentoService } from '../../../@core/services/estabelecimento.service';
 import { ToastService } from '../../../@core/services/toast.service';
+import { AuthServiceService } from '../../../@core/services/auth-service.service';
+import { SessoesEnum } from '../../../@core/enums/sessoes.enum';
 
 @Component({
   selector: 'ngx-terminal-cadastro',
@@ -31,7 +33,8 @@ export class TerminalCadastroComponent implements OnInit {
     private estabelecimentoService: EstabelecimentoService,
     private terminalService: TerminalService,
     private clienteService: ClienteService,
-    private toastService : ToastService
+    private toastService : ToastService,
+    private authService: AuthServiceService
   ) { }
 
   ngOnInit(): void {
@@ -41,10 +44,12 @@ export class TerminalCadastroComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       const id = params.id;
       if (id && id > 0) {
+        this.authService.validaPermissaoTela(SessoesEnum.ALTERAR_POS);
         this.tituloPagina = `Editar Terminal - Nº ${id}`;
         this.buscaPorId(id);
       }
       else {
+        this.authService.validaPermissaoTela(SessoesEnum.CADASTRO_POS);
         const model = new TerminalModel();
         this.createForm(model);
       }

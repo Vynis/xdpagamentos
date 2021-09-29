@@ -1,0 +1,15 @@
+<div *ngIf="sessao" class="row">
+    <div class="col-md-12">
+      <nb-card>
+        <nb-card-body>
+          <div class="flex-centered col-xl-4 col-lg-6 col-md-8 col-sm-12">
+            <h2 class="title">Permissão negada</h2>
+            <small class="sub-title">Você não tem permissão de acesso para: {{sessao.descricao}} - ({{sessao.id}})</small>
+            <button nbButton fullWidth (click)="goToHome()" type="button" class="home-button">
+              Voltar
+            </button>
+          </div>
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </div>

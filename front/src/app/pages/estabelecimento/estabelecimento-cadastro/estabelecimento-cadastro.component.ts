@@ -10,6 +10,8 @@ import { EstabelecimentoModel } from '../../../@core/models/estabelecimento.mode
 import { ContaCaixaService } from '../../../@core/services/conta-caixa.service';
 import { EstabelecimentoService } from '../../../@core/services/estabelecimento.service';
 import { ToastService } from '../../../@core/services/toast.service';
+import { AuthServiceService } from '../../../@core/services/auth-service.service';
+import { SessoesEnum } from '../../../@core/enums/sessoes.enum';
 
 @Component({
   selector: 'ngx-estabelecimento-cadastro',
@@ -33,7 +35,8 @@ export class EstabelecimentoCadastroComponent implements OnInit {
     private estabelecimentoService: EstabelecimentoService,
     private contaCaixaService: ContaCaixaService,
     private operadoraService: OperadoraService,
-    private toastService : ToastService
+    private toastService : ToastService,
+    private authService: AuthServiceService
   ) { }
 
   ngOnInit(): void {
@@ -44,10 +47,12 @@ export class EstabelecimentoCadastroComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       const id = params.id;
       if (id && id > 0) {
+        this.authService.validaPermissaoTela(SessoesEnum.ALTERAR_ESTABELECIMENTO);
         this.tituloPagina = `Editar Estabelecimento - Nº ${id}`;
         this.buscaPorId(id);
       }
       else {
+        this.authService.validaPermissaoTela(SessoesEnum.CADASTRO_ESTABELECIMENTO);
         const model = new EstabelecimentoModel();
         this.createForm(model);
       }

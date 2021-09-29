@@ -8,6 +8,8 @@ import { EstabelecimentoService } from '../../../@core/services/estabelecimento.
 import { ContaCaixaService } from '../../../@core/services/conta-caixa.service';
 import { ToastService } from '../../../@core/services/toast.service';
 import { ToastPadrao } from '../../../@core/enums/toast.enum';
+import { AuthServiceService } from '../../../@core/services/auth-service.service';
+import { SessoesEnum } from '../../../@core/enums/sessoes.enum';
 
 @Component({
   selector: 'ngx-conta-caixa-cadastro',
@@ -29,7 +31,8 @@ export class ContaCaixaCadastroComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private toastService : ToastService,
     private estabelecimentoService: EstabelecimentoService,
-    private contaCaixaService: ContaCaixaService
+    private contaCaixaService: ContaCaixaService,
+    private authService: AuthServiceService
   ) { }
 
   ngOnInit(): void {
@@ -38,10 +41,12 @@ export class ContaCaixaCadastroComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       const id = params.id;
       if (id && id > 0) {
+        this.authService.validaPermissaoTela(SessoesEnum.ALTERAR_CONTA_CAIXA);
         this.tituloPagina = `Editar Conta Caixa - Nº ${id}`;
         this.buscaPorId(id);
       }
       else {
+        this.authService.validaPermissaoTela(SessoesEnum.CADASTRO_CONTA_CAIXA);
         const model = new ContaCaixaModel();
         this.createForm(model);
       }

@@ -4,6 +4,8 @@ import { SettingsTableModel } from '../../../@core/models/configuracao/table/set
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 import { AcoesPadrao } from '../../../@core/enums/acoes.enum';
+import { AuthServiceService } from '../../../@core/services/auth-service.service';
+import { SessoesEnum } from '../../../@core/enums/sessoes.enum';
 
 @Component({
   selector: 'ngx-usuario-lista',
@@ -36,21 +38,46 @@ export class UsuarioListaComponent implements OnInit {
 
   settings: SettingsTableModel = new SettingsTableModel();
   source: LocalDataSource = new LocalDataSource();
+  carregaPagina: boolean = false;
+  validaNovo: boolean = false;
   
-  constructor(private usuarioService: UsuarioService, private route: Router) { 
-    this.configuracaoesGrid();
-    this.buscaDados();
+  constructor(
+    private usuarioService: UsuarioService, 
+    private route: Router,
+    private authService: AuthServiceService
+    ) { 
+    this.validaPermissao();
   }
 
   ngOnInit(): void {
   }
 
-  configuracaoesGrid(){
+  private validaPermissao() {
+    this.authService.validaPermissaoTela(SessoesEnum.LISTA_USUARIOS);
+    this.authService.permissaoUsuario().subscribe(res => {
+      if (!res.success)
+        return;
+
+      const validaExclusao = this.authService.validaPermissaoAvulsa(res.data, SessoesEnum.EXCLUIR_USUARIOS);
+      const validaAlteracao = this.authService.validaPermissaoAvulsa(res.data, SessoesEnum.ALTERAR_USUARIOS);
+      this.validaNovo = this.authService.validaPermissaoAvulsa(res.data, SessoesEnum.CADASTRO_USUARIOS);
+      this.carregaPagina = true;
+
+      this.buscaDados();
+      this.configuracaoesGrid(validaExclusao,validaAlteracao);
+
+    });
+  }
+
+  configuracaoesGrid(validaExclusao: boolean = false, validaAlteracao: boolean = false){
     this.settings.columns = this.columns;
-    this.settings.actions.custom = [
-      { name: AcoesPadrao.EDITAR, title: '<i title="Editar" class="nb-edit"></i>'},
-      { name: AcoesPadrao.REMOVER, title: '<i title="Remover" class="nb-trash"></i>'}
-    ];
+    this.settings.actions.custom = [];
+
+    if (validaAlteracao)
+    this.settings.actions.custom.push({ name: AcoesPadrao.EDITAR, title: '<i title="Editar" class="nb-edit"></i>'});
+
+    if (validaExclusao)
+      this.settings.actions.custom.push({ name: AcoesPadrao.REMOVER, title: '<i title="Remover" class="nb-trash"></i>'});
   }
 
   onCustom(event) {

@@ -56,5 +56,25 @@ namespace XdPagamentosApi.WebApi.Controllers
             }
         }
 
+
+        [HttpGet("permissao-usuario")]
+        [SwaggerGroup("AutenticacaoSistema")]
+        public async Task<IActionResult> PermissaoUsuario()
+        {
+            try
+            {
+
+                var resposta = await _usuarioService.ObterPorId(Convert.ToInt32(User.Identity.Name.ToString().Descriptar()));
+
+                var usuario = _mapper.Map<DtoUsuario>(resposta);
+
+                return Response(usuario.ListaPermissao);
+            }
+            catch (Exception ex)
+            {
+                return Response(ex.Message, false);
+            }
+        }
+
     }
 }

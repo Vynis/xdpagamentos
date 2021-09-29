@@ -2,6 +2,8 @@ import {Component, OnDestroy} from '@angular/core';
 import { NbThemeService } from '@nebular/theme';
 import { takeWhile } from 'rxjs/operators' ;
 import { SolarData } from '../../@core/data/solar';
+import { SessoesEnum } from '../../@core/enums/sessoes.enum';
+import { AuthServiceService } from '../../@core/services/auth-service.service';
 
 interface CardSettings {
   title: string;
@@ -79,7 +81,12 @@ export class DashboardComponent implements OnDestroy {
   };
 
   constructor(private themeService: NbThemeService,
-              private solarService: SolarData) {
+              private solarService: SolarData,
+              private authService: AuthServiceService
+              ) {
+
+    this.authService.validaPermissaoTela(SessoesEnum.DASHBOARD);
+
     this.themeService.getJsTheme()
       .pipe(takeWhile(() => this.alive))
       .subscribe(theme => {

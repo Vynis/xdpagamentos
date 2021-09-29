@@ -12,6 +12,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SettingsTableModel } from '../../../@core/models/configuracao/table/settings.table.model';
 import { LocalDataSource } from 'ng2-smart-table';
 import { AcoesPadrao } from '../../../@core/enums/acoes.enum';
+import { AuthServiceService } from '../../../@core/services/auth-service.service';
+import { SessoesEnum } from '../../../@core/enums/sessoes.enum';
 
 @Component({
   selector: 'ngx-usuario-cadastro',
@@ -81,7 +83,8 @@ export class UsuarioCadastroComponent implements OnInit {
     private usuarioService: UsuarioService,
     private sessaoService: SessaoService,
     private toastService : ToastService,
-    private estabelecimentoService: EstabelecimentoService
+    private estabelecimentoService: EstabelecimentoService,
+    private authService: AuthServiceService
   ) { }
 
   ngOnInit(): void {
@@ -99,11 +102,13 @@ export class UsuarioCadastroComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       const id = params.id;
       if (id && id > 0) {
+        this.authService.validaPermissaoTela(SessoesEnum.ALTERAR_USUARIOS);
         this.tituloPagina = `Editar Usuário - Nº ${id}`;
         this.buscaPorId(id);
         this.ehEdicao = true;
       }
       else {
+        this.authService.validaPermissaoTela(SessoesEnum.CADASTRO_USUARIOS);
         const model = new UsuarioModel();
         this.createForm(model);
       }

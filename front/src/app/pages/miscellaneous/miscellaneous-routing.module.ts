@@ -1,3 +1,4 @@
+import { PermissaoComponent } from './permissao/permissao.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -13,6 +14,10 @@ const routes: Routes = [
         path: '404',
         component: NotFoundComponent,
       },
+      {
+        path: '403/:ref',
+        component: PermissaoComponent
+      }
     ],
   },
 ];

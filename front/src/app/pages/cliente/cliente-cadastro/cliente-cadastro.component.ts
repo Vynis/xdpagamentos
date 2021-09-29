@@ -10,6 +10,8 @@ import { ClienteService } from '../../../@core/services/cliente.service';
 import { ToastService } from '../../../@core/services/toast.service';
 import { ToastPadrao } from '../../../@core/enums/toast.enum';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthServiceService } from '../../../@core/services/auth-service.service';
+import { SessoesEnum } from '../../../@core/enums/sessoes.enum';
 
 @Component({
   selector: 'ngx-cliente-cadastro',
@@ -33,7 +35,8 @@ export class ClienteCadastroComponent implements OnInit {
     private estabelecimentoService: EstabelecimentoService,
     private clienteService: ClienteService,
     private bancoService: BancoService,
-    private toastService : ToastService
+    private toastService : ToastService,
+    private authService: AuthServiceService
     ) { }
 
   ngOnInit(): void {
@@ -44,10 +47,12 @@ export class ClienteCadastroComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       const id = params.id;
       if (id && id > 0) {
+        this.authService.validaPermissaoTela(SessoesEnum.ALTERAR_CLIENTES);
         this.tituloPagina = `Editar Cliente - Nº ${id}`;
         this.buscaPorId(id);
       }
       else {
+        this.authService.validaPermissaoTela(SessoesEnum.CADASTRO_CLIENTES);
         const model = new ClienteModel();
         this.createForm(model);
       }
