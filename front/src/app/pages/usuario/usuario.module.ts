@@ -13,13 +13,15 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { UsuarioCadastroComponent } from './usuario-cadastro/usuario-cadastro.component';
 import { SessaoService } from '../../@core/services/sessao.service';
 import { EstabelecimentoService } from '../../@core/services/estabelecimento.service';
+import { AlterarSenhaComponent } from './alterar-senha/alterar-senha.component';
 
 
 @NgModule({
   declarations: [
     UsuarioComponent,
     UsuarioListaComponent,
-    UsuarioCadastroComponent
+    UsuarioCadastroComponent,
+    AlterarSenhaComponent
   ],
   imports: [
     CommonModule,
@@ -33,6 +35,7 @@ import { EstabelecimentoService } from '../../@core/services/estabelecimento.ser
     NbAlertModule,
     Ng2SmartTableModule,
     NbTooltipModule
+    
   ],
   providers: [
     InterceptService,
@@ -43,7 +46,7 @@ import { EstabelecimentoService } from '../../@core/services/estabelecimento.ser
     },
     UsuarioService,
     SessaoService,
-    EstabelecimentoService
+    EstabelecimentoService,
   ]
 })
 export class UsuarioModule { }

@@ -6,6 +6,8 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { AcoesPadrao } from '../../../@core/enums/acoes.enum';
 import { AuthServiceService } from '../../../@core/services/auth-service.service';
 import { SessoesEnum } from '../../../@core/enums/sessoes.enum';
+import { NbDialogService } from '@nebular/theme';
+import { AlterarSenhaComponent } from '../alterar-senha/alterar-senha.component';
 
 @Component({
   selector: 'ngx-usuario-lista',
@@ -44,7 +46,7 @@ export class UsuarioListaComponent implements OnInit {
   constructor(
     private usuarioService: UsuarioService, 
     private route: Router,
-    private authService: AuthServiceService
+    private authService: AuthServiceService,
     ) { 
     this.validaPermissao();
   }

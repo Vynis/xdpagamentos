@@ -23,6 +23,8 @@ import {
 import { AuthGuard } from './@core/utils/auth.guard';
 import { NbAuthJWTInterceptor } from '@nebular/auth';
 import { InterceptService } from './@core/utils/intercept.service';
+import { ReactiveFormsModule } from '@angular/forms';
+import { UsuarioService } from './@core/services/usuario.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -41,7 +43,8 @@ import { InterceptService } from './@core/utils/intercept.service';
       messageGoogleMapKey: 'AIzaSyA_wNuCzia92MAmdLRzmqitRGvCF7wCZPY',
     }),
     CoreModule.forRoot(),
-    ThemeModule.forRoot()
+    ThemeModule.forRoot(),
+    ReactiveFormsModule 
   ],
   providers: [AuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: NbAuthJWTInterceptor, multi: true },
@@ -49,7 +52,8 @@ import { InterceptService } from './@core/utils/intercept.service';
       provide: HTTP_INTERCEPTORS,
       useClass: InterceptService,
       multi: true,
-    }
+    },
+    UsuarioService
   ],
   bootstrap: [AppComponent],
 })

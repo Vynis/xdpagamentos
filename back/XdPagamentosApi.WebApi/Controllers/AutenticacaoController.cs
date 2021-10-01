@@ -76,5 +76,6 @@ namespace XdPagamentosApi.WebApi.Controllers
             }
         }
 
+
     }
 }

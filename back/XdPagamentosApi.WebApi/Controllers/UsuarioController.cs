@@ -155,5 +155,42 @@ namespace XdPagamentosApi.WebApi.Controllers
             }
         }
 
+        [HttpPut("alterar-senha")]
+        [SwaggerGroup("Usuario")]
+        public async Task<IActionResult> AlterarSenha(DtoAlteracaoSenhaUsuario dtoUsuario)
+        {
+            try
+            {
+
+                var codUsuarioLogado = User.Identity.Name.ToString();
+
+                if (codUsuarioLogado != dtoUsuario.IdUsuario)
+                    return Response("Erro usuario nao encontrado", false);
+
+                var idUsuarioFormatado = Convert.ToInt32(dtoUsuario.IdUsuario.ToString().Descriptar());
+
+                var usuario = await _usuarioService.BuscarExpressao(x => x.Id.Equals(idUsuarioFormatado) && x.Senha.Equals(SenhaHashService.CalculateMD5Hash(dtoUsuario.SenhaAtual)));
+
+                if (!usuario.Any())
+                    return Response("Senha atual invalida", false);
+
+                var usuarioEncontrado = usuario.FirstOrDefault();  
+
+                usuarioEncontrado.Senha = SenhaHashService.CalculateMD5Hash(dtoUsuario.SenhaNova);
+
+                var response = await _usuarioService.Atualizar(usuarioEncontrado);
+
+                if (!response)
+                    return Response("Erro ao alterar", false);
+
+                return Response("Alteração com sucesso!");
+
+            }
+            catch (Exception ex)
+            {
+                return Response(ex.Message, false);
+            }
+        }
+
     }
 }

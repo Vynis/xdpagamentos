@@ -3,6 +3,7 @@ import { UsuarioListaComponent } from './usuario-lista/usuario-lista.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { UsuarioComponent } from './usuario.component';
+import { AlterarSenhaComponent } from './alterar-senha/alterar-senha.component';
 
 const routes: Routes = [
   { 
@@ -25,6 +26,10 @@ const routes: Routes = [
       {
         path: 'cadastro/edit/:id',
         component: UsuarioCadastroComponent
+      },
+      { 
+        path: 'alterar-senha', 
+        component: AlterarSenhaComponent
       },
     ]
   }

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NbAuthComponent } from '@nebular/auth';
+import { AlterarSenhaComponent } from '../pages/usuario/alterar-senha/alterar-senha.component';
 
 import { NgxLoginComponent } from './login/login.component'; 
 
@@ -12,7 +13,7 @@ export const routes: Routes = [
       {
         path: 'login',
         component: NgxLoginComponent,
-      },
+      }
     ],
   },
 ];

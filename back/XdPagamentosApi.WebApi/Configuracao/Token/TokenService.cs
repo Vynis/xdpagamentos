@@ -23,8 +23,7 @@ namespace XdPagamentosApi.WebApi.Configuracao.Token
                     new Claim(ClaimTypes.Name, user.Id.ToString().Criptografar())
                 }),
                 Expires = DateTime.UtcNow.AddHours(4),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
-
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHankder.CreateToken(tokenDescriptor);
             return tokenHankder.WriteToken(token);

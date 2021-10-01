@@ -5,9 +5,10 @@ import { Router } from '@angular/router';
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 import { Component, OnInit } from '@angular/core';
-import { NbMenuService } from '@nebular/theme';
+import { NbDialogService, NbMenuService } from '@nebular/theme';
 import { AnalyticsService } from './@core/utils/analytics.service';
 import { SeoService } from './@core/utils/seo.service';
+import { AlterarSenhaComponent } from './pages/usuario/alterar-senha/alterar-senha.component';
 
 @Component({
   selector: 'ngx-app',
@@ -19,7 +20,8 @@ export class AppComponent implements OnInit {
     private analytics: AnalyticsService, 
     private seoService: SeoService, 
     private menuService: NbMenuService,
-    private router: Router
+    private router: Router,
+    private dialogService: NbDialogService
     ) {
       this.menuUser();
   }
@@ -39,7 +41,8 @@ export class AppComponent implements OnInit {
             this.router.navigateByUrl('/auth/login');
             break;
           case 'Alterar Senha':
-            this.router.navigateByUrl('/pages/dashboard');
+              this.dialogService.open(AlterarSenhaComponent);
+          //  this.router.navigateByUrl('/pages/usuario/alterar-senha');
             break;
           default:
             break;
