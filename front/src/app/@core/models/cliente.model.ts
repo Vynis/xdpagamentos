@@ -1,5 +1,6 @@
 import { BancoModel } from "./banco.model";
 import { EstabelecimentoModel } from "./estabelecimento.model";
+import { TipoTransacaoModel } from "./tipo-transacao.model";
 
 export class ClienteModel {
     id: number ;
@@ -24,6 +25,7 @@ export class ClienteModel {
     estId: number ;
     estabelecimento: EstabelecimentoModel ;
     tipoPessoa: string;
+    listaTipoTransacao: TipoTransacaoModel[] = [];
 
     /**
      *

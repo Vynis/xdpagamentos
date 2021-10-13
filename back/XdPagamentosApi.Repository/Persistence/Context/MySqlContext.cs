@@ -14,6 +14,12 @@ namespace XdPagamentosApi.Repository.Persistence.Context
         {
         }
 
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.EnableSensitiveDataLogging();
+        }
+
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Banco> Bancos { get; set; }
@@ -26,6 +32,7 @@ namespace XdPagamentosApi.Repository.Persistence.Context
         public DbSet<Sessao> Sessoes { get; set; }
         public DbSet<Permissao> Permissoes { get; set; }
         public DbSet<RelUsuarioEstabelecimento> RelUsuarioEstabelecimentos { get; set; }
+        public DbSet<TipoTransacao> TipoTransacoes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -54,6 +61,7 @@ namespace XdPagamentosApi.Repository.Persistence.Context
             modelBuilder.ApplyConfiguration(new SessaoMap());
             modelBuilder.ApplyConfiguration(new PermissaoMap());
             modelBuilder.ApplyConfiguration(new RelUsuarioEstabelecimentoMap());
+            modelBuilder.ApplyConfiguration(new TipoTransacaoMap());
         }
     }
 }

@@ -18,11 +18,13 @@ namespace XdPagamentosApi.WebApi.Controllers
     public class ClienteController : BaseController
     {
         private readonly IClienteService _clienteService;
+        private readonly ITipoTransacaoService _tipoTransacaoService;
         private readonly IMapper _mapper;
 
-        public ClienteController(IClienteService clienteService, IMapper mapper)
+        public ClienteController(IClienteService clienteService, ITipoTransacaoService tipoTransacaoService, IMapper mapper)
         {
             _clienteService = clienteService;
+            _tipoTransacaoService = tipoTransacaoService;
             _mapper = mapper;
         }
 

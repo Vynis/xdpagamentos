@@ -1,10 +1,12 @@
+import { TipoTransacaoService } from './../../../@core/services/tipo-transacao.service';
+import { TipoTransacaoModel } from './../../../@core/models/tipo-transacao.model';
 import { BancoModel } from './../../../@core/models/banco.model';
 import { BancoService } from './../../../@core/services/banco.service';
 import { EstabelecimentoModel } from './../../../@core/models/estabelecimento.model';
 import { EstabelecimentoService } from './../../../@core/services/estabelecimento.service';
 import { ClienteModel } from './../../../@core/models/cliente.model';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { EstadosBrasileiros } from '../../../@core/enums/estados-brasileiros.enum';
 import { ClienteService } from '../../../@core/services/cliente.service';
 import { ToastService } from '../../../@core/services/toast.service';
@@ -12,6 +14,7 @@ import { ToastPadrao } from '../../../@core/enums/toast.enum';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthServiceService } from '../../../@core/services/auth-service.service';
 import { SessoesEnum } from '../../../@core/enums/sessoes.enum';
+import { OrderPipe } from 'ngx-order-pipe';
 
 @Component({
   selector: 'ngx-cliente-cadastro',
@@ -27,6 +30,11 @@ export class ClienteCadastroComponent implements OnInit {
   listaestadosBrasileiros: any[];
   listaEstabelecimentos: EstabelecimentoModel[];
   listaBancos: BancoModel[];
+  listaTaxas: TipoTransacaoModel[];
+
+  get taxas(): FormArray{
+    return <FormArray>this.formulario.get('taxas');
+  }
 
   constructor(
     private fb: FormBuilder,
@@ -35,8 +43,10 @@ export class ClienteCadastroComponent implements OnInit {
     private estabelecimentoService: EstabelecimentoService,
     private clienteService: ClienteService,
     private bancoService: BancoService,
+    private tipoTransacaoService: TipoTransacaoService,
     private toastService : ToastService,
-    private authService: AuthServiceService
+    private authService: AuthServiceService,
+    private orderPipe: OrderPipe
     ) { }
 
   ngOnInit(): void {
@@ -53,6 +63,7 @@ export class ClienteCadastroComponent implements OnInit {
       }
       else {
         this.authService.validaPermissaoTela(SessoesEnum.CADASTRO_CLIENTES);
+        this.buscarTipoTransacao();
         const model = new ClienteModel();
         this.createForm(model);
       }
@@ -82,8 +93,19 @@ export class ClienteCadastroComponent implements OnInit {
       banId: [_cliente.banId],
       numAgencia: [_cliente.numAgencia],
       numConta: [_cliente.numConta],
-      tipoConta: [_cliente.tipoConta]
+      tipoConta: [_cliente.tipoConta],
+      taxas: this.fb.array([this.criaGrupoTaxa()])
     });
+  }
+
+  criaGrupoTaxa(taxas: TipoTransacaoModel = new TipoTransacaoModel()) : FormGroup {
+    return this.fb.group({
+      id: [taxas.id],
+      qtdParcelas: [taxas.qtdParcelas],
+      percDesconto: [taxas.percDesconto, Validators.required],
+      status: [taxas.status],
+      cliId : [taxas.cliId]
+    })
   }
 
   buscarListaEstabelecimentos() {
@@ -125,6 +147,26 @@ export class ClienteCadastroComponent implements OnInit {
     )
   }
 
+  buscarTipoTransacao() {
+    this.tipoTransacaoService.buscarPadrao().subscribe(
+      res => {
+        if (!res.success) {
+          this.toastService.showToast(ToastPadrao.DANGER, 'Erro ao buscar dados');
+          console.log(res.data);
+          return;
+        }
+
+        this.listaTaxas = <TipoTransacaoModel[]>res.data;
+
+        this.taxas.removeAt(0);
+
+        (<TipoTransacaoModel[]>res.data).forEach(taxa => {
+          this.taxas.push(this.criaGrupoTaxa(taxa));
+        })
+      }
+    )
+  }
+
   buscaPorId(id: number) {
     this.clienteService.buscaPorId(id).subscribe(
       res => {
@@ -134,7 +176,16 @@ export class ClienteCadastroComponent implements OnInit {
           return;
         }
 
+        this.listaTaxas = this.orderPipe.transform((<ClienteModel>res.data).listaTipoTransacao, 'qtdParcelas');
+
         this.createForm(res.data);
+
+
+        this.taxas.removeAt(0);
+
+        this.listaTaxas.forEach(taxa => {
+          this.taxas.push(this.criaGrupoTaxa(taxa));
+        })
       },
       error => {
         console.log(error);
@@ -198,6 +249,10 @@ export class ClienteCadastroComponent implements OnInit {
     _cliente.fone2 = controls.fone2.value;
     _cliente.email = controls.email.value;
     _cliente.status = controls.status.value;
+
+    controls.taxas.value.forEach(taxa => {
+      _cliente.listaTipoTransacao.push({id: 0, percDesconto: taxa.percDesconto, qtdParcelas: taxa.qtdParcelas, status: taxa.status, cliId: _cliente.id})
+    });
 
     if (controls.possuiDadosBancario.value) {
 

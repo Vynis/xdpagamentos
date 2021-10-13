@@ -26,6 +26,8 @@ namespace XdPagamentosApi.Repository.Class
 
         public async Task<Cliente[]> BuscarComFiltro(PaginationFilter paginationFilter)
         {
+           // await AtualizaTaxas();
+
             Expression<Func<Cliente, bool>> expressionDynamic = p => p.Id != 0;
 
             if (paginationFilter.Filtro.Count() > 0)
@@ -38,21 +40,63 @@ namespace XdPagamentosApi.Repository.Class
             if (paginationFilter.Filtro.Count() > 0)
                 return await query.AsNoTracking().ToArrayAsync();
 
+
             return await query.AsNoTracking().OrderBy(c => c.Nome).ToArrayAsync();
+        }
+
+        private async Task AtualizaTaxas()
+        {
+            var todosClientes = _mySqlContext.Clientes.AsNoTracking().Include(c => c.ListaTipoTransacao).ToList();
+            var taxasPadroes = _mySqlContext.TipoTransacoes.Where(x => x.CliId.Equals(0) && x.Status.Equals("A")).AsNoTracking().ToList();
+
+            foreach (var cliente in todosClientes)
+            {
+
+                var taxasNaoGravadas = taxasPadroes.ToList().Where(c => !cliente.ListaTipoTransacao.Any(x => x.QtdParcelas == c.QtdParcelas)).ToList();
+
+                if (taxasNaoGravadas.Count() > 0)
+                {
+                    taxasNaoGravadas.ToList().ForEach(x => x.Id = 0);
+                    taxasNaoGravadas.ToList().ForEach(x => x.CliId = cliente.Id);
+                    cliente.ListaTipoTransacao.AddRange(taxasNaoGravadas);
+                    var retorno = await Atualizar(cliente);
+
+                    if (!retorno)
+                        Console.WriteLine(retorno);
+                }
+            }
+
         }
 
         public async override Task<IEnumerable<Cliente>> BuscarExpressao(Expression<Func<Cliente, bool>> predicado)
         {
-            IQueryable<Cliente> query = _mySqlContext.Clientes.Where(predicado);
+            IQueryable<Cliente> query = _mySqlContext.Clientes.Where(predicado).AsNoTracking().Include(c => c.ListaTipoTransacao);
 
             return await query.AsNoTracking().ToArrayAsync();
         }
 
         public async override Task<Cliente> ObterPorId(int Id)
         {
-            IQueryable<Cliente> query = _mySqlContext.Clientes.Where(c => c.Id.Equals(Id));
+            IQueryable<Cliente> query = _mySqlContext.Clientes.Where(c => c.Id.Equals(Id)).Include(c => c.ListaTipoTransacao);
 
             return await query.AsNoTracking().FirstOrDefaultAsync();
+        }
+
+        public async override Task<IEnumerable<Cliente>> ObterTodos()
+        {
+            IQueryable<Cliente> query = _mySqlContext.Clientes.AsNoTracking().Include(c => c.ListaTipoTransacao);
+
+            return await query.AsNoTracking().ToArrayAsync();
+        }
+
+        public async override Task<bool> Atualizar(Cliente obj)
+        {
+            var validaTipoTransacao = _mySqlContext.TipoTransacoes.Where(c => c.CliId.Equals(obj.Id)).AsNoTracking().ToList();
+
+            if (validaTipoTransacao.Count() > 0)
+                _mySqlContext.RemoveRange(validaTipoTransacao);
+
+            return await base.Atualizar(obj);
         }
 
         public async override Task<bool> Excluir(Cliente obj)

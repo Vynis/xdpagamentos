@@ -1,3 +1,4 @@
+import { TipoTransacaoService } from './../../@core/services/tipo-transacao.service';
 import { EstabelecimentoService } from './../../@core/services/estabelecimento.service';
 import { ClienteService } from './../../@core/services/cliente.service';
 import { NgModule } from '@angular/core';
@@ -13,6 +14,7 @@ import { ClienteCadastroComponent } from './cliente-cadastro/cliente-cadastro.co
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptService } from '../../@core/utils/intercept.service';
 import { BancoService } from '../../@core/services/banco.service';
+import { OrderModule } from 'ngx-order-pipe';
 
 
 @NgModule({
@@ -33,7 +35,8 @@ import { BancoService } from '../../@core/services/banco.service';
     NbAlertModule,
     Ng2SmartTableModule,
     NbTooltipModule,
-    NbToggleModule
+    NbToggleModule,
+    OrderModule
   ],
   providers: [
     InterceptService,
@@ -44,7 +47,8 @@ import { BancoService } from '../../@core/services/banco.service';
     },
     ClienteService,
     EstabelecimentoService,
-    BancoService
+    BancoService,
+    TipoTransacaoService
   ]
 })
 export class ClienteModule { }

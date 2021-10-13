@@ -23,6 +23,7 @@ namespace XdPagamentosApi.WebApi
             CreateMap<Sessao, DtoSessao>().ReverseMap();
             CreateMap<Permissao, DtoPermissao>().ReverseMap();
             CreateMap<RelUsuarioEstabelecimento, DtoRelUsuarioEstabelecimento>().ReverseMap();
+            CreateMap<TipoTransacao, DtoTipoTransacao>().ReverseMap();
         }
     }
 }

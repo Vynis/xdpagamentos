@@ -27,5 +27,7 @@ namespace XdPagamentosApi.WebApi.Dtos
         public int BanId { get; set; }
         public int EstId { get; set; }
         public string TipoPessoa { get; set; }
+
+        public List<DtoTipoTransacao> ListaTipoTransacao { get; set; }
     }
 }
