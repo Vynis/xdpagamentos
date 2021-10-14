@@ -18,6 +18,10 @@ const routes: Routes = [
         path: 'lista', 
         component: ClienteListaComponent
       },
+      { 
+        path: 'lista/:agrupamento', 
+        component: ClienteListaComponent
+      },
       {
         path: 'cadastro/add',
         component: ClienteCadastroComponent

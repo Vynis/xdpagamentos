@@ -32,6 +32,11 @@ namespace XdPagamentosApi.Services.Class
             return await _repository.Atualizar(obj);
         }
 
+        public async Task<bool> AtualizarLista(List<TEntity> obj)
+        {
+            return await _repository.AtualizarLista(obj);
+        }
+
         public async Task<IEnumerable<TEntity>> BuscarExpressao(Expression<Func<TEntity, bool>> predicado)
         {
             return await _repository.BuscarExpressao(predicado);

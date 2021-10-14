@@ -26,6 +26,7 @@ export class ClienteModel {
     estabelecimento: EstabelecimentoModel ;
     tipoPessoa: string;
     listaTipoTransacao: TipoTransacaoModel[] = [];
+    nomeAgrupamento: string;
 
     /**
      *

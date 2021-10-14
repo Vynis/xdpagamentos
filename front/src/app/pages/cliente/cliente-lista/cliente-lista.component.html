@@ -1,9 +1,10 @@
+<form [formGroup]="formulario">
 <nb-card *ngIf="carregaPagina">
     <nb-card-header>
         Filtro
     </nb-card-header>
     <nb-card-body>
-      <form [formGroup]="formulario">
+      
         <div class="row">
             <div class="col-md-2">
               <label for="tipo" class="label">Tipo do Filtro</label><br>
@@ -34,24 +35,56 @@
                   <nb-option value="I">Inativo</nb-option>
                 </nb-select>
           </div>
+
+          <div *ngIf="agrupamento && listaGrupos.length > 0" class="col-md-4">
+            <label for="filtroGrupo" class="label">Grupos</label><br>
+            <nb-select placeholder="Grupo"  status="primary" formControlName="filtroGrupo">
+              <nb-option [value]="null">Todos</nb-option>
+              <nb-option *ngFor="let grupo of listaGrupos" [value]="grupo.nomeAgrupamento">{{grupo.nomeAgrupamento}}</nb-option>
+              </nb-select>
+          </div>
         </div>
-      </form>
+      
     </nb-card-body>
     <nb-card-footer>
         <button (click)="pesquisar()" type="submit" nbButton status="primary">Filtrar</button>
     </nb-card-footer>
 </nb-card>
 
+<nb-card *ngIf="carregaPagina && agrupamento">
+  <nb-card-header>
+            Agrupamento
+  </nb-card-header> 
+  <nb-card-body>
+    <div class="row">
+      <div class="col-md-12"> 
+        <label for="nomeGrupo" class="label">Nome do Grupo</label><br>
+        <input type="text" nbInput fullWidth placeholder="" formControlName="nomeAgrupamento">
+      </div>
+    </div>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="row">
+      <div class="col-sm-1">
+          <button nbButton (click)="agrupar()" status="success" >Agrupar</button>
+      </div>
+      <div class="col-sm-1">
+          <button nbButton (click)="desagrupar()" >Desagrupar</button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>
+</form>
 <nb-card *ngIf="carregaPagina">
     <nb-card-header>
         <div class="row">
-            <div class="col-sm-8" style="padding-top: 15px;">
+            <div class="col-sm-9" style="padding-top: 15px;">
                 Lista de Clientes
             </div>
-            <div class="col-sm-2" style="text-align: right">
-              <a  nbButton status="primary" routerLink="../cadastro/add" >Agrupamento</a>
+            <div  class="col-sm-2" style="text-align: right">
+              <a  *ngIf="!agrupamento" nbButton status="primary" routerLink="../lista/AG" >Agrupamento</a>
             </div>
-            <div *ngIf="validaNovo" class="col-sm-2" style="text-align: right">
+            <div *ngIf="validaNovo" class="col-sm-1" style="text-align: right">
                 <a  nbButton status="primary" routerLink="../cadastro/add" >Novo</a>
             </div>
         </div>
@@ -60,9 +93,11 @@
   
     <nb-card-body>
       <ng2-smart-table 
+      #table
       [settings]="settings" 
       [source]="source" 
       (custom)="onCustom($event)"
+      (userRowSelect)="onRowSelect($event)"
       >
       </ng2-smart-table>
     </nb-card-body>

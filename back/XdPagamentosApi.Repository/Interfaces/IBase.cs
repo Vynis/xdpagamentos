@@ -10,6 +10,7 @@ namespace XdPagamentosApi.Repository.Interfaces
     {
         Task<bool> Adicionar(TEntity obj);
         Task<bool> Atualizar(TEntity obj);
+        Task<bool> AtualizarLista(List<TEntity> obj);
         Task<bool> SaveChangesAsync();
         Task<bool> Excluir(TEntity obj);
         Task<IEnumerable<TEntity>> ObterTodos();

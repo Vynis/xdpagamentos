@@ -37,4 +37,17 @@ export class ClienteService {
   alterarSenhaPadrao(id: number) {
     return this.http.put<ModeloBase>(`${this.caminhoApi}/alterar-senha-padrao/${id}`, { id });
   }
+
+  agrupar(clientes: ClienteModel[]) {
+    return this.http.put<ModeloBase>(`${this.caminhoApi}/agrupar`, clientes);
+  }
+
+  desagrupar(clientes: ClienteModel[]) {
+    return this.http.put<ModeloBase>(`${this.caminhoApi}/desagrupar`, clientes);
+  }
+
+  buscarGrupo() {
+    return this.http.get<ModeloBase>(`${this.caminhoApi}/bucar-grupo-clientes`);
+  }
+
 }

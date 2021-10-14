@@ -1,11 +1,12 @@
+import { ClienteModel } from './../../../@core/models/cliente.model';
 import { SessoesEnum } from './../../../@core/enums/sessoes.enum';
 import { AuthServiceService } from './../../../@core/services/auth-service.service';
 import { SweetalertService } from './../../../@core/services/sweetalert.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { PaginationFilterModel } from './../../../@core/models/configuracao/paginationfilter.model';
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { LocalDataSource } from 'ng2-smart-table';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { LocalDataSource, Ng2SmartTableComponent } from 'ng2-smart-table';
 import { AcoesPadrao } from '../../../@core/enums/acoes.enum';
 import { SettingsTableModel } from '../../../@core/models/configuracao/table/settings.table.model';
 import { ClienteService } from '../../../@core/services/cliente.service';
@@ -16,7 +17,7 @@ import { EstabelecimentoService } from '../../../@core/services/estabelecimento.
 import { ToastService } from '../../../@core/services/toast.service';
 import { ToastPadrao } from '../../../@core/enums/toast.enum';
 import { SweetAlertIcons } from '../../../@core/enums/sweet-alert-icons-enum';
-import { RSA_NO_PADDING } from 'constants';
+
 
 @Component({
   selector: 'ngx-cliente-lista',
@@ -24,6 +25,8 @@ import { RSA_NO_PADDING } from 'constants';
   styleUrls: ['./cliente-lista.component.scss']
 })
 export class ClienteListaComponent implements OnInit {
+
+  @ViewChild('table') smartTable: Ng2SmartTableComponent;
 
   columns = {
     id: {
@@ -52,6 +55,37 @@ export class ClienteListaComponent implements OnInit {
     }
   }
 
+  columnsAG = {
+    id: {
+      title: 'ID',
+      type: 'number',
+    },
+    nome: {
+      title: 'Nome',
+      type: 'string',
+    },
+    nomeAgrupamento: {
+      title: 'Grupo',
+      type: 'string',
+    },
+    cnpjCpf: {
+      title: 'Documento',
+      type: 'string',
+    },
+    cidade: {
+      title: 'Cidade',
+      type: 'string',
+    },
+    estado: {
+      title: 'Estado',
+      type: 'string',
+    },
+    status: {
+      title: 'Status',
+      type: 'string',
+    }
+  }
+
   
   settings: SettingsTableModel = new SettingsTableModel();
   source: LocalDataSource = new LocalDataSource();
@@ -59,6 +93,9 @@ export class ClienteListaComponent implements OnInit {
   listaEstabelecimentos: EstabelecimentoModel[];
   validaNovo: boolean = false;
   carregaPagina: boolean = false;
+  agrupamento: boolean = false;
+  selectedRows: ClienteModel[] = [];
+  listaGrupos: any[];
 
   constructor(
     private clienteService: ClienteService,
@@ -67,7 +104,8 @@ export class ClienteListaComponent implements OnInit {
     private route: Router,
     private fb: FormBuilder,
     private sweetAlertService: SweetalertService,
-    private authService: AuthServiceService
+    private authService: AuthServiceService,
+    private activatedRoute: ActivatedRoute
     ) {
 
     this.validaPermissao();
@@ -93,6 +131,15 @@ export class ClienteListaComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.activatedRoute.params.subscribe(params => {
+      const param = params.agrupamento;
+      this.agrupamento = param == 'AG' ? true : false;
+    });
+
+    if (this.agrupamento)
+      this.buscarListaGrupos();
+
     this.createForm();
   }
 
@@ -101,12 +148,15 @@ export class ClienteListaComponent implements OnInit {
       tipo: ['0'],
       descricao: [''],
       estabelecimento: [null],
-      status: [null]
+      status: [null],
+      nomeAgrupamento: [''],
+      filtroGrupo: [''],
     })
   }
 
   configuracaoesGrid(validaExclusao: boolean = false, validaAlteracao: boolean = false, validaAlteracaoSenha: boolean = false){
-    this.settings.columns = this.columns;
+    this.settings.selectMode = this.agrupamento ? 'multi' : '';
+    this.settings.columns = this.agrupamento ? this.columnsAG : this.columns;
     this.settings.actions.custom = [];
 
     if (validaAlteracao)
@@ -143,6 +193,27 @@ export class ClienteListaComponent implements OnInit {
         }
 
         this.listaEstabelecimentos = res.data;
+
+      },
+      error => {
+        console.log(error);
+        this.toastService.showToast(ToastPadrao.DANGER, 'Erro ao buscar dados');
+      }
+      
+    )
+  }
+
+  buscarListaGrupos() {
+    this.clienteService.buscarGrupo().subscribe(
+      res => {
+        
+        if (!res.success) {
+          this.toastService.showToast(ToastPadrao.DANGER, 'Erro ao buscar dados');
+          console.log(res.data);
+          return;
+        }
+
+        this.listaGrupos = res.data;
 
       },
       error => {
@@ -215,9 +286,82 @@ export class ClienteListaComponent implements OnInit {
       listaItem.push(item);
     }
 
+    if (this.agrupamento) {
+      if (controls.filtroGrupo.value !== null) {
+        var item  = new FiltroItemModel();
+        item.property = 'NomeAgrupamento';
+        item.filterType = FilterTypeConstants.EQUALS;
+        item.value = controls.filtroGrupo.value;
+        listaItem.push(item);
+      }
+    }
+
     filtro.filtro = listaItem;
     this.buscaDados(filtro);
 
+  }
+
+  agrupar() {
+
+    const nomeAgrupamento  = this.formulario.controls.nomeAgrupamento.value;
+
+    if (nomeAgrupamento == null || nomeAgrupamento == '') {
+      this.toastService.showToast(ToastPadrao.DANGER, 'Informe o nome do agrupamento');
+      return;
+    }
+
+    if (this.selectedRows.length === 0 || this.selectedRows.length === 1) {
+      this.toastService.showToast(ToastPadrao.DANGER, 'Selecione mais de um cliente');
+      return;
+    }
+
+
+    this.selectedRows.forEach(res => {
+      res.nomeAgrupamento = nomeAgrupamento;
+    })
+
+    this.clienteService.agrupar(this.selectedRows).subscribe(
+      res => {
+        if (!res.success) {
+          this.toastService.showToast(ToastPadrao.DANGER, 'Erro ao agrupar');
+          console.log(res.data);
+          return;
+        }
+
+
+        this.toastService.showToast(ToastPadrao.SUCCESS, 'Agrupamento realizado com sucesso!');
+
+        this.pesquisar();
+      }
+    )
+  }
+
+  desagrupar() {
+
+    if (this.selectedRows.length === 0) {
+      this.toastService.showToast(ToastPadrao.DANGER, 'Selecione um cliente');
+      return;
+    }
+
+    this.clienteService.desagrupar(this.selectedRows).subscribe(
+      res => {
+        if (!res.success) {
+          this.toastService.showToast(ToastPadrao.DANGER, 'Erro ao agrupar');
+          console.log(res.data);
+          return;
+        }
+
+
+        this.toastService.showToast(ToastPadrao.SUCCESS, 'Desagrupamento realizado com sucesso!');
+
+        this.pesquisar();
+      }
+    )
+
+  }
+
+  onRowSelect(event) {
+    this.selectedRows = event.selected;
   }
 
 }

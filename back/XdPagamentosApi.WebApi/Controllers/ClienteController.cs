@@ -45,6 +45,26 @@ namespace XdPagamentosApi.WebApi.Controllers
             }
         }
 
+        [HttpGet("bucar-grupo-clientes")]
+        [SwaggerGroup("Cliente")]
+        public async Task<IActionResult> BuscarGrupoClientes()
+        {
+            try
+            {
+                var response = await _clienteService.ObterTodos();
+
+                var grupos = response.ToList().Where(c => !string.IsNullOrEmpty(c.NomeAgrupamento)).GroupBy(c => c.NomeAgrupamento).Select(c => new { NomeAgrupamento = c.Key });
+
+                return Response(grupos.ToList().OrderBy(c => c.NomeAgrupamento));
+            }
+            catch (Exception ex)
+            {
+
+                return Response(ex.Message, false);
+            }
+        }
+
+
         [HttpPost("buscar-cliente-filtro")]
         [SwaggerGroup("Cliente")]
         public async Task<IActionResult> BuscarFiltro(PaginationFilter filtro)
@@ -135,6 +155,49 @@ namespace XdPagamentosApi.WebApi.Controllers
             }
         }
 
+
+        [HttpPut("agrupar")]
+        [SwaggerGroup("Cliente")]
+        public async Task<IActionResult> Agrupar(List<DtoCliente> dtoCliente)
+        {
+            try
+            {
+
+                var response = await _clienteService.AtualizarLista(_mapper.Map<List<Cliente>>(dtoCliente));
+
+                if (!response)
+                    return Response("Erro ao alterar", false);
+
+                return Response("Alteração com sucesso!");
+
+            }
+            catch (Exception ex)
+            {
+                return Response(ex.Message, false);
+            }
+        }
+
+        [HttpPut("desagrupar")]
+        [SwaggerGroup("Cliente")]
+        public async Task<IActionResult> Desagrupar(List<DtoCliente> dtoCliente)
+        {
+            try
+            {
+                dtoCliente.ForEach(x => x.NomeAgrupamento = "");
+
+                var response = await _clienteService.AtualizarLista(_mapper.Map<List<Cliente>>(dtoCliente));
+
+                if (!response)
+                    return Response("Erro ao alterar", false);
+
+                return Response("Alteração com sucesso!");
+
+            }
+            catch (Exception ex)
+            {
+                return Response(ex.Message, false);
+            }
+        }
 
         [HttpDelete("deletar")]
         [SwaggerGroup("Cliente")]

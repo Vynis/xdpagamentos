@@ -72,5 +72,11 @@ namespace XdPagamentosApi.Repository.Class
             _mySqlContext.RemoveRange(obj);
             return await _mySqlContext.SaveChangesAsync() > 0;
         }
+
+        public virtual async Task<bool> AtualizarLista(List<TEntity> obj)
+        {
+            _mySqlContext.UpdateRange(obj);
+            return await _mySqlContext.SaveChangesAsync() > 0;
+        }
     }
 }
