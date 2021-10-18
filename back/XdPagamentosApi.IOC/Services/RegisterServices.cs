@@ -21,6 +21,7 @@ namespace XdPagamentosApi.IOC.Services
             service.AddScoped<IOperadoraService, OperadoraService>();
             service.AddScoped<ISessaoService, SessaoService>();
             service.AddScoped<ITipoTransacaoService, TipoTransacaoService>();
+            service.AddScoped<ILogNotificacoesService, LogNotificacoesService>();
         }
     }
 }
