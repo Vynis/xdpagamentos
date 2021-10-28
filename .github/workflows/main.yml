@@ -18,7 +18,7 @@ jobs:
     
     defaults:
       run:
-        working-directory: front
+        working-directory: cliente
 
     steps:
   
@@ -44,4 +44,4 @@ jobs:
         password: ${{ secrets.ftp_password }}
         local-dir: ./cliente/dist/
         server-dir: cliente/
-        dangerous-clean-slate: true      
+        dangerous-clean-slate: true
