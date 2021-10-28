@@ -1,0 +1,47 @@
+name: Front Cliente
+
+on:
+  push:
+    branches: 
+      - master
+    paths: 
+      - cliente/**
+  pull_request:  # [master, next]
+    paths: 
+      - cliente/**
+
+jobs:
+  web-deploy:
+
+    name: Deploy Angular App
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        working-directory: front
+
+    steps:
+  
+    - name: Get latest code
+      uses: actions/checkout@v2.3.2
+
+    - name: Use Node.js 14 LTS
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+      
+    - name: Install NPM Modules
+      run: npm install
+
+    - name: Build Project
+      run: npm run build:prod2
+    
+    - name: Sync Files
+      uses: SamKirkland/FTP-Deploy-Action@4.0.0
+      with:
+        server: ${{ secrets.ftp_host }}
+        username: ${{ secrets.ftp_user }}
+        password: ${{ secrets.ftp_password }}
+        local-dir: ./cliente/dist/
+        server-dir: cliente/
+        dangerous-clean-slate: true      
