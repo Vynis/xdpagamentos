@@ -107,7 +107,7 @@ namespace XdPagamentosApi.WebApi.Controllers
                 if (validaCpfCnpjExistente.Any())
                     return Response("Cpf/Cnpj já cadastrado", false);
 
-                dtoCliente.Senha = "cli102030";
+                dtoCliente.Senha = SenhaHashService.CalculateMD5Hash("cli102030");
 
                 var response = await _clienteService.Adicionar(_mapper.Map<Cliente>(dtoCliente));
 

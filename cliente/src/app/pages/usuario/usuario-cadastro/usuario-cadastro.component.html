@@ -1,0 +1,134 @@
+<nb-card> 
+    <nb-card-header>{{tituloPagina}} </nb-card-header>
+    <nb-card-body *ngIf="usuarioOld">
+        <nb-alert *ngIf="existeErro" status="danger" closable>Favor preencher todos os campos obrigatorios!</nb-alert>
+        <form  [formGroup]="formulario">
+            <input type="hidden" formControlName="id">
+            <nb-tabset>
+                <nb-tab tabTitle="Cadastro">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="nome" class="label">*Nome</label>
+                              <input type="text" class="form-control" maxlength="45"
+                              [ngClass]="{'is-invalid': formulario.get('nome').errors  && formulario.get('nome').touched}"
+                                nbInput fullWidth placeholder="Nome" formControlName="nome" />
+                                <div *ngIf="formulario.get('nome').hasError('required')  && formulario.get('nome').touched" class="invalid-feedback">
+                                  Campo é obrigatório.
+                                </div>
+                            </div>
+                        </div>
+       
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="email" class="label">*E-mail</label>
+                                <input type="text" class="form-control" maxlength="100"
+                                [ngClass]="{'is-invalid': formulario.get('email').errors  && formulario.get('email').touched}"
+                                  nbInput fullWidth placeholder="E-mail" formControlName="email"  />
+                                  <div *ngIf="formulario.get('email').hasError('required')  && formulario.get('email').touched" class="invalid-feedback">
+                                    Campo é obrigatório.
+                                  </div>
+                                  <div *ngIf="formulario.get('email').hasError('email')  && formulario.get('email').touched" class="invalid-feedback">
+                                    E-mail inválido.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="cpf" class="label">*CPF</label>
+                                <input type="text" class="form-control" maxlength="11"
+                                [ngClass]="{'is-invalid': formulario.get('cpf').errors  && formulario.get('cpf').touched}"
+                                  nbInput fullWidth placeholder="CPF" formControlName="cpf"  />
+                                  <div *ngIf="formulario.get('cpf').hasError('required')  && formulario.get('cpf').touched" class="invalid-feedback">
+                                    Campo é obrigatório.
+                                  </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <label for="status" class="label">*Status</label><br>
+                            <nb-select id="status" placeholder="Selecione" formControlName="status"  selected="A">
+                              <nb-option value="A">Ativo</nb-option>
+                              <nb-option value="I">Inativo</nb-option>
+                            </nb-select>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="!ehEdicao">
+                        <div class="col-sm-12">
+                            <nb-alert status="basic">Senha padrão: usu123456</nb-alert>
+                        </div>
+                    </div>
+                </nb-tab>
+                <nb-tab tabTitle="Permissões">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="sessao" class="label">Sessões sistema</label><br>
+                            <nb-select id="sessao" placeholder="Selecione" formControlName="sessao" >
+                              <nb-option *ngFor="let sessao of listaSessao" [value]="sessao">{{sessao.descricao}} - ({{sessao.id}}) </nb-option>
+                            </nb-select>
+                        </div>
+                        <div class="col-sm-2" style="padding-top: 30px">
+                            <button nbButton (click)="addSessao()" status="success" size="small" >Adicionar</button>
+                        </div>
+                        <div class="col-sm-2" style="padding-top: 30px;">
+                            <button nbButton (click)="addTodasSessoes()" status="info" size="small" >Adicionar Todos</button>
+                        </div>
+                        <div class="col-sm-2" style="padding-top: 30px;">
+                            <button nbButton (click)="removerTodasSessoes()" status="danger" size="small" >Remover Todos</button>
+                        </div>
+                    </div> <br />
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <ng2-smart-table 
+                            [settings]="settings" 
+                            [source]="source" 
+                            (custom)="onCustom($event)"
+                            >
+                            </ng2-smart-table>
+                        </div>
+                    </div>
+                </nb-tab>
+                <nb-tab tabTitle="Estabelecimentos">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="estabelecimento" class="label">Estabelcimenbto</label><br>
+                            <nb-select id="estabelecimento" placeholder="Selecione" formControlName="estabelecimento" >
+                              <nb-option *ngFor="let est of listaEstabelecimento" [value]="est">{{est.nome}} </nb-option>
+                            </nb-select>
+                        </div>
+                        <div class="col-sm-2" style="padding-top: 30px">
+                            <button nbButton (click)="addEst()" status="success" size="small" >Adicionar</button>
+                        </div>
+                        <div class="col-sm-2" style="padding-top: 30px;">
+                            <button nbButton (click)="addTodasEst()" status="info" size="small" >Adicionar Todos</button>
+                        </div>
+                        <div class="col-sm-2" style="padding-top: 30px;">
+                            <button nbButton (click)="removerTodasEst()" status="danger" size="small" >Remover Todos</button>
+                        </div>
+                    </div> <br />
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <ng2-smart-table 
+                            [settings]="settingsEst" 
+                            [source]="sourceEst" 
+                            (custom)="onCustomEst($event)"
+                            >
+                            </ng2-smart-table>
+                        </div>
+                    </div>
+                </nb-tab>
+            </nb-tabset>
+        </form>
+    </nb-card-body>
+    <nb-card-footer>
+        <div class="row">
+            <div class="col-sm-1">
+                <button nbButton (click)="submit()" status="success" >Salvar</button>
+            </div>
+            <div class="col-sm-1">
+                <button nbButton (click)="voltar()" >Voltar</button>
+            </div>
+        </div>
+      </nb-card-footer>
+</nb-card>

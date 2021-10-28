@@ -1,0 +1,59 @@
+    
+    <nb-card> 
+        <nb-card-header>Alterar Senha </nb-card-header>
+        <nb-card-body>
+            <nb-alert *ngIf="existeErro" status="danger" closable>Favor preencher todos os campos obrigatorios!</nb-alert>
+            <form  [formGroup]="formulario">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="senhaAtual" class="label">*Senha Atual</label>
+                            <input type="password" class="form-control" maxlength="45"
+                            [ngClass]="{'is-invalid': formulario.get('senhaAtual').errors  && formulario.get('senhaAtual').touched}"
+                              nbInput fullWidth placeholder="" formControlName="senhaAtual"  />
+                              <div *ngIf="formulario.get('senhaAtual').hasError('required')  && formulario.get('senhaAtual').touched" class="invalid-feedback">
+                                Campo é obrigatório.
+                              </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="senhaNovo" class="label">*Senha Novo</label>
+                            <input type="password" class="form-control" maxlength="45"
+                            [ngClass]="{'is-invalid': formulario.get('senhaNovo').errors  && formulario.get('senhaNovo').touched}"
+                              nbInput fullWidth placeholder="" formControlName="senhaNovo"  />
+                              <div *ngIf="formulario.get('senhaNovo').hasError('required')  && formulario.get('senhaNovo').touched" class="invalid-feedback">
+                                Campo é obrigatório.
+                              </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="confirmarSenha" class="label">*Confirmar Senha</label>
+                            <input type="password" class="form-control" maxlength="45"
+                            [ngClass]="{'is-invalid': formulario.get('confirmarSenha').errors  && formulario.get('confirmarSenha').touched}"
+                              nbInput fullWidth placeholder="" formControlName="confirmarSenha"  />
+                              <div *ngIf="formulario.get('confirmarSenha').hasError('required')  && formulario.get('confirmarSenha').touched" class="invalid-feedback">
+                                Campo é obrigatório.
+                              </div>
+                              <div *ngIf="formulario.get('confirmarSenha').errors  && formulario.get('confirmarSenha').errors.ConfirmPassword" class="invalid-feedback">
+                                Confirmação de senha incorreta.
+                              </div>
+                        </div>
+                    </div>
+                </div> 
+            </form> 
+        </nb-card-body>
+        <nb-card-footer>
+          <div class="row">
+            <div class="col-sm-2">
+              <button nbButton (click)="submit()"  status="success" >Salvar</button>
+            </div>
+            <div class="col-sm-2">
+              <button nbButton (click)="cancel()" >Sair</button>
+            </div>
+          </div>
+            
+          </nb-card-footer>
+    </nb-card>
+

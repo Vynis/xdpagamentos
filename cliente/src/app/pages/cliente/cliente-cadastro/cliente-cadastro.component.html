@@ -1,0 +1,254 @@
+<nb-card> 
+    <nb-card-header>{{tituloPagina}} </nb-card-header>
+    <nb-card-body *ngIf="clienteOld">
+        <nb-alert *ngIf="existeErro" status="danger" closable>Favor preencher todos os campos obrigatorios!</nb-alert>
+        <form  [formGroup]="formulario">
+            <nb-tabset>
+                <nb-tab tabTitle="Dados Pessoais">
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label for="tipo" class="label">*Tipo</label><br>
+                            <nb-select id="tipoPessoa" placeholder="Selecione" formControlName="tipoPessoa"  selected="PF">
+                              <nb-option value="PF">Pessoa Física</nb-option>
+                              <nb-option value="PJ">Pessoa Jurídica</nb-option>
+                            </nb-select>
+                        </div>
+                        <div class="col-sm-8">
+                            <label for="estId" class="label">*Estabelecimento</label><br>
+                            <nb-select id="estId" placeholder="Selecione" formControlName="estId">
+                              <nb-option *ngFor="let estabelecimento of listaEstabelecimentos" [value]="estabelecimento.id">{{estabelecimento.numEstabelecimento}} - {{estabelecimento.nome}} ({{estabelecimento.id}} )</nb-option>
+                            </nb-select>
+                        </div>
+                    </div> <br>
+
+                    <div class="row ">
+                        
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="cnpjCpf" class="label">{{ formulario.controls.tipoPessoa.value == 'PF' ? 'CPF ' : 'CNPJ' }}</label>
+                                <input type="text" class="form-control" maxlength="14"
+                                  nbInput fullWidth [placeholder]="formulario.controls.tipoPessoa.value == 'PF' ? 'CPF ' : 'CNPJ'" formControlName="cnpjCpf"  />
+                            </div>
+                        </div>
+
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <label for="nome" class="label">*{{ formulario.controls.tipoPessoa.value == 'PF' ? 'Nome ' : 'Razão Social' }}</label>
+                                <input type="text" class="form-control" maxlength="45"
+                                [ngClass]="{'is-invalid': formulario.get('nome').errors  && formulario.get('nome').touched}"
+                                  nbInput fullWidth [placeholder]="formulario.controls.tipoPessoa.value == 'PF' ? 'Nome ' : 'Razão Social'" formControlName="nome"  />
+                                  <div *ngIf="formulario.get('nome').hasError('required')  && formulario.get('nome').touched" class="invalid-feedback">
+                                    Campo é obrigatório.
+                                  </div>
+                              </div>
+                        </div>
+                    </div>
+
+                    <div  class="row ">
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="cep" class="label">*Cep</label>
+                                <input type="text" class="form-control" maxlength="8"
+                                [ngClass]="{'is-invalid': formulario.get('cep').errors  && formulario.get('cep').touched}"
+                                  nbInput fullWidth placeholder="Cep" formControlName="cep" />
+                                  <div *ngIf="formulario.get('cep').hasError('required')  && formulario.get('cep').touched" class="invalid-feedback">
+                                    Campo é obrigatório.
+                                  </div>
+                              </div>
+                        </div>
+
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                              <label for="nome" class="label">*Endereço</label>
+                              <input type="text" class="form-control" maxlength="45"
+                              [ngClass]="{'is-invalid': formulario.get('endereco').errors  && formulario.get('endereco').touched}"
+                                nbInput fullWidth placeholder="Endereço" formControlName="endereco" />
+                                <div *ngIf="formulario.get('endereco').hasError('required')  && formulario.get('endereco').touched" class="invalid-feedback">
+                                  Campo é obrigatório.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div  class="row ">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="bairro" class="label">*Bairro</label>
+                                <input type="text" class="form-control" maxlength="45"
+                                [ngClass]="{'is-invalid': formulario.get('bairro').errors  && formulario.get('bairro').touched}"
+                                  nbInput fullWidth placeholder="Bairro" formControlName="bairro" />
+                                  <div *ngIf="formulario.get('bairro').hasError('required')  && formulario.get('bairro').touched" class="invalid-feedback">
+                                    Campo é obrigatório.
+                                  </div>
+                              </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="cidade" class="label">*Cidade</label>
+                                <input type="text" class="form-control" maxlength="45"
+                                [ngClass]="{'is-invalid': formulario.get('cidade').errors  && formulario.get('cidade').touched}"
+                                  nbInput fullWidth placeholder="Cidade" formControlName="cidade" />
+                                  <div *ngIf="formulario.get('cidade').hasError('required')  && formulario.get('cidade').touched" class="invalid-feedback">
+                                    Campo é obrigatório.
+                                  </div>
+                              </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="estado" class="label">*Estado</label><br>
+                            <nb-select placeholder="Selecione" formControlName="estado">
+                              <nb-option *ngFor="let estado of listaestadosBrasileiros" [value]="estado.sigla" >{{estado.sigla}}-{{estado.nome}}</nb-option>
+                            </nb-select>
+                        </div>
+                    </div>
+
+                    <div  class="row">
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="fone1" class="label">Telefone Fixo</label>
+                                <input type="text" class="form-control" maxlength="15"
+                                [ngClass]="{'is-invalid': formulario.get('fone1').errors  && formulario.get('fone1').touched}"
+                                  nbInput fullWidth placeholder="Telefone Fixo" formControlName="fone1" />
+                                  <div *ngIf="formulario.get('fone1').hasError('required')  && formulario.get('fone1').touched" class="invalid-feedback">
+                                    Campo é obrigatório.
+                                  </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="fone2" class="label">*Telefone Celular</label>
+                                <input type="text" class="form-control" maxlength="15"
+                                [ngClass]="{'is-invalid': formulario.get('fone2').errors  && formulario.get('fone2').touched}"
+                                  nbInput fullWidth placeholder="Telefone Celular" formControlName="fone2" />
+                                  <div *ngIf="formulario.get('fone2').hasError('required')  && formulario.get('fone2').touched" class="invalid-feedback">
+                                    Campo é obrigatório.
+                                  </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="email" class="label">E-mail</label>
+                                <input type="text" class="form-control" maxlength="100"
+                                [ngClass]="{'is-invalid': formulario.get('email').errors  && formulario.get('email').touched}"
+                                  nbInput fullWidth placeholder="E-mail" formControlName="email"  />
+                                  <div *ngIf="formulario.get('email').hasError('email')  && formulario.get('email').touched" class="invalid-feedback">
+                                    E-mail inválido.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <label for="status" class="label">*Status</label><br>
+                            <nb-select id="status" placeholder="Selecione" formControlName="status"  selected="A">
+                              <nb-option value="A">Ativo</nb-option>
+                              <nb-option value="I">Inativo</nb-option>
+                            </nb-select>
+                        </div>
+
+                    </div>
+
+                </nb-tab>
+                <nb-tab tabTitle="Dados Bancários">
+                    <div  class="row">
+                        <div class="col-sm-12">
+                            <nb-toggle  (checkedChange)="selecaoPossuiContaBancaria($event)" formControlName="possuiDadosBancario" status="basic">Possui conta bancária</nb-toggle>
+                        </div>
+                    </div> <br>
+
+                    <div [hidden]="!formulario.controls.possuiDadosBancario.value" class="row">
+                        
+                        <div class="col-sm-3">
+                            <label for="banId" class="label">*Banco</label><br>
+                            <nb-select id="banId" placeholder="Selecione" formControlName="banId" >
+                              <nb-option *ngFor="let banco of listaBancos" [value]="banco.id">{{banco.nome}}</nb-option>
+                            </nb-select>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="numAgencia" class="label">*Número da Agencia</label>
+                                <input type="text" class="form-control" maxlength="10"
+                                [ngClass]="{'is-invalid': formulario.get('numAgencia').errors  && formulario.get('numAgencia').touched}"
+                                  nbInput fullWidth placeholder="Número da Agencia" formControlName="numAgencia" />
+                                  <div *ngIf="formulario.get('numAgencia').hasError('required')  && formulario.get('numAgencia').touched" class="invalid-feedback">
+                                    Campo é obrigatório.
+                                  </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="numConta" class="label">*Número da Conta + dígito</label>
+                                <input type="text" class="form-control" maxlength="45"
+                                [ngClass]="{'is-invalid': formulario.get('numConta').errors  && formulario.get('numConta').touched}"
+                                  nbInput fullWidth placeholder="Número da Conta + dígito" formControlName="numConta" />
+                                  <div *ngIf="formulario.get('numConta').hasError('required')  && formulario.get('numConta').touched" class="invalid-feedback">
+                                    Campo é obrigatório.
+                                  </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-sm-3">
+                            
+                                <label for="tipoConta" class="label">*Tipo da Conta</label>
+                                <nb-select id="status"
+                                [ngClass]="{'is-invalid': formulario.get('tipoConta').errors  && formulario.get('tipoConta').touched}"
+                                 formControlName="tipoConta" [selected]="null"  >
+                                  <nb-option [value]="null">Selecione</nb-option>
+                                  <nb-option value="C">CORRENTE</nb-option>
+                                  <nb-option value="P">POUPANÇA</nb-option>
+                                </nb-select>
+                              <div *ngIf="formulario.get('tipoConta').hasError('required')  && formulario.get('tipoConta').touched" class="invalid-feedback">
+                                Campo é obrigatório.
+                              </div>
+                            
+                        </div>
+
+
+                    </div>
+                </nb-tab>
+                <nb-tab tabTitle="Taxas">
+                  <nb-card formArrayName="taxas" *ngFor="let taxa of taxas.controls; let i = index;"> 
+                    <div class="row" [formGroupName]="i" >
+                      <input type="hidden" formControlName="id">
+
+                      <div style="padding-top: 33px;padding-left: 20px;" class="col-sm-10">
+                        <h6>Parcela {{taxas.get(i + '.qtdParcelas').value}}</h6>
+                      </div>
+                      
+                      <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="percDesconto" class="label">*Taxas(%)</label>
+                            <input type="text" class="form-control" maxlength="10"
+                            [ngClass]="{'is-invalid': taxas.get(i +'.percDesconto').errors  && taxas.get(i +'.percDesconto').touched}"
+                              nbInput fullWidth placeholder="" formControlName="percDesconto" />
+                              <div *ngIf="taxas.get(i +'.percDesconto').hasError('required')  && taxas.get(i +'.percDesconto').touched" class="invalid-feedback">
+                                Campo é obrigatório.
+                              </div>
+                          </div>
+                      </div>
+
+                    </div>
+                  </nb-card>
+                </nb-tab>
+            </nb-tabset>
+            
+        </form>
+    </nb-card-body>
+
+    <nb-card-footer>
+        <div class="row">
+            <div class="col-sm-1">
+                <button nbButton (click)="submit()" status="success" >Salvar</button>
+            </div>
+            <div class="col-sm-1">
+                <button nbButton (click)="voltar()" >Voltar</button>
+            </div>
+        </div>
+    </nb-card-footer>
+</nb-card>

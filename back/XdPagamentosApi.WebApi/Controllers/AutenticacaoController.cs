@@ -21,11 +21,13 @@ namespace XdPagamentosApi.WebApi.Controllers
     {
         private readonly IUsuarioService _usuarioService;
         private readonly IMapper _mapper;
+        private readonly IClienteService _clienteService;
 
-        public AutenticacaoController(IUsuarioService usuarioService, IMapper mapper)
+        public AutenticacaoController(IUsuarioService usuarioService, IMapper mapper, IClienteService clienteService)
         {
             _usuarioService = usuarioService;
             _mapper = mapper;
+            _clienteService = clienteService;
         }
 
         [HttpPost]
@@ -75,6 +77,50 @@ namespace XdPagamentosApi.WebApi.Controllers
                 return Response(ex.Message, false);
             }
         }
+
+        [HttpPost("AutenticarCliente")]
+        [SwaggerGroup("AutenticacaoSistema")]
+        [AllowAnonymous]
+        public async Task<IActionResult> AutenticarCliente(DtoParamLoginUsuario param)
+        {
+            try
+            {
+                param.Senha = SenhaHashService.CalculateMD5Hash(param.Senha.Trim());
+
+                var resposta = await _clienteService.BuscarExpressao(x => x.CnpjCpf.Trim().ToUpper().Equals(param.CPF.Trim().ToUpper())
+                                                                    && x.Senha.Equals(param.Senha) && x.Status.Equals("A"));
+
+
+                var usuario = _mapper.Map<DtoUsuarioLogado>(resposta.FirstOrDefault());
+
+                if (usuario == null)
+                    return Response(new { usuario = string.Empty, token = string.Empty, }) ;
+
+                var token = TokenService.GenerateToken(usuario);
+
+                return Response(new { usuario, token });
+            }
+            catch (Exception ex)
+            {
+                return Response(ex.Message, false);
+            }
+        }
+
+
+        //[HttpGet("gerar-senha")]
+        //[SwaggerGroup("AutenticacaoSistema")]
+        //[AllowAnonymous]
+        //public async Task<IActionResult> GerarSenha(string senha)
+        //{
+        //    try
+        //    {
+        //        return Response(SenhaHashService.CalculateMD5Hash(senha.Trim()));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Response(ex.Message, false);
+        //    }
+        //}
 
 
     }
