@@ -131,21 +131,23 @@ export class GeracaoOrdemPagtoComponent implements OnInit {
       listaItem.push(item);
     }
 
+    if (!controls.periodoGeral.value) {
 
-    if ((controls.dtInicial.value !== '' && this.ehData(controls.dtInicial.value))  && (controls.dtFinal.value !== '' && this.ehData(controls.dtInicial.value)) ) {
-      var item  = new FiltroItemModel();
-      item.property = 'DataOperacao';
-      item.filterType = FilterTypeConstants.GREATERTHANEQUALS;
-      item.value = new Date(controls.dtInicial.value).toLocaleDateString();
-      listaItem.push(item);
-
-
-      var item  = new FiltroItemModel();
-      item.property = 'DataOperacao';
-      item.filterType = FilterTypeConstants.LESSTHANEQUALS;
-      item.value =new Date(controls.dtFinal.value).toLocaleDateString();
-      listaItem.push(item);
+      if ((controls.dtInicial.value !== '' && this.ehData(controls.dtInicial.value))  && (controls.dtFinal.value !== '' && this.ehData(controls.dtInicial.value)) ) {
+        var item  = new FiltroItemModel();
+        item.property = 'DataOperacao';
+        item.filterType = FilterTypeConstants.GREATERTHANEQUALS;
+        item.value = new Date(controls.dtInicial.value).toLocaleDateString();
+        listaItem.push(item);
   
+  
+        var item  = new FiltroItemModel();
+        item.property = 'DataOperacao';
+        item.filterType = FilterTypeConstants.LESSTHANEQUALS;
+        item.value =new Date(controls.dtFinal.value).toLocaleDateString();
+        listaItem.push(item);
+    
+      }
     }
 
     // if (controls.status.value !== null) {

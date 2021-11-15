@@ -8,7 +8,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAHmBYwCLQv0OWaIfYcsP7dgAAAAACAAAAAAAQZgAAAAEAACAAAADWPzM3bKVo/Xa0LzIPfgrqEo7WZ6k72af4lOZCiMNpUAAAAAAOgAAAAAIAACAAAACUpLUbFIGvVpMYsZuyneSUmS98IjWm+HO1CABgz3mxDiAAAAAY0ttdN3eWuWWadf2zs13sSRQRhe6uMpnGTHrH9lCotEAAAABmN+Pe70T8Hkb7TJpvgSAJ3X2TbTABba9VNUdv+mCaltlibidm3Br6+nJ0riKmfJQD/ptC/GCKTYr4ZtdPl3pP</EncryptedPassword>
     <_PublishTargetUrl>ftp://ftp.api.xdpayment.sis-pro.net/www</_PublishTargetUrl>
-    <History>True|2021-11-15T17:40:12.5690008Z;True|2021-11-15T14:12:21.7915558-03:00;True|2021-11-15T09:33:39.8098955-03:00;True|2021-10-28T15:58:48.2780383-03:00;True|2021-10-15T13:57:48.5717368-03:00;True|2021-10-14T17:52:37.9407485-03:00;True|2021-10-14T17:47:10.5786859-03:00;False|2021-10-14T17:46:06.4561257-03:00;True|2021-10-14T17:28:56.6847529-03:00;True|2021-10-13T18:18:50.2879943-03:00;True|2021-09-30T22:46:11.5316894-03:00;True|2021-09-29T14:36:17.9166624-03:00;False|2021-09-29T14:34:52.8264549-03:00;True|2021-09-28T15:38:17.3328946-03:00;False|2021-09-28T15:35:51.5057253-03:00;True|2021-09-21T23:06:34.9857768-03:00;True|2021-09-20T17:37:03.1083021-03:00;False|2021-09-20T17:35:23.9714633-03:00;True|2021-09-18T18:11:40.2439785-03:00;False|2021-09-18T18:10:46.9106822-03:00;True|2021-09-18T18:06:52.6952967-03:00;True|2021-09-18T15:35:30.0304810-03:00;False|2021-09-18T15:34:25.3115355-03:00;True|2021-09-12T23:15:01.6549467-03:00;False|2021-09-12T23:14:00.3092084-03:00;True|2021-08-30T20:33:38.7840365-03:00;True|2021-08-30T20:29:14.9492569-03:00;</History>
+    <History>True|2021-11-15T21:22:34.2955831Z;True|2021-11-15T14:40:12.5690008-03:00;True|2021-11-15T14:12:21.7915558-03:00;True|2021-11-15T09:33:39.8098955-03:00;True|2021-10-28T15:58:48.2780383-03:00;True|2021-10-15T13:57:48.5717368-03:00;True|2021-10-14T17:52:37.9407485-03:00;True|2021-10-14T17:47:10.5786859-03:00;False|2021-10-14T17:46:06.4561257-03:00;True|2021-10-14T17:28:56.6847529-03:00;True|2021-10-13T18:18:50.2879943-03:00;True|2021-09-30T22:46:11.5316894-03:00;True|2021-09-29T14:36:17.9166624-03:00;False|2021-09-29T14:34:52.8264549-03:00;True|2021-09-28T15:38:17.3328946-03:00;False|2021-09-28T15:35:51.5057253-03:00;True|2021-09-21T23:06:34.9857768-03:00;True|2021-09-20T17:37:03.1083021-03:00;False|2021-09-20T17:35:23.9714633-03:00;True|2021-09-18T18:11:40.2439785-03:00;False|2021-09-18T18:10:46.9106822-03:00;True|2021-09-18T18:06:52.6952967-03:00;True|2021-09-18T15:35:30.0304810-03:00;False|2021-09-18T15:34:25.3115355-03:00;True|2021-09-12T23:15:01.6549467-03:00;False|2021-09-12T23:14:00.3092084-03:00;True|2021-08-30T20:33:38.7840365-03:00;True|2021-08-30T20:29:14.9492569-03:00;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include="appsettings.Development.json">
@@ -24,10 +24,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/05/2021 14:28:34</publishTime>
     </File>
     <File Include="FiltrDinamico.Core.dll">
-      <publishTime>11/15/2021 09:32:43</publishTime>
+      <publishTime>11/15/2021 18:21:41</publishTime>
     </File>
     <File Include="FiltrDinamico.Core.pdb">
-      <publishTime>11/15/2021 09:32:43</publishTime>
+      <publishTime>11/15/2021 18:21:41</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Authentication.JwtBearer.dll">
       <publishTime>03/16/2021 18:08:02</publishTime>
@@ -144,43 +144,43 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/24/2019 19:49:50</publishTime>
     </File>
     <File Include="web.config">
-      <publishTime>11/15/2021 14:39:28</publishTime>
+      <publishTime>11/15/2021 18:21:48</publishTime>
     </File>
     <File Include="XdPagamentosApi.Domain.dll">
-      <publishTime>11/15/2021 14:11:26</publishTime>
+      <publishTime>11/15/2021 18:21:42</publishTime>
     </File>
     <File Include="XdPagamentosApi.Domain.pdb">
-      <publishTime>11/15/2021 14:11:26</publishTime>
+      <publishTime>11/15/2021 18:21:42</publishTime>
     </File>
     <File Include="XdPagamentosApi.IOC.dll">
-      <publishTime>11/15/2021 14:11:27</publishTime>
+      <publishTime>11/15/2021 18:21:43</publishTime>
     </File>
     <File Include="XdPagamentosApi.IOC.pdb">
-      <publishTime>11/15/2021 14:11:27</publishTime>
+      <publishTime>11/15/2021 18:21:43</publishTime>
     </File>
     <File Include="XdPagamentosApi.Repository.dll">
-      <publishTime>11/15/2021 14:11:26</publishTime>
+      <publishTime>11/15/2021 18:21:42</publishTime>
     </File>
     <File Include="XdPagamentosApi.Repository.pdb">
-      <publishTime>11/15/2021 14:11:26</publishTime>
+      <publishTime>11/15/2021 18:21:42</publishTime>
     </File>
     <File Include="XdPagamentosApi.Services.dll">
-      <publishTime>11/15/2021 14:11:26</publishTime>
+      <publishTime>11/15/2021 18:21:43</publishTime>
     </File>
     <File Include="XdPagamentosApi.Services.pdb">
-      <publishTime>11/15/2021 14:11:26</publishTime>
+      <publishTime>11/15/2021 18:21:43</publishTime>
     </File>
     <File Include="XdPagamentosApi.WebApi.deps.json">
-      <publishTime>11/15/2021 14:39:28</publishTime>
+      <publishTime>11/15/2021 18:21:48</publishTime>
     </File>
     <File Include="XdPagamentosApi.WebApi.dll">
-      <publishTime>11/15/2021 14:39:27</publishTime>
+      <publishTime>11/15/2021 18:21:47</publishTime>
     </File>
     <File Include="XdPagamentosApi.WebApi.exe">
-      <publishTime>11/15/2021 14:39:27</publishTime>
+      <publishTime>11/15/2021 18:21:47</publishTime>
     </File>
     <File Include="XdPagamentosApi.WebApi.pdb">
-      <publishTime>11/15/2021 14:39:27</publishTime>
+      <publishTime>11/15/2021 18:21:47</publishTime>
     </File>
     <File Include="XdPagamentosApi.WebApi.runtimeconfig.json">
       <publishTime>11/15/2021 09:32:48</publishTime>
