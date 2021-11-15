@@ -36,6 +36,10 @@ namespace XdPagamentosApi.Repository.Persistence.Context
         public DbSet<LogNotificacoes> LogNotificacoes { get; set; }
         public DbSet<VwTransacoesSemOrdemPagto> VwTransacoesSemOrdemPagtos { get; set; }
 
+        public DbSet<Pagamentos> Pagamentos { get; set; }
+        public DbSet<OrdemPagto> OrdemPagtos { get; set; }
+        public DbSet<FormaPagto> FormaPagtos { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //Retira o delete on cascade
@@ -66,6 +70,9 @@ namespace XdPagamentosApi.Repository.Persistence.Context
             modelBuilder.ApplyConfiguration(new TipoTransacaoMap());
             modelBuilder.ApplyConfiguration(new LogNotificacoesMap());
             modelBuilder.ApplyConfiguration(new VwTransacoesSemOrdemPagtoMap());
+            modelBuilder.ApplyConfiguration(new PagamentosMap());
+            modelBuilder.ApplyConfiguration(new OrdemPagtoMap());
+            modelBuilder.ApplyConfiguration(new FormaPagtoMap());
         }
     }
 }

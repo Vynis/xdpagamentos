@@ -7,9 +7,6 @@ namespace XdPagamentosApi.WebApi.Dtos
 {
     public class DtoVwTransacoesSemOrdemPagto
     {
-        private string _VlBrutoFormatado = "";
-        private string _DataOperacaoFormatado = "";
-
 
 
         public int Id { get; set; }
@@ -23,17 +20,34 @@ namespace XdPagamentosApi.WebApi.Dtos
         public int? ClidId { get; set; }
         public string Cliente { get; set; }
 
+        public string VlLiquido { get; set; }
+        public string VlTxAdmin { get; set; }
+        public string VlTxAdminPercentual { get; set; }
+
         public string VlBrutoFormatado
         {
             get => $"R$ { Convert.ToDecimal(VlBruto) }";
-            set { _VlBrutoFormatado = value; }
+        }
+
+        public string VlLiquidoFormatado
+        {
+            get => $"R$ { Convert.ToDecimal(VlLiquido) }";
+        }
+
+        public string VlTaxaAdminFormatado
+        {
+            get => $"R$ { Convert.ToDecimal(VlTxAdmin) } ({VlTxAdminPercentual} %) ";
         }
 
         public string DataOperacaoFormatado
         {
             get => DataOperacao?.ToString("dd/MM/yyyy");
-            set => _DataOperacaoFormatado = value;
         }
 
+
+        public string DataGravacaoFormatado
+        {
+            get => DataGravacao?.ToString("dd/MM/yyyy");
+        }
     }
 }

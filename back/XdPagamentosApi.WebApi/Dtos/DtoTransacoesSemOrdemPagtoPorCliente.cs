@@ -23,6 +23,26 @@ namespace XdPagamentosApi.WebApi.Dtos
             }
         }
 
+        public string VlTxAdminTotal
+        {
+            get
+            {
+                decimal soma = 0;
+                ListaTransacoes.ForEach(x => soma += Convert.ToDecimal(x.VlTxAdmin));
+                return $"R$ {soma}";
+            }
+        }
+
+        public string VlLiquidoTotal
+        {
+            get
+            {
+                decimal soma = 0;
+                ListaTransacoes.ForEach(x => soma += Convert.ToDecimal(x.VlLiquido));
+                return $"R$ {soma}";
+            }
+        }
+
         public int QtdOperacoes
         {
             get => ListaTransacoes.Count(); 

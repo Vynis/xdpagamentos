@@ -98,6 +98,7 @@
                                         <td>QTD. PARCELAS</td>
                                         <td>COD. AUTO</td>
                                         <td>VL BRUTO</td>
+                                        <td>VL TX ADM</td>
                                         <td>VL LIQUIDO</td>
                                         <td>DT GRAVACAO</td>
                                         <td>ESTABELECIMENTO</td>
@@ -106,14 +107,14 @@
                                 <tbody>
                                     <tr *ngFor="let transacoes of operacao.listaTransacoes">
                                         <td>{{transacoes.id}}</td>
-                                        <td>{{ tranformarData(transacoes.dataOperacao) }}</td>
+                                        <td>{{ transacoes.dataOperacaoFormatado }}</td>
                                         <td>{{transacoes.numTerminal}}</td>
                                         <td>{{transacoes.qtdParcelas}}</td>
                                         <td>{{transacoes.codTransacao}}</td>
-                                        <td>{{ transformarMoeda(transacoes.vlBruto)}}</td>
-                                        <td>{{transacoes.vlBruto}}</td>
-                                        <td>R$ 93,10</td>
-                                        <td>{{tranformarData(transacoes.dataGravacao)}}</td>
+                                        <td>{{transacoes.vlBrutoFormatado}}</td>
+                                        <td>{{transacoes.vlTaxaAdminFormatado}}</td>
+                                        <td>{{transacoes.vlLiquidoFormatado}}</td>
+                                        <td>{{transacoes.dataGravacaoFormatado}}</td>
                                         <td>{{tranformaNomeEstabelecimento(transacoes.estabelecimento)}}</td>
                                     </tr>
                                 </tbody>
@@ -122,7 +123,7 @@
                     </div>
                 </nb-card-body>
                 <nb-card-footer style="font-weight: bold;">
-                    QTD OPERAÇÕES: {{ operacao.listaTransacoes.length }} | VL BRUTO TOTAL: {{somatorioVlBrutoTotal(operacao.listaTransacoes)}} | VL TX ADM TOTAL: R$ 124,19 | VALOR LIQUIDO TOTAL: R$ 5.860,27
+                    QTD OPERAÇÕES: {{ operacao.listaTransacoes.length }} | VL BRUTO TOTAL: {{operacao.vlBrutoTotal}} | VL TX ADM TOTAL: {{operacao.vlTxAdminTotal}} | VALOR LIQUIDO TOTAL: {{operacao.vlLiquidoTotal}}
                 </nb-card-footer>
             </nb-card>
            

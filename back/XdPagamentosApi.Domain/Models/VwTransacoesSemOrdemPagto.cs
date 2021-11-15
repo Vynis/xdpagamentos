@@ -16,6 +16,10 @@ namespace XdPagamentosApi.Domain.Models
         public DateTime? DataGravacao { get; set; }
         public string Estabelecimento { get; set; }
         public int? ClidId { get; set; }
-        public  string Cliente { get; set; }
+        public string Cliente { get; set; }
+
+        public string VlLiquido { get; set; }
+        public string VlTxAdmin { get; set; }
+        public string VlTxAdminPercentual { get; set; }
     }
 }

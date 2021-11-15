@@ -9,4 +9,11 @@ export class VwTransacoesSemOrdemPagtoModel {
     estabelecimento: string;
     clidId: number;
     cliente: string;
+    vlLiquido: string;
+    vlTxAdmin: string;
+    vlTxAdminPercentual: string;
+    vlBrutoFormatado: string;
+    vlLiquidoFormatado: string;
+    vlTaxaAdminFormatado: string;
+    dataOperacaoFormatado: string;
 }

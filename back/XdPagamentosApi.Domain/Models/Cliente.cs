@@ -35,6 +35,8 @@ namespace XdPagamentosApi.Domain.Models
 
         public List<RelClienteTerminal> ListaRelClienteTerminal { get; set; }
         public List<TipoTransacao> ListaTipoTransacao { get; set; }
+        public List<OrdemPagto> ListaOrdempagto { get; set; }
+        public List<Pagamentos> ListaPagamentos { get; set; }
 
     }
 }

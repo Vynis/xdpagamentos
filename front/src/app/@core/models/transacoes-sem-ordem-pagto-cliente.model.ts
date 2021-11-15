@@ -6,4 +6,8 @@ export class TransacoesSemOrdemPagtoPorClienteModel {
     numEstabelecimento: string;
     nomeEstabelcimento: string;
     listaTransacoes: VwTransacoesSemOrdemPagtoModel[] =[];
+    vlBrutoTotal: string;
+    vlTxAdminTotal: string;
+    vlLiquidoTotal: string;
+    qtdOperacoes: number;
 }
