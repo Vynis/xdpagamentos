@@ -34,6 +34,7 @@ namespace XdPagamentosApi.Repository.Persistence.Context
         public DbSet<RelUsuarioEstabelecimento> RelUsuarioEstabelecimentos { get; set; }
         public DbSet<TipoTransacao> TipoTransacoes { get; set; }
         public DbSet<LogNotificacoes> LogNotificacoes { get; set; }
+        public DbSet<VwTransacoesSemOrdemPagto> VwTransacoesSemOrdemPagtos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -64,6 +65,7 @@ namespace XdPagamentosApi.Repository.Persistence.Context
             modelBuilder.ApplyConfiguration(new RelUsuarioEstabelecimentoMap());
             modelBuilder.ApplyConfiguration(new TipoTransacaoMap());
             modelBuilder.ApplyConfiguration(new LogNotificacoesMap());
+            modelBuilder.ApplyConfiguration(new VwTransacoesSemOrdemPagtoMap());
         }
     }
 }

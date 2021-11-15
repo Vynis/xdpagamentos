@@ -82,7 +82,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
       },
       {
         title: 'Criação de Ordem de Pagamento',
-        link: '/pages/ui-features/icons',
+        link: '/pages/geracao-pagto',
       },
       {
         title: 'Restauração de Ordem de Pagamento',

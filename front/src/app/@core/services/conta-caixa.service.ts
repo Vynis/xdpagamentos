@@ -32,4 +32,8 @@ export class ContaCaixaService {
   alterar(model : ContaCaixaModel) {
     return this.http.put<ModeloBase>(`${this.caminhoApi}/alterar`, model);
   }
+
+  buscarContaCaixaEstabelecimento() {
+    return this.http.get<ModeloBase>(`${this.caminhoApi}/buscar-conta-caixa-estabelecimento`);
+  }
 }

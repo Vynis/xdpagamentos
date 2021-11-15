@@ -45,6 +45,7 @@
     "@asymmetrik/ngx-leaflet": "3.0.1",
     "@nebular/auth": "8.0.0",
     "@nebular/eva-icons": "8.0.0",
+    "@nebular/moment": "^8.0.0",
     "@nebular/security": "8.0.0",
     "@nebular/theme": "8.0.0",
     "@swimlane/ngx-charts": "^14.0.0",

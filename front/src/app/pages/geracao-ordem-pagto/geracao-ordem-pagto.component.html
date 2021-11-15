@@ -1,0 +1,134 @@
+<form >
+    <nb-card >
+        <nb-card-header>
+            Filtro
+        </nb-card-header>
+        <nb-card-body>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="estabelecimento" class="label">Estabelecimento das transações</label><br>
+                        <nb-select placeholder=""  status="primary" formControlName="estabelecimento" >
+                            <nb-option [value]="null">Todos</nb-option>
+                            <nb-option *ngFor="let est of listaEstabelecimento" [value]="est.id">{{est.numEstabelecimento}} - {{est.nome}}</nb-option>
+                          </nb-select>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="status" class="label">Status</label><br>
+                        <nb-select placeholder=""  status="primary" formControlName="status" >
+                            <nb-option [value]="null">Todos</nb-option>
+                            <nb-option value="NP">NP - Não Pago</nb-option>
+                          </nb-select>            
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="status" class="label">Período inicial da gravação</label><br>
+                        <input nbInput placeholder="" [nbDatepicker]="dtInicial">
+                        <nb-datepicker #dtInicial format="dd/MM/yyyy"></nb-datepicker>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="status" class="label">Período final da gravação</label><br>
+                        <input nbInput placeholder="" [nbDatepicker]="dtFinal">
+                        <nb-datepicker #dtFinal format="dd/MM/yyyy"></nb-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <nb-checkbox>Relatório por todo o período (geral)</nb-checkbox>
+                </div>
+            </div>
+
+        </nb-card-body>
+        <nb-card-footer>
+            <button type="submit"   nbButton status="primary">Filtrar</button>
+        </nb-card-footer>
+    </nb-card>
+
+    <nb-card >
+        <nb-card-header>
+            Geração
+        </nb-card-header>
+        <nb-card-body>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="conta" class="label">Conta onde ocrreu o crédito</label><br>
+                        <nb-select placeholder=""  status="primary" formControlName="conta" >
+                            <nb-option [value]="null">Todos</nb-option>
+                            <nb-option *ngFor="let conta of listaRelContaCaixaEstabeleicmento" [value]="conta.id">{{conta.contaCaixa.descricao}} | {{conta.estabelecimento.nome}} </nb-option>
+                          </nb-select>            
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="status" class="label">Data de lançamento dos créditos</label><br>
+                        <input nbInput placeholder="" [nbDatepicker]="formpicker1">
+                        <nb-datepicker #formpicker1 format="dd/MM/yyyy"></nb-datepicker>
+                    </div>
+                </div>
+            </div>
+        </nb-card-body>
+        <nb-card-footer>
+            <button type="submit"   nbButton status="success">Lançar crédito para pagamento do cliente</button>
+        </nb-card-footer>
+    </nb-card>
+
+    <nb-card >
+        <nb-card-header>
+            Seleção dos clientes
+        </nb-card-header>
+        <nb-card-body>
+            <nb-card *ngFor="let operacao of listaTransacoesSemOrdemPagto" accent="info">
+                <nb-card-header><nb-checkbox >CLIENTE: {{operacao.idCliente}} - {{operacao.nomeCliente}} ({{operacao.numEstabelecimento}} - {{operacao.nomeEstabelcimento}})</nb-checkbox></nb-card-header>
+                <nb-card-body>
+                    <div class="row">
+                        <div class="col-md-12" >
+                            <table  class="table table-striped">
+                                <thead>
+                                    <tr style="font-weight: bold;">
+                                        <td>ID</td>
+                                        <td>DT VENDA</td>
+                                        <td>NUM TERMINAL</td>
+                                        <td>QTD. PARCELAS</td>
+                                        <td>COD. AUTO</td>
+                                        <td>VL BRUTO</td>
+                                        <td>VL LIQUIDO</td>
+                                        <td>DT GRAVACAO</td>
+                                        <td>ESTABELECIMENTO</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let transacoes of operacao.listaTransacoes">
+                                        <td>{{transacoes.id}}</td>
+                                        <td>{{ tranformarData(transacoes.dataOperacao) }}</td>
+                                        <td>{{transacoes.numTerminal}}</td>
+                                        <td>{{transacoes.qtdParcelas}}</td>
+                                        <td>{{transacoes.codTransacao}}</td>
+                                        <td>{{ transformarMoeda(transacoes.vlBruto)}}</td>
+                                        <td>{{transacoes.vlBruto}}</td>
+                                        <td>R$ 93,10</td>
+                                        <td>{{tranformarData(transacoes.dataGravacao)}}</td>
+                                        <td>{{tranformaNomeEstabelecimento(transacoes.estabelecimento)}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </nb-card-body>
+                <nb-card-footer style="font-weight: bold;">
+                    QTD OPERAÇÕES: {{ operacao.listaTransacoes.length }} | VL BRUTO TOTAL: {{somatorioVlBrutoTotal(operacao.listaTransacoes)}} | VL TX ADM TOTAL: R$ 124,19 | VALOR LIQUIDO TOTAL: R$ 5.860,27
+                </nb-card-footer>
+            </nb-card>
+           
+            <!-- {{listaTransacoesSemOrdemPagto | json}} -->
+        </nb-card-body>
+
+    </nb-card>
+</form>
+

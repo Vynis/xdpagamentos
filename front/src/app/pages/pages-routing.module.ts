@@ -39,6 +39,10 @@ const routes: Routes = [{
       loadChildren: () => import('./estabelecimento/estabelecimento.module').then(m => m.EstabelecimentoModule)
     },
     {
+      path: 'geracao-pagto',
+      loadChildren: () => import('./geracao-ordem-pagto/geracao-ordem-pagto.module').then(m => m.GeracaoOrdemPagtoModule)
+    },
+    {
       path: '',
       redirectTo: 'dashboard',
       pathMatch: 'full',

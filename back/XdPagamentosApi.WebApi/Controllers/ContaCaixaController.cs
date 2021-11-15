@@ -18,11 +18,13 @@ namespace XdPagamentosApi.WebApi.Controllers
     {
         private readonly IContaCaixaService _contaCaixaService;
         private readonly IMapper _mapper;
+        private readonly IRelContaEstabelecimentoService _relContaEstabelecimentoService;
 
-        public ContaCaixaController(IContaCaixaService contaCaixaService, IMapper mapper)
+        public ContaCaixaController(IContaCaixaService contaCaixaService, IMapper mapper, IRelContaEstabelecimentoService relContaEstabelecimentoService)
         {
             _contaCaixaService = contaCaixaService;
             _mapper = mapper;
+            _relContaEstabelecimentoService = relContaEstabelecimentoService;
         }
 
         [HttpGet("buscar-por-ativos")]
@@ -113,6 +115,23 @@ namespace XdPagamentosApi.WebApi.Controllers
             }
             catch (Exception ex)
             {
+                return Response(ex.Message, false);
+            }
+        }
+
+        [HttpGet("buscar-conta-caixa-estabelecimento")]
+        [SwaggerGroup("ContaCaixa")]
+        public async Task<IActionResult> BuscarTodosComEstabelecimento()
+        {
+            try
+            {
+                var response = await _relContaEstabelecimentoService.BuscarExpressao(x => x.Estabelecimento.Status.Equals("A"));
+
+                return Response(response.ToList().OrderBy(c => c.Id));
+            }
+            catch (Exception ex)
+            {
+
                 return Response(ex.Message, false);
             }
         }

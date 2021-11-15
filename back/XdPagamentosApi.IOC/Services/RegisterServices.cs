@@ -22,6 +22,8 @@ namespace XdPagamentosApi.IOC.Services
             service.AddScoped<ISessaoService, SessaoService>();
             service.AddScoped<ITipoTransacaoService, TipoTransacaoService>();
             service.AddScoped<ILogNotificacoesService, LogNotificacoesService>();
+            service.AddScoped<IVwTransacoesSemOrdemPagtoService, VwTransacoesSemOrdemPagtoService>();
+            service.AddScoped<IRelContaEstabelecimentoService, RelContaEstabelecimentoService>();
         }
     }
 }
