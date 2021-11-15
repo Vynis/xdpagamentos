@@ -16,4 +16,5 @@ export class VwTransacoesSemOrdemPagtoModel {
     vlLiquidoFormatado: string;
     vlTaxaAdminFormatado: string;
     dataOperacaoFormatado: string;
+    dataGravacaoFormatado: string;
 }

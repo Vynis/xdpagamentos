@@ -10,7 +10,7 @@ namespace XdPagamentosApi.WebApi.Dtos
 
 
         public int Id { get; set; }
-        public DateTime? DataOperacao { get; set; }
+        public DateTime DataOperacao { get; set; }
         public string NumTerminal { get; set; }
         public string QtdParcelas { get; set; }
         public string CodTransacao { get; set; }
@@ -23,6 +23,8 @@ namespace XdPagamentosApi.WebApi.Dtos
         public string VlLiquido { get; set; }
         public string VlTxAdmin { get; set; }
         public string VlTxAdminPercentual { get; set; }
+
+        public int EstId { get; set; }
 
         public string VlBrutoFormatado
         {
@@ -41,7 +43,7 @@ namespace XdPagamentosApi.WebApi.Dtos
 
         public string DataOperacaoFormatado
         {
-            get => DataOperacao?.ToString("dd/MM/yyyy");
+            get => DataOperacao.ToString("dd/MM/yyyy");
         }
 
 

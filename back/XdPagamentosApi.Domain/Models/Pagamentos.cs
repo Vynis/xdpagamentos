@@ -13,5 +13,7 @@ namespace XdPagamentosApi.Domain.Models
         public Cliente Cliente { get; set; }
         public int OrpId { get; set; }
         public OrdemPagto OrdemPagto { get; set; }
+
+        public List<Transacao> ListaTransacoes { get; set; }
     }
 }

@@ -7,6 +7,7 @@ import { NbButtonModule, NbCardModule, NbCheckboxModule, NbDatepickerModule, NbI
 import { OrdemPagtoService } from '../../@core/services/ordem-pagto.service';
 import { EstabelecimentoService } from '../../@core/services/estabelecimento.service';
 import { ContaCaixaService } from '../../@core/services/conta-caixa.service';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { ContaCaixaService } from '../../@core/services/conta-caixa.service';
     NbButtonModule,
     NbSelectModule,
     NbCheckboxModule,
-    NbDatepickerModule
+    NbDatepickerModule,
+    ReactiveFormsModule
   ],
   providers: [
     {

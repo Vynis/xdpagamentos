@@ -38,5 +38,7 @@ namespace XdPagamentosApi.Domain.Models
         public List<OrdemPagto> ListaOrdempagto { get; set; }
         public List<Pagamentos> ListaPagamentos { get; set; }
 
+        public List<Transacao> ListaTransacoes { get; set; }
+
     }
 }

@@ -19,7 +19,10 @@ namespace FiltrDinamico.Core.Interpreters
                     return new LessThanInterpreter<TType>(filtroItem);
                 case FilterTypeConstants.StartsWith:
                     return new StartsWithInterpreter<TType>(filtroItem);
-
+                case FilterTypeConstants.GreaterThanEquals:
+                    return new GreaterThanEqualsInterpreter<TType>(filtroItem);
+                case FilterTypeConstants.LessThanEquals:
+                    return new LessThanEqualsInterpreter<TType>(filtroItem);
                 default:
                     throw new ArgumentException($"the filter type {filtroItem.FilterType} is invalid");
             }

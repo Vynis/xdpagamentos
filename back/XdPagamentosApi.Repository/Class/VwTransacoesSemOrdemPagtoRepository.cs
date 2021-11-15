@@ -23,6 +23,70 @@ namespace XdPagamentosApi.Repository.Class
             _filtroDinamico = filtroDinamico;
         }
 
+        public async Task<bool> Gerar(ParamOrdemPagto parametros)
+        {
+
+            try
+            {
+                if (parametros.ClientesSelecionados.Count() == 0)
+                    return false;
+
+
+                foreach (var item in parametros.ClientesSelecionados)
+                {
+                    //Cadastrar ordem de Pagamento e Pagamento
+                    var pagamento = new Pagamentos
+                    {
+                        CliId = item.IdCliente,
+                        Data = parametros.DataLancamentoCredito,
+                    };
+
+                    var listaPagamento = new List<Pagamentos>();
+                    listaPagamento.Add(pagamento);
+
+                    decimal valorLiquidoTotal = 0;
+
+                    parametros.ClientesSelecionados.Where(x => x.IdCliente == item.IdCliente).ToList().ForEach(x => x.ListaTransacoes.ForEach(c => valorLiquidoTotal += Convert.ToDecimal(c.VlLiquido)));
+
+                    var idEstabelecimento = (await _mySqlContext.Estabelecimentos.Where(c => c.NumEstabelecimento == item.NumEstabelecimento).AsNoTracking().FirstOrDefaultAsync()).Id;
+
+                    var ordemPagto = new OrdemPagto
+                    {
+                        FopId = 0,
+                        Valor = valorLiquidoTotal.ToString(),
+                        Status = "NP",
+                        DtEmissao = DateTime.Now,
+                        EstId = idEstabelecimento,
+                        ListaPagamentos = listaPagamento
+                    };
+
+                    _mySqlContext.OrdemPagtos.Add(ordemPagto);
+                    await _mySqlContext.SaveChangesAsync();
+
+                    //Atualiza a tabela ta de transacoes com id do pagamento
+                    var idPagamento = ordemPagto.ListaPagamentos.FirstOrDefault().Id;
+
+                    foreach (var transacao in item.ListaTransacoes)
+                    {
+                        var transacaoBD = await _mySqlContext.Transacoes.Where(c => c.Id.Equals(transacao.Id)).AsNoTracking().FirstOrDefaultAsync();
+
+                        transacaoBD.PagId = idPagamento;
+
+                        _mySqlContext.Transacoes.Update(transacaoBD);
+                        await _mySqlContext.SaveChangesAsync();
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+
+
+        }
 
         public async Task<List<TransacoesSemOrdemPagtoPorCliente>> ListaTransacoesSemOrdemPagto(PaginationFilter paginationFilter)
         {

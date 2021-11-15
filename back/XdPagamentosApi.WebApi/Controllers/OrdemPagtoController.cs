@@ -41,5 +41,22 @@ namespace XdPagamentosApi.WebApi.Controllers
                 return Response(ex.Message, false);
             }
         }
+
+        [HttpPost("gerar-ordem-pagto")]
+        [SwaggerGroup("OrdemPagto")]
+        public async Task<IActionResult> GerarOrdemPagto(DtoParamOrdemPagto parametro)
+        {
+            try
+            {
+                var response = await _vwTransacoesSemOrdemPagtoService.Gerar(_mapper.Map<ParamOrdemPagto>(parametro));
+
+                return Response("Ordem pagamento gerado!");
+            }
+            catch (Exception ex)
+            {
+
+                return Response(ex.Message, false);
+            }
+        }
     }
 }

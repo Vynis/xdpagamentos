@@ -9,5 +9,7 @@ namespace XdPagamentosApi.Repository.Interfaces
     public interface IVwTransacoesSemOrdemPagtoRepository : IBase<VwTransacoesSemOrdemPagto>
     {
         Task<List<TransacoesSemOrdemPagtoPorCliente>> ListaTransacoesSemOrdemPagto(PaginationFilter paginationFilter);
+
+        Task<bool> Gerar(ParamOrdemPagto parametros);
     }
 }

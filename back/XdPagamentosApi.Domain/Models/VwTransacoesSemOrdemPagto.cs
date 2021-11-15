@@ -8,7 +8,7 @@ namespace XdPagamentosApi.Domain.Models
     public class VwTransacoesSemOrdemPagto
     {
         public int Id { get; set; }
-        public DateTime? DataOperacao { get; set; }
+        public DateTime DataOperacao { get; set; }
         public string NumTerminal { get; set; }
         public string QtdParcelas { get; set; }
         public string CodTransacao { get; set; }
@@ -21,5 +21,7 @@ namespace XdPagamentosApi.Domain.Models
         public string VlLiquido { get; set; }
         public string VlTxAdmin { get; set; }
         public string VlTxAdminPercentual { get; set; }
+
+        public int EstId { get; set; }
     }
 }

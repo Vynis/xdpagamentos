@@ -17,6 +17,11 @@ namespace XdPagamentosApi.Services.Class
             _vwTransacoesSemOrdemPagtoRepository = vwTransacoesSemOrdemPagtoRepository;
         }
 
+        public async Task<bool> Gerar(ParamOrdemPagto parametros)
+        {
+            return await _vwTransacoesSemOrdemPagtoRepository.Gerar(parametros);
+        }
+
         public async Task<List<TransacoesSemOrdemPagtoPorCliente>> ListaTransacoesSemOrdemPagto(PaginationFilter paginationFilter)
         {
             return await _vwTransacoesSemOrdemPagtoRepository.ListaTransacoesSemOrdemPagto(paginationFilter);

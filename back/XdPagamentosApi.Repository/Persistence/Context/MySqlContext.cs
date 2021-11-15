@@ -35,7 +35,7 @@ namespace XdPagamentosApi.Repository.Persistence.Context
         public DbSet<TipoTransacao> TipoTransacoes { get; set; }
         public DbSet<LogNotificacoes> LogNotificacoes { get; set; }
         public DbSet<VwTransacoesSemOrdemPagto> VwTransacoesSemOrdemPagtos { get; set; }
-
+        public DbSet<Transacao> Transacoes { get; set; }
         public DbSet<Pagamentos> Pagamentos { get; set; }
         public DbSet<OrdemPagto> OrdemPagtos { get; set; }
         public DbSet<FormaPagto> FormaPagtos { get; set; }
@@ -73,6 +73,7 @@ namespace XdPagamentosApi.Repository.Persistence.Context
             modelBuilder.ApplyConfiguration(new PagamentosMap());
             modelBuilder.ApplyConfiguration(new OrdemPagtoMap());
             modelBuilder.ApplyConfiguration(new FormaPagtoMap());
+            modelBuilder.ApplyConfiguration(new TransacaoMap());
         }
     }
 }

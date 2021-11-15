@@ -28,6 +28,7 @@ namespace XdPagamentosApi.Repository.Persistence.Mapping
             builder.Property(c => c.VlLiquido).HasColumnName("tra_vl_liquido");
             builder.Property(c => c.VlTxAdmin).HasColumnName("tra_tx_adm");
             builder.Property(c => c.VlTxAdminPercentual).HasColumnName("tra_tx_adm_percentual");
+            builder.Property(c => c.EstId).HasColumnName("est_id");
 
         }
     }

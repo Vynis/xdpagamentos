@@ -1,75 +1,78 @@
-<form >
     <nb-card >
         <nb-card-header>
             Filtro
         </nb-card-header>
         <nb-card-body>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="estabelecimento" class="label">Estabelecimento das transações</label><br>
-                        <nb-select placeholder=""  status="primary" formControlName="estabelecimento" >
-                            <nb-option [value]="null">Todos</nb-option>
-                            <nb-option *ngFor="let est of listaEstabelecimento" [value]="est.id">{{est.numEstabelecimento}} - {{est.nome}}</nb-option>
-                          </nb-select>
+            <div  [formGroup]="formularioFiltro">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="estabelecimento" class="label">Estabelecimento das transações</label><br>
+                            <nb-select placeholder=""  status="primary" formControlName="estabelecimento" >
+                                <nb-option [value]="null">Todos</nb-option>
+                                <nb-option *ngFor="let est of listaEstabelecimento" [value]="est.id">{{est.numEstabelecimento}} - {{est.nome}}</nb-option>
+                              </nb-select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="status" class="label">Status</label><br>
+                            <nb-select placeholder=""  status="primary" formControlName="status" >
+                                <nb-option [value]="null">Todos</nb-option>
+                                <nb-option value="NP">NP - Não Pago</nb-option>
+                              </nb-select>            
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="status" class="label">Período inicial da gravação</label><br>
+                            <input nbInput placeholder="" formControlName="dtInicial" [nbDatepicker]="dtInicial">
+                            <nb-datepicker #dtInicial [min]="min" [max]="max" format="dd/MM/yyyy"></nb-datepicker>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="status" class="label">Período final da gravação</label><br>
+                            <input nbInput placeholder="" formControlName="dtFinal" [nbDatepicker]="dtFinal">
+                            <nb-datepicker #dtFinal [min]="min" [max]="max" format="dd/MM/yyyy"></nb-datepicker>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label for="status" class="label">Status</label><br>
-                        <nb-select placeholder=""  status="primary" formControlName="status" >
-                            <nb-option [value]="null">Todos</nb-option>
-                            <nb-option value="NP">NP - Não Pago</nb-option>
-                          </nb-select>            
+                <div class="row">
+                    <div class="col-md-12">
+                        <nb-checkbox formControlName="periodoGeral">Relatório por todo o período (geral)</nb-checkbox>
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="status" class="label">Período inicial da gravação</label><br>
-                        <input nbInput placeholder="" [nbDatepicker]="dtInicial">
-                        <nb-datepicker #dtInicial format="dd/MM/yyyy"></nb-datepicker>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="status" class="label">Período final da gravação</label><br>
-                        <input nbInput placeholder="" [nbDatepicker]="dtFinal">
-                        <nb-datepicker #dtFinal format="dd/MM/yyyy"></nb-datepicker>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <nb-checkbox>Relatório por todo o período (geral)</nb-checkbox>
                 </div>
             </div>
 
         </nb-card-body>
         <nb-card-footer>
-            <button type="submit"   nbButton status="primary">Filtrar</button>
+            <button (click)="pesquisar()" type="submit" nbButton status="primary">Filtrar</button>
         </nb-card-footer>
     </nb-card>
 
-    <nb-card >
+    <!-- <nb-card *ngIf="realizouFiltro" >
         <nb-card-header>
             Geração
         </nb-card-header>
         <nb-card-body>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="conta" class="label">Conta onde ocrreu o crédito</label><br>
-                        <nb-select placeholder=""  status="primary" formControlName="conta" >
-                            <nb-option [value]="null">Todos</nb-option>
-                            <nb-option *ngFor="let conta of listaRelContaCaixaEstabeleicmento" [value]="conta.id">{{conta.contaCaixa.descricao}} | {{conta.estabelecimento.nome}} </nb-option>
-                          </nb-select>            
+            <div  [formGroup]="formularioGeracao">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="conta" class="label">Conta onde ocrreu o crédito</label><br>
+                            <nb-select placeholder=""  status="primary" formControlName="conta" >
+                                <nb-option [value]="null">Todos</nb-option>
+                                <nb-option *ngFor="let conta of listaRelContaCaixaEstabeleicmento" [value]="conta.id">{{conta.contaCaixa.descricao}} | {{conta.estabelecimento.nome}} </nb-option>
+                              </nb-select>            
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="status" class="label">Data de lançamento dos créditos</label><br>
-                        <input nbInput placeholder="" [nbDatepicker]="formpicker1">
-                        <nb-datepicker #formpicker1 format="dd/MM/yyyy"></nb-datepicker>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="status" class="label">Data de lançamento dos créditos</label><br>
+                            <input nbInput placeholder="" [nbDatepicker]="formpicker1">
+                            <nb-datepicker #formpicker1 format="dd/MM/yyyy"></nb-datepicker>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -77,15 +80,15 @@
         <nb-card-footer>
             <button type="submit"   nbButton status="success">Lançar crédito para pagamento do cliente</button>
         </nb-card-footer>
-    </nb-card>
+    </nb-card> -->
 
-    <nb-card >
+    <nb-card *ngIf="realizouFiltro" >
         <nb-card-header>
             Seleção dos clientes
         </nb-card-header>
         <nb-card-body>
             <nb-card *ngFor="let operacao of listaTransacoesSemOrdemPagto" accent="info">
-                <nb-card-header><nb-checkbox >CLIENTE: {{operacao.idCliente}} - {{operacao.nomeCliente}} ({{operacao.numEstabelecimento}} - {{operacao.nomeEstabelcimento}})</nb-checkbox></nb-card-header>
+                <nb-card-header><nb-checkbox (checkedChange)="selecionaCliente($event, operacao)" >CLIENTE: {{operacao.idCliente}} - {{operacao.nomeCliente}} ({{operacao.numEstabelecimento}} - {{operacao.nomeEstabelcimento}})</nb-checkbox></nb-card-header>
                 <nb-card-body>
                     <div class="row">
                         <div class="col-md-12" >
@@ -131,5 +134,5 @@
         </nb-card-body>
 
     </nb-card>
-</form>
+
 
