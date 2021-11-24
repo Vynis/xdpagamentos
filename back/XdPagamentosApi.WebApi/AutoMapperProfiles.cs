@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using XdPagamentosApi.Domain.Models;
+using XdPagamentosApi.Domain.Models.NotificacaoTransacao;
+using XdPagamentosApi.PagSeguro.TransferObjects.NotificacaoTransacao;
 using XdPagamentosApi.WebApi.Dtos;
 
 namespace XdPagamentosApi.WebApi
@@ -27,6 +29,13 @@ namespace XdPagamentosApi.WebApi
             CreateMap<TransacoesSemOrdemPagtoPorCliente, DtoTransacoesSemOrdemPagtoPorCliente>().ReverseMap();
             CreateMap<VwTransacoesSemOrdemPagto, DtoVwTransacoesSemOrdemPagto>().ReverseMap();
             CreateMap<ParamOrdemPagto, DtoParamOrdemPagto>().ReverseMap();
+            CreateMap<DtoTransactionPagSeguro, TransactionPagSeguro>().ReverseMap();
+            CreateMap<DtoCreditorFees, CreditorFees>().ReverseMap();
+            CreateMap<DtoDeviceInfo, DeviceInfo>().ReverseMap();
+            CreateMap<DtoItem, Item>().ReverseMap();
+            CreateMap<DtoItems, Items>().ReverseMap();
+            CreateMap<DtoPaymentMethod, PaymentMethod>().ReverseMap();
+            CreateMap<DtoPrimaryReceiver, PrimaryReceiver>().ReverseMap();
 
 
             CreateMap<Cliente, DtoUsuarioLogado>().ForMember(x => x.Cpf, c => c.MapFrom(s => s.CnpjCpf)).ReverseMap();

@@ -19,6 +19,11 @@ namespace XdPagamentosApi.Repository.Persistence.Mapping
             builder.Property(c => c.NotificationCode).HasColumnName("lon_notification_code");
             builder.Property(c => c.NotificationType).HasColumnName("lon_notification_type");
             builder.Property(c => c.Data).HasColumnName("lon_data");
+            builder.Property(c => c.Xml).HasColumnName("lon_xml");
+            builder.Property(c => c.PublicKey).HasColumnName("lon_public_key");
+            builder.Property(c => c.NumTerminal).HasColumnName("lon_num_terminal");
+            builder.Property(c => c.EstId).HasColumnName("lon_est_id");
+            builder.Property(c => c.MotivoErro).HasColumnName("lon_motivo_erro");
         }
     }
 }

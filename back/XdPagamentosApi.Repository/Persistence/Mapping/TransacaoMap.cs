@@ -35,11 +35,18 @@ namespace XdPagamentosApi.Repository.Persistence.Mapping
             builder.Property(c => c.MeioCaptura).HasColumnName("tra_meio_captura");
             builder.Property(c => c.TaxaComissaoOperador).HasColumnName("tra_taxa_comissao_operador");
             builder.Property(c => c.Descricao).HasColumnName("tra_tio_descricao");
-            builder.Property(c => c.HoraOperacao).HasColumnName("tra_hora_operacao");
             builder.Property(c => c.VlLiquido).HasColumnName("tra_vl_liquido");
             builder.Property(c => c.VlTxAdm).HasColumnName("tra_tx_adm");
             builder.Property(c => c.VlTxAdmPercentual).HasColumnName("tra_tx_adm_percentual");
+            builder.Property(c => c.DtCredito).HasColumnName("tra_dt_hr_credito");
+            builder.Property(c => c.EstId).HasColumnName("tra_est_id");
+            builder.Property(c => c.Status).HasColumnName("tra_status");
+
+            builder.HasOne(c => c.Cliente).WithMany(c => c.ListaTransacoes).HasForeignKey(c => c.CliId);
+            builder.HasOne(c => c.Pagamentos).WithMany(c => c.ListaTransacoes).HasForeignKey(c => c.PagId);
+            
 
         }
     }
 }
+

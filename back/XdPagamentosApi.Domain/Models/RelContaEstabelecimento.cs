@@ -11,5 +11,6 @@ namespace XdPagamentosApi.Domain.Models
         public ContaCaixa ContaCaixa { get; set; }
         public int EstId { get; set; }
         public Estabelecimento Estabelecimento { get; set; }
+        public List<GestaoPagamento> ListaGestaoPagamento { get; set; }
     }
 }

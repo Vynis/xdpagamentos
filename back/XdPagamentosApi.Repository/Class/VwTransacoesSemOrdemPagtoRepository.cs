@@ -45,36 +45,41 @@ namespace XdPagamentosApi.Repository.Class
                     listaPagamento.Add(pagamento);
 
                     decimal valorLiquidoTotal = 0;
+                    decimal valorBrutoTotal = 0;
 
                     parametros.ClientesSelecionados.Where(x => x.IdCliente == item.IdCliente).ToList().ForEach(x => x.ListaTransacoes.ForEach(c => valorLiquidoTotal += Convert.ToDecimal(c.VlLiquido)));
+                    parametros.ClientesSelecionados.Where(x => x.IdCliente == item.IdCliente).ToList().ForEach(x => x.ListaTransacoes.ForEach(c => valorBrutoTotal += Convert.ToDecimal(c.VlBruto)));
+
+                    decimal valorTotal = valorBrutoTotal - valorLiquidoTotal;
 
                     var idEstabelecimento = (await _mySqlContext.Estabelecimentos.Where(c => c.NumEstabelecimento == item.NumEstabelecimento).AsNoTracking().FirstOrDefaultAsync()).Id;
+
 
                     var ordemPagto = new OrdemPagto
                     {
                         FopId = 0,
-                        Valor = valorLiquidoTotal.ToString(),
+                        Valor = valorTotal.ToString(),
                         Status = "NP",
-                        DtEmissao = DateTime.Now,
+                        DtEmissao = parametros.DataLancamentoCredito,
                         EstId = idEstabelecimento,
-                        ListaPagamentos = listaPagamento
+                        //ListaPagamentos = listaPagamento
                     };
 
                     _mySqlContext.OrdemPagtos.Add(ordemPagto);
                     await _mySqlContext.SaveChangesAsync();
 
                     //Atualiza a tabela ta de transacoes com id do pagamento
-                    var idPagamento = ordemPagto.ListaPagamentos.FirstOrDefault().Id;
+                    //var idPagamento = ordemPagto.ListaPagamentos.FirstOrDefault().Id;
 
-                    foreach (var transacao in item.ListaTransacoes)
-                    {
-                        var transacaoBD = await _mySqlContext.Transacoes.Where(c => c.Id.Equals(transacao.Id)).AsNoTracking().FirstOrDefaultAsync();
+                    //foreach (var transacao in item.ListaTransacoes)
+                    //{
+                    //    var transacaoBD = await _mySqlContext.Transacoes.Where(c => c.Id.Equals(transacao.Id)).AsNoTracking().FirstOrDefaultAsync();
 
-                        transacaoBD.PagId = idPagamento;
+                    //    transacaoBD.PagId = idPagamento;
 
-                        _mySqlContext.Transacoes.Update(transacaoBD);
-                        await _mySqlContext.SaveChangesAsync();
-                    }
+                    //    _mySqlContext.Transacoes.Update(transacaoBD);
+                    //    await _mySqlContext.SaveChangesAsync();
+                    //}
                 }
 
                 return true;

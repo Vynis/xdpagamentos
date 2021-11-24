@@ -14,11 +14,9 @@ namespace XdPagamentosApi.Domain.Models
         public string Status { get; set; }
         public string Chave { get; set; }
         public DateTime? DtEmissao { get; set; }
-        public DateTime? DtBaixa { get; set; }
+        public DateTime? DtCredito { get; set; }
         public int EstId { get; set; }
         public Estabelecimento Estabelecimento { get; set; }
-
-        public List<OrdemPagto> ListaOrdempagto { get; set; }
-        public List<Pagamentos> ListaPagamentos { get; set; }
+       public List<Pagamentos> ListaPagamentos { get; set; }
     }
 }

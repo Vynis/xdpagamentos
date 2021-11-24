@@ -11,5 +11,11 @@ namespace XdPagamentosApi.Domain.Models
         public string NotificationType { get; set; }
         public DateTime Data { get; set; }
 
+        public string Xml { get; set; }
+        public string PublicKey { get; set; }
+        public string NumTerminal { get; set; }
+        public string EstId { get; set; }
+        public string MotivoErro { get; set; }
+
     }
 }

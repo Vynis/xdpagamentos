@@ -22,7 +22,7 @@ namespace XdPagamentosApi.Repository.Persistence.Mapping
             builder.Property(c => c.Status).HasColumnName("orp_status");
             builder.Property(c => c.Chave).HasColumnName("orp_chave");
             builder.Property(c => c.DtEmissao).HasColumnName("orp_dt_emissao");
-            builder.Property(c => c.DtBaixa).HasColumnName("orp_dt_baixa");
+            builder.Property(c => c.DtCredito).HasColumnName("orp_dt_credito");
             builder.Property(c => c.EstId).HasColumnName("orp_est_id");
 
             builder.HasOne(c => c.Estabelecimento).WithMany(c => c.ListaOrdemPagos).HasForeignKey(c => c.EstId);

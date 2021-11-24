@@ -30,6 +30,8 @@ namespace XdPagamentosApi.Repository.Persistence.Mapping
             builder.Property(c => c.NumConta).HasColumnName("est_num_conta");
             builder.Property(c => c.Status).HasColumnName("est_status");
             builder.Property(c => c.Tipo).HasColumnName("est_tipo");
+            builder.Property(c => c.Token).HasColumnName("est_token");
+            builder.Property(c => c.Email).HasColumnName("est_email");
 
             builder.Property(c => c.CocId).HasColumnName("est_coc_id");
             builder.Property(c => c.OpeId).HasColumnName("est_ope_id");

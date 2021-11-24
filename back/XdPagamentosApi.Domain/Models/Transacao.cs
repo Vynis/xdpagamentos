@@ -28,10 +28,12 @@ namespace XdPagamentosApi.Domain.Models
         public string MeioCaptura { get; set; }
         public string TaxaComissaoOperador { get; set; }
         public string Descricao { get; set; }
-        public string HoraOperacao { get; set; }
         public string VlLiquido { get; set; }
         public string VlTxAdm { get; set; }
         public string VlTxAdmPercentual { get; set; }
+        public DateTime DtCredito { get; set; }
+        public int EstId { get; set; }
+        public string Status { get; set; }
 
     }
 }

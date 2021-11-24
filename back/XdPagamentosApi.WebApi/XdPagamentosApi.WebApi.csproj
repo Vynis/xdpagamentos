@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\XdPagamentosApi.Domain\XdPagamentosApi.Domain.csproj" />
+    <ProjectReference Include="..\XdPagamentosApi.PagSeguro\XdPagamentosApi.PagSeguro.csproj" />
     <ProjectReference Include="..\XdPagamentosApi.Repository\XdPagamentosApi.Repository.csproj" />
     <ProjectReference Include="..\XdPagamentosApi.IOC\XdPagamentosApi.IOC.csproj" />
   </ItemGroup>
