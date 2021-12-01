@@ -13,6 +13,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NbDateService } from '@nebular/theme';
 import { FiltroItemModel } from '../../@core/models/configuracao/filtroitem.model';
 import { FilterTypeConstants } from '../../@core/enums/filter-type.enum';
+import { ParamOrdemPagtoModel } from '../../@core/models/param-ordem-pagto.model';
+import { ToastService } from '../../@core/services/toast.service';
+import { ToastPadrao } from '../../@core/enums/toast.enum';
 
 @Component({
   selector: 'ngx-geracao-ordem-pagto',
@@ -30,6 +33,8 @@ export class GeracaoOrdemPagtoComponent implements OnInit {
   min: Date;
   max: Date;
   realizouFiltro: boolean = false;
+  existeErro:boolean = false;
+  existeErro2:boolean = false;
 
 
   constructor(
@@ -37,7 +42,8 @@ export class GeracaoOrdemPagtoComponent implements OnInit {
     private contaCaixaService: ContaCaixaService, 
     private orderPagtoService: OrdemPagtoService,
     private fb: FormBuilder,
-    protected dateService: NbDateService<Date>
+    protected dateService: NbDateService<Date>,
+    private toastService : ToastService,
     ) { 
       // this.min = this.dateService.addMonth(this.dateService.today(), -1);
       // this.max = this.dateService.addMonth(this.dateService.today(), 1);
@@ -48,21 +54,25 @@ export class GeracaoOrdemPagtoComponent implements OnInit {
     this.buscarContaCaixaRelEstabelecimento();
 
     this.createFormFiltro();
+    this.createFormGeracao();
 
   }
 
   createFormFiltro() {
     this.formularioFiltro = this.fb.group({
       periodoGeral: [false],
-      estabelecimento: [null, Validators.required],
-      dtInicial: [new Date(), Validators.required ],
-      dtFinal: [new Date(), Validators.required],
-      status: ['NP', Validators.required]
+      estabelecimento: [0, Validators.required],
+      dtInicial: [new Date()],
+      dtFinal: [new Date()],
+      status: ['NP']
     })
   }
 
   createFormGeracao() {
-
+    this.formularioGeracao = this.fb.group({
+      conta: [null, Validators.required],
+      dtLancamento: [new Date(), Validators.required]
+    })
   }
 
   buscarEstabelecimentos() {
@@ -118,12 +128,16 @@ export class GeracaoOrdemPagtoComponent implements OnInit {
   }
 
   pesquisar() {
+
+    // if (this.validacaoFiltro() === false)
+    //   return;
+
     const controls = this.formularioFiltro.controls;
     var filtro = new PaginationFilterModel();
     let listaItem: FiltroItemModel[] = [];
     
 
-    if (controls.estabelecimento.value !== null) {
+    if (controls.estabelecimento.value !== 0) {
       var item  = new FiltroItemModel();
       item.property = 'EstId';
       item.filterType = FilterTypeConstants.EQUALS;
@@ -167,6 +181,68 @@ export class GeracaoOrdemPagtoComponent implements OnInit {
 
   ehData(valor) {
     return (valor instanceof Date)
+  }
+
+  validacaoFiltro() : boolean {
+    const controls = this.formularioFiltro.controls;
+    this.existeErro = false;
+
+    if (this.formularioFiltro.invalid){
+      Object.keys(controls).forEach(controlName => 
+        controls[controlName].markAllAsTouched()
+      );
+
+      this.existeErro = true;
+      return false;
+    }
+
+    return true;
+  }
+
+  validacaoFormGeracao() : boolean {
+    const controls = this.formularioGeracao.controls;
+    this.existeErro2 = false;
+
+    if (this.formularioGeracao.invalid){
+      Object.keys(controls).forEach(controlName => 
+        controls[controlName].markAllAsTouched()
+      );
+
+      this.existeErro2 = true;
+      return false;
+    }
+
+    if (this.listaTransacoesSemOrdemPagtoSelecionado.length == 0)
+      return false;
+
+    return true;
+  }
+
+  submit() {
+
+    if (this.validacaoFormGeracao() === false)
+       return;
+
+    const controls = this.formularioGeracao.controls;
+
+    var parametro = new ParamOrdemPagtoModel();
+
+    parametro.idConta = controls.conta.value;
+    parametro.dataLancamentoCredito = controls.dtLancamento.value;
+    parametro.clientesSelecionados = this.listaTransacoesSemOrdemPagtoSelecionado;
+
+    this.orderPagtoService.gerarOrdemPagto(parametro).subscribe(
+      res => {
+        if (!res.success) {
+          this.toastService.showToast(ToastPadrao.DANGER, 'Erro ao realizar a geracao', res.data);
+          return;
+        }
+
+        this.toastService.showToast(ToastPadrao.SUCCESS, 'Ordem de pagamento gerado com sucesso!');
+        this.pesquisar();
+      }
+    )
+
   }
 
 

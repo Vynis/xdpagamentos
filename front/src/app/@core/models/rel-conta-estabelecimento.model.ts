@@ -7,4 +7,5 @@ export class RelContaEstabelecimentoModel {
     contaCaixa: ContaCaixaModel;
     estId: number;
     estabelecimento: EstabelecimentoModel;
+    creditoAutomatico: string = '';
 }

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { GeracaoOrdemPagtoRoutingModule } from './geracao-ordem-pagto-routing.module';
 import { GeracaoOrdemPagtoComponent } from './geracao-ordem-pagto.component';
-import { NbButtonModule, NbCardModule, NbCheckboxModule, NbDatepickerModule, NbInputModule, NbSelectModule } from '@nebular/theme';
+import { NbAlertModule, NbButtonModule, NbCardModule, NbCheckboxModule, NbDatepickerModule, NbInputModule, NbSelectModule } from '@nebular/theme';
 import { OrdemPagtoService } from '../../@core/services/ordem-pagto.service';
 import { EstabelecimentoService } from '../../@core/services/estabelecimento.service';
 import { ContaCaixaService } from '../../@core/services/conta-caixa.service';
@@ -23,7 +23,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     NbSelectModule,
     NbCheckboxModule,
     NbDatepickerModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NbAlertModule
+
   ],
   providers: [
     {

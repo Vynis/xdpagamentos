@@ -4,12 +4,13 @@ using System.Text;
 
 namespace XdPagamentosApi.Domain.Models
 {
-    public class ContaCaixa
+    public class TipoOperacao
     {
         public int Id { get; set; }
+        public int OpeId { get; set; }
+        public Operadora Operadora { get; set; }
+        public string Codigo { get; set; }
         public string Descricao { get; set; }
-        public string Status { get; set; }
-
-        public List<RelContaEstabelecimento> ListaRelContaEstabelecimento { get; set; }
+        public string Ref { get; set; }
     }
 }

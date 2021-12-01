@@ -3,20 +3,22 @@
             Filtro
         </nb-card-header>
         <nb-card-body>
+            <nb-alert *ngIf="existeErro" status="danger" closable>Favor preencher todos os campos obrigatorios!</nb-alert>
+
             <div  [formGroup]="formularioFiltro">
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="estabelecimento" class="label">Estabelecimento das transações</label><br>
+                            <label for="estabelecimento" class="label">*Estabelecimento das transações</label><br>
                             <nb-select placeholder=""  status="primary" formControlName="estabelecimento" >
-                                <nb-option [value]="null">Todos</nb-option>
+                                <nb-option [value]="0">Todos</nb-option>
                                 <nb-option *ngFor="let est of listaEstabelecimento" [value]="est.id">{{est.numEstabelecimento}} - {{est.nome}}</nb-option>
                               </nb-select>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label for="status" class="label">Status</label><br>
+                            <label for="status" class="label">*Status</label><br>
                             <nb-select placeholder=""  status="primary" formControlName="status" >
                                 <nb-option [value]="null">Todos</nb-option>
                                 <nb-option value="NP">NP - Não Pago</nb-option>
@@ -25,14 +27,14 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="status" class="label">Período inicial da gravação</label><br>
+                            <label for="status" class="label">*Período inicial da gravação</label><br>
                             <input nbInput placeholder="" formControlName="dtInicial" [nbDatepicker]="dtInicial">
                             <nb-datepicker #dtInicial [min]="min" [max]="max" format="dd/MM/yyyy"></nb-datepicker>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="status" class="label">Período final da gravação</label><br>
+                            <label for="status" class="label">*Período final da gravação</label><br>
                             <input nbInput placeholder="" formControlName="dtFinal" [nbDatepicker]="dtFinal">
                             <nb-datepicker #dtFinal [min]="min" [max]="max" format="dd/MM/yyyy"></nb-datepicker>
                         </div>
@@ -57,6 +59,7 @@
         </nb-card-header>
         <nb-card-body>
             <div  [formGroup]="formularioGeracao">
+                <nb-alert *ngIf="existeErro2" status="danger" closable>Favor preencher todos os campos obrigatorios!</nb-alert>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -70,7 +73,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="status" class="label">Data de lançamento dos créditos</label><br>
-                            <input nbInput placeholder="" [nbDatepicker]="formpicker1">
+                            <input nbInput placeholder="" formControlName="dtLancamento" [nbDatepicker]="formpicker1">
                             <nb-datepicker #formpicker1 format="dd/MM/yyyy"></nb-datepicker>
                         </div>
                     </div>
@@ -78,7 +81,7 @@
             </div>
         </nb-card-body>
         <nb-card-footer>
-            <button type="submit"   nbButton status="success">Lançar crédito para pagamento do cliente</button>
+            <button type="submit"  (click)="submit()"  nbButton status="success">Lançar crédito para pagamento do cliente</button>
         </nb-card-footer>
     </nb-card>
 

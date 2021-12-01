@@ -12,5 +12,6 @@ namespace XdPagamentosApi.WebApi.Dtos
         public DtoContaCaixa ContaCaixa { get; set; }
         public int EstId { get; set; }
         public DtoEstabelecimento Estabelecimento { get; set; }
+        public string CreditoAutomatico { get; set; }
     }
 }

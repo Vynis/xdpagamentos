@@ -61,11 +61,13 @@ namespace XdPagamentosApi.WebApi.Controllers
                 notificacoes.PublicKey = retornoPagSeguro.PrimaryReceiver?.PublicKey;
 
                 //Salva a notificacao
-                //var response = await _logNotificacoesService.Adicionar(notificacoes);
+                var response = await _logNotificacoesService.Adicionar(notificacoes);
 
-                //if (!response)
-                //    return Response("Não foi possível fazer operacao", false);
+                if (!response)
+                    return Response("Não foi possível fazer operacao", false);
 
+                if (!notificacoes.NumTerminal.Equals("1730545744"))
+                    return Ok();
 
                 //Salva a ordem de pagamento
                 var resonseOrdemPagto = await _logNotificacoesService.GerarOrdemPagamento(retornoPagSeguro, estabelecimento);
@@ -78,7 +80,7 @@ namespace XdPagamentosApi.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //await _logNotificacoesService.Adicionar(new LogNotificacoes { NotificationCode = notificacaoDto.NotificationCode, NotificationType = notificacaoDto.NotificationType, Xml = "erro", EstId = estabelecimento, Data = DateTime.Now, MotivoErro = ex.Message });
+                await _logNotificacoesService.Adicionar(new LogNotificacoes { NotificationCode = notificacaoDto.NotificationCode, NotificationType = notificacaoDto.NotificationType, Xml = "erro", EstId = estabelecimento, Data = DateTime.Now, MotivoErro = ex.Message });
                 return Response(ex.Message, false);
             }
         }

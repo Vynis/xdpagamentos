@@ -26,6 +26,11 @@ namespace XdPagamentosApi.WebApi.Dtos
         public int OpeId { get; set; }
         public int CocId { get; set; }
 
+        public string Token { get; set; }
+        public string Email { get; set; }
+
         public List<DtoRelUsuarioEstabelecimento> ListaUsuarioEstabelecimentos { get; set; }
+
+        public List<DtoRelContaEstabelecimento> ListaRelContaEstabelecimento { get; set; }
     }
 }

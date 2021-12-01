@@ -1,3 +1,4 @@
+import { RelContaEstabelecimentoModel } from './rel-conta-estabelecimento.model';
 export class EstabelecimentoModel {
     id: number;
     numEstabelecimento: string;
@@ -16,6 +17,7 @@ export class EstabelecimentoModel {
     tipo: string;
     opeId: number;
     cocId: number;
+    listaRelContaEstabelecimento: RelContaEstabelecimentoModel[] = [];
 
     constructor() {
         this.estado = 'GO';

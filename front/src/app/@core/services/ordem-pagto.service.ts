@@ -1,3 +1,4 @@
+import { ParamOrdemPagtoModel } from './../models/param-ordem-pagto.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
@@ -15,5 +16,9 @@ export class OrdemPagtoService {
 
   buscarTransacoesSemOrdemPagto(filtro: PaginationFilterModel) {
     return this.http.post<ModeloBase>(`${this.caminhoApi}/buscar-transacoes-sem-ordem-pagto`, filtro);
+  }
+
+  gerarOrdemPagto(parametro: ParamOrdemPagtoModel) {
+    return this.http.post<ModeloBase>(`${this.caminhoApi}/gerar-ordem-pagto`, parametro);
   }
 }

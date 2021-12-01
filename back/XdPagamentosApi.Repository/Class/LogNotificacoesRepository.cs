@@ -33,6 +33,9 @@ namespace XdPagamentosApi.Repository.Class
             //Busca o status da transacao
             await BuscaDescricaoStatusTransacao(transacao, dtoTransactionPagSeguro);
 
+            //Busca o tipo de operacao
+            await BuscaTipoOperacao(transacao, dtoTransactionPagSeguro);
+
             if (string.IsNullOrEmpty(transacao.NumTerminal))
             {
                 return await SalvarTransacao(transacao);
@@ -98,6 +101,14 @@ namespace XdPagamentosApi.Repository.Class
                 transacao.OpeId = resposta.OpeId;
         }
 
+        private async Task BuscaTipoOperacao(Transacao transacao, DtoTransactionPagSeguro dtoTransactionPagSeguro)
+        {
+            var resposta = await _mySqlContext.TipoOperacoes.Where(c => c.Codigo.Equals(dtoTransactionPagSeguro.PaymentMethod.Code.ToString())).AsNoTracking().FirstOrDefaultAsync();
+
+            if (resposta != null)
+                transacao.Descricao = resposta.Descricao;
+        }
+
         private async Task BuscaDescricaoStatusTransacao(Transacao transacao, DtoTransactionPagSeguro dtoTransactionPagSeguro)
         {
             var resposta = await _mySqlContext.StatusTransacoes.Where(c => c.Codigo.Equals(dtoTransactionPagSeguro.Status.ToString()) ).AsNoTracking().FirstOrDefaultAsync();
@@ -120,7 +131,7 @@ namespace XdPagamentosApi.Repository.Class
 
         private async Task<int> BuscaContaEstabelecimento(int estId)
         {
-            var resposta = await _mySqlContext.RelContaEstabelecimentos.Where(c => c.EstId.Equals(estId)).AsNoTracking().FirstOrDefaultAsync();
+            var resposta = await _mySqlContext.RelContaEstabelecimentos.Where(c => c.EstId.Equals(estId) && c.CreditoAutomatico.Equals("S")).AsNoTracking().FirstOrDefaultAsync();
 
             if (resposta != null)
                 return resposta.Id;
@@ -145,7 +156,8 @@ namespace XdPagamentosApi.Repository.Class
                     DtEmissao = transacao.DtOperacao,
                     DtCredito = transacao.DtCredito,
                     Valor = Convert.ToDecimal(transacao.VlLiquido).ToString(),
-                    ListaPagamentos = new List<Pagamentos> { pagamento }
+                    ListaPagamentos = new List<Pagamentos> { pagamento },
+                    Status = "NP"
                 };
 
                 _mySqlContext.OrdemPagtos.Add(ordemPagto);

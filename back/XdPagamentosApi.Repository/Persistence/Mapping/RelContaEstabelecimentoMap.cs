@@ -18,6 +18,7 @@ namespace XdPagamentosApi.Repository.Persistence.Mapping
             builder.Property(c => c.Id).HasColumnName("rce_id");
             builder.Property(c => c.CocId).HasColumnName("rce_coc_id");
             builder.Property(c => c.EstId).HasColumnName("rce_est_id");
+            builder.Property(c => c.CreditoAutomatico).HasColumnName("rce_credito_automatico");
 
             builder.HasOne(c => c.ContaCaixa).WithMany(c => c.ListaRelContaEstabelecimento).HasForeignKey(c => c.CocId);
             builder.HasOne(c => c.Estabelecimento).WithMany(c => c.ListaRelContaEstabelecimento).HasForeignKey(c => c.EstId);

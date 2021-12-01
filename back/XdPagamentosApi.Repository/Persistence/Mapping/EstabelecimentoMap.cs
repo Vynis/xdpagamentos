@@ -33,12 +33,10 @@ namespace XdPagamentosApi.Repository.Persistence.Mapping
             builder.Property(c => c.Token).HasColumnName("est_token");
             builder.Property(c => c.Email).HasColumnName("est_email");
 
-            builder.Property(c => c.CocId).HasColumnName("est_coc_id");
             builder.Property(c => c.OpeId).HasColumnName("est_ope_id");
 
 
             builder.HasOne(c => c.Operadora).WithMany(c => c.ListaEstabelecimento).HasForeignKey(c => c.OpeId);
-            builder.HasOne(c => c.ContaCaixa).WithMany(c => c.ListaEstabelecimento).HasForeignKey(c => c.CocId);
 
         }
     }

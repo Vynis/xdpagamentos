@@ -11,5 +11,6 @@ namespace XdPagamentosApi.Domain.Models
         public string Status { get; set; }
 
         public List<Estabelecimento> ListaEstabelecimento { get; set; }
+        public List<TipoOperacao> ListaTipoOperacao { get; set; }
     }
 }

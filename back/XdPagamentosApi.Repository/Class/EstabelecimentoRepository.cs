@@ -49,9 +49,20 @@ namespace XdPagamentosApi.Repository.Class
 
         public async override Task<Estabelecimento> ObterPorId(int Id)
         {
-            IQueryable<Estabelecimento> query = _mySqlContext.Estabelecimentos.Where(c => c.Id.Equals(Id));
+            IQueryable<Estabelecimento> query = _mySqlContext.Estabelecimentos.Where(c => c.Id.Equals(Id)).Include(c => c.ListaRelContaEstabelecimento);
 
             return await query.AsNoTracking().FirstOrDefaultAsync();
         }
+
+        public override async Task<bool> Atualizar(Estabelecimento obj)
+        {
+            var buscaRelacionamentoConta =  _mySqlContext.RelContaEstabelecimentos.Where(c => (c.EstId.Equals(obj.Id) && c.CreditoAutomatico.Equals("S")) || ( c.EstId.Equals(obj.Id) && c.CocId.Equals(obj.ListaRelContaEstabelecimento[0].CocId) )).AsNoTracking();
+
+            if (buscaRelacionamentoConta.Count() > 0)
+                _mySqlContext.RelContaEstabelecimentos.RemoveRange(buscaRelacionamentoConta);
+ 
+            return await base.Atualizar(obj);
+        }
+
     }
 }

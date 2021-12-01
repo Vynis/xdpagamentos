@@ -85,6 +85,8 @@ namespace XdPagamentosApi.WebApi.Controllers
                 if (validaCpfCnpjExistente.Any())
                     return Response("Cpf/Cnpj já cadastrado", false);
 
+                dto.ListaRelContaEstabelecimento.ForEach(x => x.CreditoAutomatico = "S");
+
                 var response = await _estabelecimentoService.Adicionar(_mapper.Map<Estabelecimento>(dto));
 
                 if (!response)
@@ -116,6 +118,10 @@ namespace XdPagamentosApi.WebApi.Controllers
                         return Response("Cpf/Cnpj já cadastrado", false);
 
                 }
+
+                dto.ListaRelContaEstabelecimento.ForEach(x => x.CreditoAutomatico = "S");
+                dto.Token = dados.Token;
+                dto.Email = dados.Email;
 
                 var response = await _estabelecimentoService.Atualizar(_mapper.Map<Estabelecimento>(dto));
 

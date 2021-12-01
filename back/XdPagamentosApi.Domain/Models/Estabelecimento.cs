@@ -23,8 +23,6 @@ namespace XdPagamentosApi.Domain.Models
         public string Tipo { get; set; }
         public int OpeId { get; set; }
         public Operadora Operadora { get; set; }
-        public int CocId { get; set; }
-        public ContaCaixa ContaCaixa { get; set; }
         public string Token { get; set; }
         public string Email { get; set; }
 

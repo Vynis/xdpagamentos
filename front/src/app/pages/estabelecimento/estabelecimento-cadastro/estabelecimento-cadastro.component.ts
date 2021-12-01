@@ -62,6 +62,16 @@ export class EstabelecimentoCadastroComponent implements OnInit {
   createForm(_estabeblecimento: EstabelecimentoModel) {
     this.estabelecimentoOld = Object.assign({},_estabeblecimento);
 
+    let coc_id = 0;
+
+    if (_estabeblecimento.listaRelContaEstabelecimento.length > 0) {
+
+       const filtro = _estabeblecimento.listaRelContaEstabelecimento.filter(x => x.creditoAutomatico === 'S');
+
+       coc_id = filtro[0].cocId;
+
+    }
+     
     this.formulario = this.fb.group({
       id: [_estabeblecimento.id],
       nome: [_estabeblecimento.nome, Validators.required],
@@ -74,7 +84,7 @@ export class EstabelecimentoCadastroComponent implements OnInit {
       numEstabelecimento: [_estabeblecimento.numEstabelecimento, Validators.required],
       status: [_estabeblecimento.status, Validators.required],
       opeId: [_estabeblecimento.opeId, Validators.required],
-      cocId: [_estabeblecimento.cocId, Validators.required]
+      cocId: [coc_id, Validators.required]
     });
   }
 
@@ -183,8 +193,9 @@ export class EstabelecimentoCadastroComponent implements OnInit {
     _estabelecimento.estado = controls.estado.value;
     _estabelecimento.status = controls.status.value;
     _estabelecimento.numEstabelecimento = controls.numEstabelecimento.value;
-    _estabelecimento.cocId = controls.cocId.value;
     _estabelecimento.opeId = controls.opeId.value;
+
+    _estabelecimento.listaRelContaEstabelecimento.push({ id: 0, cocId: controls.cocId.value, estId: _estabelecimento.id, contaCaixa:null, estabelecimento: null, creditoAutomatico: 'S' });
 
     return _estabelecimento;
   }

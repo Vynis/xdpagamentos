@@ -135,7 +135,7 @@ export class ContaCaixaCadastroComponent implements OnInit {
     _model.status = controls.status.value;
 
     this.listaEstablecimentoConta.forEach(x => {
-      _model.listaRelContaEstabelecimento.push({id: 0, cocId: 0, estId: x.id, contaCaixa: null, estabelecimento: null});
+      _model.listaRelContaEstabelecimento.push({id: 0, cocId: 0, estId: x.id, contaCaixa: null, estabelecimento: null, creditoAutomatico: 'N' });
     });
 
     return _model;
