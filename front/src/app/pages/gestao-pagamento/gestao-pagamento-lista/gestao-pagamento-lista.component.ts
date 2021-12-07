@@ -11,6 +11,7 @@ import { PaginationFilterModel } from '../../../@core/models/configuracao/pagina
 import { FiltroItemModel } from '../../../@core/models/configuracao/filtroitem.model';
 import { FilterTypeConstants } from '../../../@core/enums/filter-type.enum';
 import { GestaoPagamentoService } from '../../../@core/services/gestao-pagamento-service';
+import { ResumoLancamentosModel } from '../../../@core/models/resumo-lancamentos.model';
 
 @Component({
   templateUrl: './gestao-pagamento-lista.component.html',
@@ -25,6 +26,7 @@ export class GestaoPagamentoListaComponent implements OnInit {
   settings: SettingsTableModel = new SettingsTableModel();
   source: LocalDataSource = new LocalDataSource();
   realizouFiltro: boolean = false;
+  resumoLancamentos: ResumoLancamentosModel = new ResumoLancamentosModel();
 
   columns = {
     id: {
@@ -143,6 +145,14 @@ export class GestaoPagamentoListaComponent implements OnInit {
         if (res.success) {
           this.realizouFiltro = true;
           this.source.load(res.data.listaGestaoPagamentos);
+
+          const controls = this.formularioFiltro.controls;
+          this.resumoLancamentos.cliente = this.listaClientes.filter(x => x.id == controls.cliente.value)[0].nome;
+          this.resumoLancamentos.periodo = `De ${ new Date(controls.dtInicial.value).toLocaleDateString() } até ${ new Date(controls.dtFinal.value).toLocaleDateString() }`;
+          this.resumoLancamentos.saldoAnterior = res.data.saldoAnterior;
+          this.resumoLancamentos.entradas = res.data.entradas;
+          this.resumoLancamentos.saidas = res.data.saidas;
+          this.resumoLancamentos.saldoAtual = res.data.saldoAtual;
         }
       }
     )

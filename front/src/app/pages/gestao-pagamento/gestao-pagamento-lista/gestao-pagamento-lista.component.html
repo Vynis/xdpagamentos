@@ -60,6 +60,39 @@
         <button (click)="pesquisar()" type="submit" nbButton status="primary">Filtrar</button>
     </nb-card-footer>
 </nb-card>
+<nb-card *ngIf="realizouFiltro" >
+    <nb-card-header>Resumo dos Lançamentos</nb-card-header>
+    <nb-card-body>
+        <div class="row">
+            <div  class="col-md-6">
+                Cliente:<br>
+                <b>{{resumoLancamentos.cliente}}</b>
+            </div>
+            <div class="col-md-6">
+                Período lançamentos:<br>
+                <b>{{resumoLancamentos.periodo}}</b>
+            </div>
+        </div><br>
+        <div class="row">
+            <div class="col-md-3">
+                Saldo anterior:<br>
+                <b>{{resumoLancamentos.saldoAnterior}}</b>
+            </div>
+            <div class="col-md-3">
+                Entradas:<br>
+                <b>{{resumoLancamentos.entradas}}</b>
+            </div>
+            <div class="col-md-3">
+                Saídas:<br>
+                <b>{{resumoLancamentos.saidas}}</b>
+            </div>
+            <div class="col-md-3">
+                Saldo atual:<br>
+                <b>{{resumoLancamentos.saldoAtual}}</b>
+            </div>
+        </div>
+    </nb-card-body>
+</nb-card>
 
 <nb-card *ngIf="realizouFiltro" >
     <nb-card-header>
