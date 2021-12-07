@@ -22,6 +22,8 @@ namespace XdPagamentosApi.Repository.Class
 
         public async Task<bool> GerarOrdemPagamento(DtoTransactionPagSeguro dtoTransactionPagSeguro, string estabelecimento)
         {
+            if (! await ValidaTransacao(dtoTransactionPagSeguro))
+                return false;
 
             var transacao = new Transacao();
 
@@ -91,6 +93,7 @@ namespace XdPagamentosApi.Repository.Class
             transacao.TitPercDesconto = "";
             transacao.EstId = Convert.ToInt32(estabelecimento);
             transacao.Descricao = "";
+            transacao.StatusCodigo = dtoTransactionPagSeguro.Status;
         }
 
         private async Task BuscaTipoOperadora(Transacao transacao)
@@ -119,7 +122,7 @@ namespace XdPagamentosApi.Repository.Class
                 transacao.Status = "vazio";
         }
 
-        private async Task<string> BuscaStatusTransacao(Transacao transacao, DtoTransactionPagSeguro dtoTransactionPagSeguro)
+        private async Task<string> BuscaStatusTransacao(DtoTransactionPagSeguro dtoTransactionPagSeguro)
         {
             var resposta = await _mySqlContext.StatusTransacoes.Where(c => c.Codigo.Equals(dtoTransactionPagSeguro.Status.ToString())).AsNoTracking().FirstOrDefaultAsync();
 
@@ -137,6 +140,22 @@ namespace XdPagamentosApi.Repository.Class
                 return resposta.Id;
 
             return 0;
+        }
+
+        private async Task<bool> ValidaTransacao(DtoTransactionPagSeguro dtoTransactionPagSeguro)
+        {
+
+            if (!dtoTransactionPagSeguro.Status.Equals(3) && !dtoTransactionPagSeguro.Status.Equals(4) && !dtoTransactionPagSeguro.Status.Equals(6))
+                return false;
+
+            var chave = $"{dtoTransactionPagSeguro.PrimaryReceiver.PublicKey}/{dtoTransactionPagSeguro.Code}";
+
+            var valida = await _mySqlContext.Transacoes.Where(c => c.Chave.Equals(chave) && c.StatusCodigo.Equals(dtoTransactionPagSeguro.Status) ).AsNoTracking().FirstOrDefaultAsync();
+
+            if (valida != null)
+                return false;
+
+            return true;
         }
 
         private async Task<bool> GeraOrdemPagto(Transacao transacao)
@@ -178,7 +197,7 @@ namespace XdPagamentosApi.Repository.Class
                     DtHrLancamento = transacao.DtOperacao,
                     DtHrCredito = transacao.DtCredito,
                     Descricao = "Pagseguro",
-                    Tipo = await BuscaStatusTransacao(transacao, dtoTransactionPagSeguro),
+                    Tipo = await BuscaStatusTransacao(dtoTransactionPagSeguro),
                     VlBruto = transacao.VlBruto,
                     VlLiquido = transacao.VlLiquido,
                     Grupo = "EG",

@@ -34,6 +34,7 @@ namespace XdPagamentosApi.Domain.Models
         public DateTime DtCredito { get; set; }
         public int EstId { get; set; }
         public string Status { get; set; }
+        public int StatusCodigo { get; set; }
 
     }
 }

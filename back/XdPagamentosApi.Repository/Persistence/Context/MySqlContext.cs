@@ -41,6 +41,7 @@ namespace XdPagamentosApi.Repository.Persistence.Context
         public DbSet<FormaPagto> FormaPagtos { get; set; }
         public DbSet<StatusTransacao> StatusTransacoes { get; set; }
         public  DbSet<TipoOperacao> TipoOperacoes { get; set; }
+        public DbSet<GestaoPagamento> GestaoPagamentos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -28,6 +28,7 @@ namespace XdPagamentosApi.IOC.Repository
             service.AddScoped<ILogNotificacoesRepository, LogNotificacoesRepository>();
             service.AddScoped<IVwTransacoesSemOrdemPagtoRepository, VwTransacoesSemOrdemPagtoRepository>();
             service.AddScoped<IRelContaEstabelecimentoRepository, RelContaEstabelecimentoRepository>();
+            service.AddScoped<IGestaoPagamentoRepository, GestaoPagamentoRepository>();
         }
     }
 }

@@ -1,0 +1,86 @@
+<nb-card >
+    <nb-card-header>
+        Filtro
+    </nb-card-header>
+    <nb-card-body>
+        <nb-alert *ngIf="existeErro" status="danger" closable>Favor preencher todos os campos obrigatorios!</nb-alert>
+
+        <div  [formGroup]="formularioFiltro">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="cliente" class="label">*Cliente</label><br>
+                        <nb-select placeholder="" fullWidth  status="primary" formControlName="cliente" >
+                            <nb-option *ngFor="let cliente of listaClientes" [value]="cliente.id" >{{cliente.nome}}</nb-option>
+                          </nb-select>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="status" class="label">*Período inicial de lançamento</label><br>
+                        <input nbInput placeholder="" fullWidth formControlName="dtInicial" [nbDatepicker]="dtInicial">
+                        <nb-datepicker #dtInicial [min]="min" [max]="max" format="dd/MM/yyyy"></nb-datepicker>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="status" class="label">*Período final da laçamento</label><br>
+                        <input nbInput placeholder="" fullWidth formControlName="dtFinal" [nbDatepicker]="dtFinal">
+                        <nb-datepicker #dtFinal [min]="min" [max]="max" format="dd/MM/yyyy"></nb-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="status" class="label">Descrição do lançamento</label><br>    
+                        <input type="text" nbInput fullWidth placeholder="" formControlName="descricao">      
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="status" class="label">Valor líquido</label><br>    
+                        <input type="text" nbInput fullWidth placeholder="" formControlName="valorliquido">      
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label for="estabelecimento" class="label">Tipo</label><br>
+                    <nb-select placeholder="" fullWidth  status="primary" formControlName="tipo" >
+                        <nb-option value="T">Todos</nb-option>
+                        <nb-option value="C">Credito</nb-option>
+                        <nb-option value="D">Debito</nb-option>
+                      </nb-select>
+                </div>
+            </div>
+        </div>
+
+    </nb-card-body>
+    <nb-card-footer>
+        <button (click)="pesquisar()" type="submit" nbButton status="primary">Filtrar</button>
+    </nb-card-footer>
+</nb-card>
+
+<nb-card *ngIf="realizouFiltro" >
+    <nb-card-header>
+        <div class="row">
+            <div class="col-sm-10" style="padding-top: 15px;">
+                Lista de Gestão de Pagamento
+            </div>
+            <div  class="col-sm-2" style="text-align: right">
+                <a  nbButton status="primary" routerLink="../cadastro/add" >Novo</a>
+            </div>
+        </div>
+      
+    </nb-card-header>
+  
+    <nb-card-body>
+      <ng2-smart-table 
+      #table
+      [settings]="settings" 
+      [source]="source" 
+      (custom)="onCustom($event)"
+      >
+      </ng2-smart-table>
+    </nb-card-body>
+  </nb-card>

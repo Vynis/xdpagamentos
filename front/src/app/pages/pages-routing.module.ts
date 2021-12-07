@@ -43,6 +43,10 @@ const routes: Routes = [{
       loadChildren: () => import('./geracao-ordem-pagto/geracao-ordem-pagto.module').then(m => m.GeracaoOrdemPagtoModule)
     },
     {
+      path: 'gestao-pagto',
+      loadChildren: () => import('./gestao-pagamento/gestao-pagamento.module').then(m => m.GestaoPagamentoModule)
+    },
+    {
       path: '',
       redirectTo: 'dashboard',
       pathMatch: 'full',

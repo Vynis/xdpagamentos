@@ -41,6 +41,7 @@ namespace XdPagamentosApi.Repository.Persistence.Mapping
             builder.Property(c => c.DtCredito).HasColumnName("tra_dt_hr_credito");
             builder.Property(c => c.EstId).HasColumnName("tra_est_id");
             builder.Property(c => c.Status).HasColumnName("tra_status");
+            builder.Property(c => c.StatusCodigo).HasColumnName("tra_status_codigo");
 
             builder.HasOne(c => c.Cliente).WithMany(c => c.ListaTransacoes).HasForeignKey(c => c.CliId);
             builder.HasOne(c => c.Pagamentos).WithMany(c => c.ListaTransacoes).HasForeignKey(c => c.PagId);

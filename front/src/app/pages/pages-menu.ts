@@ -77,33 +77,29 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'keypad-outline',
     children: [
       {
-        title: 'Transferência de Transações para Outro Cliente',
+        title: 'Transferência de Transações',
         link: '/pages/ui-features/grid',
       },
       {
-        title: 'Criação de Ordem de Pagamento',
+        title: 'Criação de Ordem de Pagto',
         link: '/pages/geracao-pagto',
       },
       {
-        title: 'Restauração de Ordem de Pagamento',
+        title: 'Restauração de Ordem de Pagto',
         link: '/pages/ui-features/typography',
       },
       {
-        title: 'Gestão de Pagamento de Clientes',
+        title: 'Gestão de Pagto de Clientes',
+        link: '/pages/gestao-pagto',
+      },
+      {
+        title: 'Gestão de Extratos',
         link: '/pages/ui-features/search-fields',
       },
       {
-        title: 'Gestão de Extratos das Contas Caixa',
+        title: 'Resumo Gestão de Pagto',
         link: '/pages/ui-features/search-fields',
-      },
-      {
-        title: 'Resumo Gestão de Pagamento de Clientes',
-        link: '/pages/ui-features/search-fields',
-      },
-      {
-        title: 'Histórico de Importação de Arquivos',
-        link: '/pages/ui-features/search-fields',
-      },
+      }
     ],
   },
 ];
