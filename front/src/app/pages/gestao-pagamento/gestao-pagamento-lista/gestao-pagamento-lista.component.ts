@@ -87,35 +87,41 @@ export class GestaoPagamentoListaComponent implements OnInit {
 
 
   pesquisar(): void {
-
     const controls = this.formularioFiltro.controls;
     var filtro = new PaginationFilterModel();
     let listaItem: FiltroItemModel[] = [];
-    
+    this.existeErro = false;
+    this.realizouFiltro = false;
 
-    if (controls.cliente.value !== 0) {
-      var item  = new FiltroItemModel();
-      item.property = 'CliId';
-      item.filterType = FilterTypeConstants.EQUALS;
-      item.value = controls.cliente.value;
-      listaItem.push(item);
+    //Validacoes
+    if (controls.cliente.value == 0) {
+      this.existeErro = true;
+      return;
     }
 
-    if ((controls.dtInicial.value !== '' && this.ehData(controls.dtInicial.value))  && (controls.dtFinal.value !== '' && this.ehData(controls.dtInicial.value)) ) {
-      var item  = new FiltroItemModel();
-      item.property = 'DtHrLancamento';
-      item.filterType = FilterTypeConstants.GREATERTHANEQUALS;
-      item.value = new Date(controls.dtInicial.value).toLocaleDateString();
-      listaItem.push(item);
-
-
-      var item  = new FiltroItemModel();
-      item.property = 'DtHrLancamento';
-      item.filterType = FilterTypeConstants.LESSTHANEQUALS;
-      item.value =new Date(controls.dtFinal.value).toLocaleDateString();
-      listaItem.push(item);
-  
+    if ((controls.dtInicial.value === '' || !this.ehData(controls.dtInicial.value)) || (controls.dtFinal.value === '' || !this.ehData(controls.dtInicial.value))) {
+      this.existeErro = true;
+      return;
     }
+
+    var item  = new FiltroItemModel();
+    item.property = 'CliId';
+    item.filterType = FilterTypeConstants.EQUALS;
+    item.value = controls.cliente.value;
+    listaItem.push(item);
+
+    var item  = new FiltroItemModel();
+    item.property = 'DtHrLancamento';
+    item.filterType = FilterTypeConstants.GREATERTHANEQUALS;
+    item.value = new Date(controls.dtInicial.value).toLocaleDateString();
+    listaItem.push(item);
+
+
+    var item  = new FiltroItemModel();
+    item.property = 'DtHrLancamento';
+    item.filterType = FilterTypeConstants.LESSTHANEQUALS;
+    item.value =new Date(controls.dtFinal.value).toLocaleDateString();
+    listaItem.push(item);
 
 
     if (controls.descricao.value !== ''){
@@ -133,6 +139,15 @@ export class GestaoPagamentoListaComponent implements OnInit {
       item.value = controls.valorliquido.value;
       listaItem.push(item);
     }
+
+    if (controls.tipo.value !== 'T'){
+      var item  = new FiltroItemModel();
+      item.property = 'Tipo';
+      item.filterType = FilterTypeConstants.EQUALS;
+      item.value = controls.tipo.value;
+      listaItem.push(item);
+     }
+
 
     filtro.filtro = listaItem;
     this.buscarDados(filtro);
