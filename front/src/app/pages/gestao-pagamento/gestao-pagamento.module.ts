@@ -1,3 +1,4 @@
+import { FormaPagtoService } from './../../@core/services/forma-pagto.service';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -13,6 +14,7 @@ import { ClienteService } from '../../@core/services/cliente.service';
 import { GestaoPagamentoService } from '../../@core/services/gestao-pagamento-service';
 import { InterceptService } from '../../@core/utils/intercept.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ContaCaixaService } from '../../@core/services/conta-caixa.service';
 
 
 @NgModule({
@@ -48,7 +50,9 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
       multi: true
     },
     ClienteService,
-    GestaoPagamentoService
+    GestaoPagamentoService,
+    FormaPagtoService,
+    ContaCaixaService
   ]
 })
 export class GestaoPagamentoModule { }

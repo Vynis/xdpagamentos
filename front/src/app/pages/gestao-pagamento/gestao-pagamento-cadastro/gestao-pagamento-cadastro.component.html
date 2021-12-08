@@ -1,1 +1,86 @@
-<p>gestao-pagamento-cadastro works!</p>
+<nb-card> 
+    <nb-card-header>{{tituloPagina}} </nb-card-header>
+    <nb-card-body *ngIf="gestaoPagtoOld">
+        <nb-alert *ngIf="existeErro" status="danger" closable>Favor preencher todos os campos obrigatorios!</nb-alert>
+        <form [formGroup]="formulario">
+            <div class="row ">
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="status" class="label">*Data do lançamento</label><br>
+                        <input nbInput placeholder="" fullWidth formControlName="dtHrLancamento" [nbDatepicker]="dtInicial">
+                        <nb-datepicker #dtInicial format="dd/MM/yyyy"></nb-datepicker>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="cliente" class="label">*Cliente</label><br>
+                        <nb-select placeholder="" fullWidth  status="primary" formControlName="cliId" >
+                            <nb-option *ngFor="let cliente of listaClientes" [value]="cliente.id" >{{cliente.nome}}</nb-option>
+                          </nb-select>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="status" class="label">*Descrição</label><br>    
+                        <input type="text" nbInput fullWidth placeholder="" formControlName="descricao">      
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="status" class="label">*Valor</label><br>    
+                        <input type="text" nbInput fullWidth placeholder="" formControlName="vlLiquido">      
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row ">
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="tipoLancamento" class="label">*Tipo de Lançamento</label><br>
+                        <nb-select placeholder="" fullWidth  status="primary" formControlName="tipo" >
+                            <nb-option value="C" >C - Credito</nb-option>
+                            <nb-option value="D" >D - Debito</nb-option>
+                          </nb-select>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="formaPagto" class="label">*Forma de Pagamento</label><br>
+                        <nb-select placeholder="" fullWidth  status="primary" formControlName="fopId" >
+                            <nb-option *ngFor="let forma of listaFormaPagto" [value]="forma.id" >{{forma.descricao}}</nb-option>
+                          </nb-select>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="contaCaixa" class="label">*Conta Caixa</label><br>
+                        <nb-select placeholder="" fullWidth  status="primary" formControlName="rceId" >
+                            <nb-option *ngFor="let conta of listaContaCaixa" [value]="conta.id" >{{conta.contaCaixa.descricao}} | {{conta.estabelecimento.nome}} ({{conta.id}})</nb-option>
+                          </nb-select>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </nb-card-body>
+
+    
+    <nb-card-footer>
+        <div class="row">
+            <div class="col-sm-1">
+                <button nbButton (click)="submit()" status="success" >Salvar</button>
+            </div>
+            <div class="col-sm-1">
+                <button nbButton (click)="voltar()" >Voltar</button>
+            </div>
+        </div>
+    </nb-card-footer>
+</nb-card>
