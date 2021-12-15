@@ -22,6 +22,10 @@ export class GestaoPagamentoService {
         return this.http.post<ModeloBase>(`${this.caminhoApi}/inserir`, model);
     }
 
+    remover(id) {
+        return this.http.delete<ModeloBase>(`${this.caminhoApi}/excluir/${id}`);
+    }
+
     
 
 }

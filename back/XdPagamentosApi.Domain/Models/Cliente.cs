@@ -25,6 +25,7 @@ namespace XdPagamentosApi.Domain.Models
         public string UltimoAcesso { get; set; }
         public string TipoPessoa { get; set; }
         public string NomeAgrupamento { get; set; }
+        public string LimiteCredito { get; set; }
 
 
         public int BanId { get; set; }

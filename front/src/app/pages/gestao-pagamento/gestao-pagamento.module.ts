@@ -15,6 +15,7 @@ import { GestaoPagamentoService } from '../../@core/services/gestao-pagamento-se
 import { InterceptService } from '../../@core/utils/intercept.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ContaCaixaService } from '../../@core/services/conta-caixa.service';
+import { NbMomentDateModule } from '@nebular/moment';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { ContaCaixaService } from '../../@core/services/conta-caixa.service';
     NbTooltipModule,
     NbToggleModule,
     OrderModule,
-    NbDatepickerModule
+    NbDatepickerModule,
+    NbMomentDateModule
   ],
   providers: [
     InterceptService,

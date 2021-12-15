@@ -18,6 +18,8 @@ export class EstabelecimentoModel {
     opeId: number;
     cocId: number;
     listaRelContaEstabelecimento: RelContaEstabelecimentoModel[] = [];
+    token: string;
+    email: string;
 
     constructor() {
         this.estado = 'GO';

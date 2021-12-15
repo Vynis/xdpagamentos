@@ -5,6 +5,7 @@ export class ActionsTableModel {
     edit: boolean;
     delete: boolean;
     custom: any;
+    
 
     constructor() {
      this.position = 'right';

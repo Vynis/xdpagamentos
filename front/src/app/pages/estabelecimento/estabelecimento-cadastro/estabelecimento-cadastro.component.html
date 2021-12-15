@@ -93,7 +93,7 @@
                         <div class="form-group">
                             <label for="numEstabelecimento" class="label">*Número do Estabelecimento</label>
                             <input type="text" class="form-control" maxlength="45"
-                            [ngClass]="{'is-invalid': formulario.get('numEstabelecimento').errors  && formulario.get('cidade').touched}"
+                            [ngClass]="{'is-invalid': formulario.get('numEstabelecimento').errors  && formulario.get('numEstabelecimento').touched}"
                               nbInput fullWidth placeholder="" formControlName="numEstabelecimento" />
                               <div *ngIf="formulario.get('numEstabelecimento').hasError('required')  && formulario.get('numEstabelecimento').touched" class="invalid-feedback">
                                 Campo é obrigatório.
@@ -125,6 +125,35 @@
                         </nb-select>
                     </div>
                 </div>
+            </nb-tab>
+            <nb-tab tabTitle="Configurações">
+              <div  class="row ">
+                <div class="col-sm-8"> 
+                  <div class="form-group">
+                      <label for="token" class="label">*Token</label>
+                      <input type="text" class="form-control" maxlength="100"
+                      [ngClass]="{'is-invalid': formulario.get('token').errors  && formulario.get('token').touched}"
+                        nbInput fullWidth placeholder="" formControlName="token" />
+                        <div *ngIf="formulario.get('token').hasError('required')  && formulario.get('token').touched" class="invalid-feedback">
+                          Campo é obrigatório.
+                        </div>
+                  </div>
+                </div>
+                <div class="col-sm-4"> 
+                  <div class="form-group">
+                      <label for="email" class="label">*Email</label>
+                      <input type="text" class="form-control" maxlength="100"
+                      [ngClass]="{'is-invalid': formulario.get('email').errors  && formulario.get('email').touched}"
+                        nbInput fullWidth placeholder="" formControlName="email" />
+                        <div *ngIf="formulario.get('email').hasError('required')  && formulario.get('email').touched" class="invalid-feedback">
+                          Campo é obrigatório.
+                        </div>
+                        <div *ngIf="formulario.get('email').hasError('email')  && formulario.get('email').touched" class="invalid-feedback">
+                          Email invalido.
+                        </div>
+                  </div>
+                </div>
+              </div>
             </nb-tab>
         </nb-tabset>
     </form>

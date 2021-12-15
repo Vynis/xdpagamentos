@@ -10,6 +10,7 @@ export class SettingsTableModel {
   delete: DeleteTableModel;
   columns: any;
   selectMode: string = '';
+  rowClassFunction: (any);
 
   constructor() {
       this.hideSubHeader = true;

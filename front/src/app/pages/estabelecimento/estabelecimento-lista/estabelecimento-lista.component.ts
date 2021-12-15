@@ -11,6 +11,7 @@ import { FiltroItemModel } from '../../../@core/models/configuracao/filtroitem.m
 import { FilterTypeConstants } from '../../../@core/enums/filter-type.enum';
 import { AuthServiceService } from '../../../@core/services/auth-service.service';
 import { SessoesEnum } from '../../../@core/enums/sessoes.enum';
+import { SweetalertService } from '../../../@core/services/sweetalert.service';
 
 @Component({
   selector: 'ngx-estabelecimento-lista',
@@ -59,7 +60,6 @@ export class EstabelecimentoListaComponent implements OnInit {
 
   constructor(
     private estabelecimentoService: EstabelecimentoService,
-    private toastService : ToastService,
     private route: Router,
     private fb: FormBuilder,
     private authService: AuthServiceService

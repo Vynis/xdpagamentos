@@ -25,5 +25,8 @@ namespace XdPagamentosApi.Domain.Models
         public string UsuCpf { get; set; }
         public DateTime DtHrAcaoUsuario { get; set; }
         public DateTime DtHrCredito { get; set; }
+        public string Status { get; set; }
+        public string ValorSolicitadoCliente { get; set; }
+        public DateTime? DtHrSolicitacoCliente { get; set; }
     }
 }

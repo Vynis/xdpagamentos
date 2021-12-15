@@ -1,9 +1,9 @@
 import { ClienteModel } from './../../../@core/models/cliente.model';
 import { ClienteService } from './../../../@core/services/cliente.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SettingsTableModel } from '../../../@core/models/configuracao/table/settings.table.model';
-import { LocalDataSource } from 'ng2-smart-table';
+import { LocalDataSource, Ng2SmartTableComponent } from 'ng2-smart-table';
 import { AcoesPadrao } from '../../../@core/enums/acoes.enum';
 import { Router } from '@angular/router';
 import { TheadTitlesRowComponent } from 'ng2-smart-table/lib/components/thead/rows/thead-titles-row.component';
@@ -12,6 +12,9 @@ import { FiltroItemModel } from '../../../@core/models/configuracao/filtroitem.m
 import { FilterTypeConstants } from '../../../@core/enums/filter-type.enum';
 import { GestaoPagamentoService } from '../../../@core/services/gestao-pagamento-service';
 import { ResumoLancamentosModel } from '../../../@core/models/resumo-lancamentos.model';
+import { ToastService } from '../../../@core/services/toast.service';
+import { SweetalertService } from '../../../@core/services/sweetalert.service';
+import { SweetAlertIcons } from '../../../@core/enums/sweet-alert-icons-enum';
 
 @Component({
   templateUrl: './gestao-pagamento-lista.component.html',
@@ -27,6 +30,7 @@ export class GestaoPagamentoListaComponent implements OnInit {
   source: LocalDataSource = new LocalDataSource();
   realizouFiltro: boolean = false;
   resumoLancamentos: ResumoLancamentosModel = new ResumoLancamentosModel();
+  @ViewChild('table') smartTable: Ng2SmartTableComponent;
 
   columns = {
     id: {
@@ -45,11 +49,15 @@ export class GestaoPagamentoListaComponent implements OnInit {
       title: 'Vl. Liquido',
       type: 'string',
     },
+    valorSolicitadoCliente: {
+      title: 'Vl. Sol. Cliente',
+      type: 'string',
+    },
     tipo: {
       title: 'Tipo',
       type: 'string',
     },
-    usuario: {
+    usuarioFormatada: {
       title: 'Usuario',
       type: 'string',
     },
@@ -62,6 +70,8 @@ export class GestaoPagamentoListaComponent implements OnInit {
   constructor(
     private clienteService: ClienteService, 
     private gestaoPagtoService: GestaoPagamentoService,
+    private toastService : ToastService,
+    private sweetAlertService: SweetalertService,
     private route: Router,
     private fb: FormBuilder) { }
 
@@ -72,6 +82,13 @@ export class GestaoPagamentoListaComponent implements OnInit {
     this.settings.columns = this.columns;
     this.settings.actions.custom = [];
     this.settings.actions.custom.push({ name: AcoesPadrao.REMOVER, title: '<i title="Remover" class="nb-trash"></i>'});
+    this.settings.rowClassFunction = (row) => { 
+      if (row.data.codRef === 'LANC-CLIENTE-CRED-DEB')
+        return ''
+      else
+        return 'remove'
+    };
+
   }
 
   createFormFiltro() {
@@ -120,7 +137,7 @@ export class GestaoPagamentoListaComponent implements OnInit {
     var item  = new FiltroItemModel();
     item.property = 'DtHrLancamento';
     item.filterType = FilterTypeConstants.LESSTHANEQUALS;
-    item.value =new Date(controls.dtFinal.value).toLocaleDateString();
+    item.value =new Date(controls.dtFinal.value).toLocaleDateString() + ' 23:59';
     listaItem.push(item);
 
 
@@ -160,7 +177,9 @@ export class GestaoPagamentoListaComponent implements OnInit {
         if (res.success) {
           this.realizouFiltro = true;
           this.source.load(res.data.listaGestaoPagamentos);
+          console.log(this.smartTable);
 
+          this.settings.actions.custom = [];
           const controls = this.formularioFiltro.controls;
           this.resumoLancamentos.cliente = this.listaClientes.filter(x => x.id == controls.cliente.value)[0].nome;
           this.resumoLancamentos.periodo = `De ${ new Date(controls.dtInicial.value).toLocaleDateString() } até ${ new Date(controls.dtFinal.value).toLocaleDateString() }`;
@@ -193,9 +212,31 @@ export class GestaoPagamentoListaComponent implements OnInit {
       case AcoesPadrao.EDITAR:
         this.route.navigateByUrl(`/pages/conta/cadastro/edit/${event.data.id}`);
         break;
+      case AcoesPadrao.REMOVER:
+        console.log(event);
+        this.sweetAlertService.msgPadrao().then(
+          res => {
+            if (res.isConfirmed){
+              this.excluir(event.data.id);
+            } 
+          }
+        )
+        break;        
       default:
         break;
     }
+  }
+
+  excluir(id) {
+    this.gestaoPagtoService.remover(id).subscribe(
+      res => {
+        if (!res.success)
+          return;
+        
+        this.sweetAlertService.msgAvulsa('Deletado', SweetAlertIcons.SUCESS ,''); 
+        this.pesquisar();
+      }
+    )
   }
 
 }

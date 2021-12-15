@@ -8,15 +8,21 @@
                 <div class="col-md-2">
                     <div class="form-group">
                         <label for="status" class="label">*Data do lançamento</label><br>
-                        <input nbInput placeholder="" fullWidth formControlName="dtHrLancamento" [nbDatepicker]="dtInicial">
+                        <input class="form-control"
+                        [ngClass]="{'is-invalid': formulario.get('dtHrLancamento').errors  && formulario.get('dtHrLancamento').touched}"
+                        nbInput placeholder="" fullWidth formControlName="dtHrLancamento" [nbDatepicker]="dtInicial">
                         <nb-datepicker #dtInicial format="dd/MM/yyyy"></nb-datepicker>
+                        <div *ngIf="formulario.get('dtHrLancamento').hasError('required')  && formulario.get('dtHrLancamento').touched" class="invalid-feedback">
+                            Campo é obrigatório.
+                          </div>  
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="cliente" class="label">*Cliente</label><br>
-                        <nb-select placeholder="" fullWidth  status="primary" formControlName="cliId" >
+                        <nb-select 
+                        placeholder="" fullWidth  status="primary" formControlName="cliId" >
                             <nb-option *ngFor="let cliente of listaClientes" [value]="cliente.id" >{{cliente.nome}}</nb-option>
                           </nb-select>
                     </div>
@@ -24,15 +30,25 @@
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="status" class="label">*Descrição</label><br>    
-                        <input type="text" nbInput fullWidth placeholder="" formControlName="descricao">      
+                        <label for="descricao" class="label">*Descrição</label><br>    
+                        <input class="form-control"
+                        [ngClass]="{'is-invalid': formulario.get('descricao').errors  && formulario.get('descricao').touched}"
+                        type="text" nbInput fullWidth placeholder="" formControlName="descricao">  
+                        <div *ngIf="formulario.get('descricao').hasError('required')  && formulario.get('descricao').touched" class="invalid-feedback">
+                            Campo é obrigatório.
+                          </div>    
                     </div>
                 </div>
 
                 <div class="col-md-2">
                     <div class="form-group">
                         <label for="status" class="label">*Valor</label><br>    
-                        <input type="text" nbInput fullWidth placeholder="" formControlName="vlLiquido">      
+                        <input class="form-control"
+                        [ngClass]="{'is-invalid': formulario.get('vlLiquido').errors  && formulario.get('vlLiquido').touched}"
+                        type="text" nbInput fullWidth placeholder="" formControlName="vlLiquido">  
+                        <div *ngIf="formulario.get('vlLiquido').hasError('required')  && formulario.get('vlLiquido').touched" class="invalid-feedback">
+                            Campo é obrigatório.
+                          </div>      
                     </div>
                 </div>
 

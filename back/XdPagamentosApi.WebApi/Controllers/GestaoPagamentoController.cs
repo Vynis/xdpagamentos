@@ -9,6 +9,7 @@ using XdPagamentosApi.Services.Interfaces;
 using XdPagamentosApi.WebApi.Configuracao.Swagger;
 using XdPagamentosApi.WebApi.Dtos;
 using XdPagamentosApi.WebApi.Shared;
+using XdPagamentosApi.WebApi.Shared.Extensions;
 
 namespace XdPagamentosApi.WebApi.Controllers
 {
@@ -18,11 +19,13 @@ namespace XdPagamentosApi.WebApi.Controllers
     {
         private readonly IGestaoPagamentoService _gestaoPagamentoService;
         private readonly IMapper _mapper;
+        private readonly IUsuarioService _usuarioService;
 
-        public GestaoPagamentoController(IGestaoPagamentoService gestaoPagamentoService, IMapper mapper)
+        public GestaoPagamentoController(IGestaoPagamentoService gestaoPagamentoService, IMapper mapper, IUsuarioService usuarioService)
         {
             _gestaoPagamentoService = gestaoPagamentoService;
             _mapper = mapper;
+            _usuarioService = usuarioService;
         }
 
 
@@ -78,7 +81,18 @@ namespace XdPagamentosApi.WebApi.Controllers
             try
             {
 
-               var response = await _gestaoPagamentoService.Adicionar(_mapper.Map<GestaoPagamento>(dto));
+                var usuarioLogado = await _usuarioService.ObterPorId(Convert.ToInt32(User.Identity.Name.ToString().Descriptar()));
+
+                if (usuarioLogado == null)
+                    return Response("Erro ao cadastrar", false);
+
+                dto.UsuNome = usuarioLogado.Nome;
+                dto.UsuCpf = usuarioLogado.CPF;
+                dto.DtHrAcaoUsuario = DateTime.Now;
+                dto.Grupo = "EC";
+                dto.CodRef = "LANC-CLIENTE-CRED-DEB";
+
+                var response = await _gestaoPagamentoService.Adicionar(_mapper.Map<GestaoPagamento>(dto));
 
                 if (!response)
                     return Response("Erro ao cadastrar", false);
@@ -92,7 +106,7 @@ namespace XdPagamentosApi.WebApi.Controllers
             }
         }
 
-        [HttpDelete("excluir")]
+        [HttpDelete("excluir/{id}")]
         [SwaggerGroup("GestaoPagamento")]
         public async Task<IActionResult> Excluir(int id)
         {
@@ -108,7 +122,7 @@ namespace XdPagamentosApi.WebApi.Controllers
                 if (!response)
                     return Response("Erro ao excluir", false);
 
-                return Response("Cadastro excluído com sucesso!");
+                return Response("Excluído com sucesso!");
 
             }
             catch (Exception ex)

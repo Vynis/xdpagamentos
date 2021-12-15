@@ -15,4 +15,11 @@ export class GestaoPagamentoModel {
     usuCpf: string;
     dtHrAcaoUsuario: Date;
     dtHrCredito: Date;
+
+    /**
+     *
+     */
+    constructor() {
+        this.id = 0;
+    }
 }

@@ -14,6 +14,7 @@ namespace XdPagamentosApi.Repository.Class
     public class LogNotificacoesRepository : Base<LogNotificacoes>, ILogNotificacoesRepository
     {
         private readonly MySqlContext _mySqlContext;
+        private OrdemPagto ordemPagto;
 
         public LogNotificacoesRepository(MySqlContext mySqlContext) : base(mySqlContext)
         {
@@ -65,7 +66,7 @@ namespace XdPagamentosApi.Repository.Class
                     transacao.TitPercDesconto = respostaTipoTransacao.PercDesconto;
 
                 //Gera Ordem de Pagto
-                return  await GeraOrdemPagto(transacao) && await GeraGestaoPagamento(transacao, dtoTransactionPagSeguro) && await AtualizaTransacao(transacao);
+                return  await GeraOrdemPagto(transacao, dtoTransactionPagSeguro) && await GeraGestaoPagamento(transacao, dtoTransactionPagSeguro) && await AtualizaTransacao(transacao);
 
             }
 
@@ -158,10 +159,15 @@ namespace XdPagamentosApi.Repository.Class
             return true;
         }
 
-        private async Task<bool> GeraOrdemPagto(Transacao transacao)
+        private async Task<bool> GeraOrdemPagto(Transacao transacao, DtoTransactionPagSeguro dtoTransactionPagSeguro)
         {
             try
             {
+
+                var tipoValor = await BuscaStatusTransacao(dtoTransactionPagSeguro);
+
+                var vlLiquido = tipoValor.Equals("D") ?  $"-{Convert.ToDecimal(transacao.VlLiquido)}" : Convert.ToDecimal(transacao.VlLiquido).ToString();
+
                 var pagamento = new Pagamentos
                 {
                     CliId = transacao.CliId,
@@ -169,12 +175,14 @@ namespace XdPagamentosApi.Repository.Class
                     ListaTransacoes = new List<Transacao>() { transacao }
                 };
 
-                var ordemPagto = new OrdemPagto
+                pagamento.ListaTransacoes.ForEach(x => x.VlLiquido = vlLiquido);
+
+                ordemPagto = new OrdemPagto
                 {
                     EstId = transacao.EstId,
                     DtEmissao = transacao.DtOperacao,
                     DtCredito = transacao.DtCredito,
-                    Valor = Convert.ToDecimal(transacao.VlLiquido).ToString(),
+                    Valor = vlLiquido,
                     ListaPagamentos = new List<Pagamentos> { pagamento },
                     Status = "NP"
                 };
@@ -192,18 +200,21 @@ namespace XdPagamentosApi.Repository.Class
         private async Task<bool> GeraGestaoPagamento(Transacao transacao, DtoTransactionPagSeguro dtoTransactionPagSeguro) {
             try
             {
+                
                 var gestaoPagamento = new GestaoPagamento
                 {
                     DtHrLancamento = transacao.DtOperacao,
                     DtHrCredito = transacao.DtCredito,
-                    Descricao = "Pagseguro",
+                    Descricao = $"Ordem de pagamento - {ordemPagto.Id}",
                     Tipo = await BuscaStatusTransacao(dtoTransactionPagSeguro),
-                    VlBruto = transacao.VlBruto,
-                    VlLiquido = transacao.VlLiquido,
-                    Grupo = "EG",
+                    VlBruto = "0,00",
+                    VlLiquido = transacao.VlLiquido.Replace("-",""),
+                    Grupo = "EC",
                     FopId = 2,
                     CliId = transacao.CliId,
-                    RceId = await BuscaContaEstabelecimento(transacao.EstId)
+                    RceId = await BuscaContaEstabelecimento(transacao.EstId),
+                    CodRef = $"ORPID{ordemPagto.Id}",
+                    Status = "AP"
                 };
 
                 _mySqlContext.Add(gestaoPagamento);

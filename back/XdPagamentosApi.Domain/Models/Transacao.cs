@@ -4,7 +4,7 @@ using System.Text;
 
 namespace XdPagamentosApi.Domain.Models
 {
-    public class Transacao
+    public class Transacao 
     {
         public int Id { get; set; }
         public DateTime DtOperacao { get; set; }

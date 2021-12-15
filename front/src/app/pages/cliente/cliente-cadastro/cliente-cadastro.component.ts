@@ -94,6 +94,7 @@ export class ClienteCadastroComponent implements OnInit {
       numAgencia: [_cliente.numAgencia],
       numConta: [_cliente.numConta],
       tipoConta: [_cliente.tipoConta],
+      limiteCredito: [_cliente.limiteCredito, Validators.required],
       taxas: this.fb.array([this.criaGrupoTaxa()])
     });
   }
@@ -227,6 +228,11 @@ export class ClienteCadastroComponent implements OnInit {
       return false;
     }
 
+    if (!this.ehNumeric(controls.limiteCredito.value)) {
+      this.existeErro = true;
+      return false;
+    }
+
     return true;
   }
 
@@ -249,6 +255,7 @@ export class ClienteCadastroComponent implements OnInit {
     _cliente.fone2 = controls.fone2.value;
     _cliente.email = controls.email.value;
     _cliente.status = controls.status.value;
+    _cliente.limiteCredito = controls.limiteCredito.value;
 
     controls.taxas.value.forEach(taxa => {
       _cliente.listaTipoTransacao.push({id: 0, percDesconto: taxa.percDesconto, qtdParcelas: taxa.qtdParcelas, status: taxa.status, cliId: _cliente.id})
@@ -330,6 +337,10 @@ export class ClienteCadastroComponent implements OnInit {
     controls.numConta.updateValueAndValidity();
     controls.tipoConta.updateValueAndValidity();
 
+  }
+
+  ehNumeric(value) {
+    return /^\d+(?:\,\d+)?$/.test(value);
   }
 
 }

@@ -68,7 +68,8 @@ export class EstabelecimentoCadastroComponent implements OnInit {
 
        const filtro = _estabeblecimento.listaRelContaEstabelecimento.filter(x => x.creditoAutomatico === 'S');
 
-       coc_id = filtro[0].cocId;
+       if (filtro.length > 0)
+        coc_id = filtro[0].cocId;
 
     }
      
@@ -84,7 +85,9 @@ export class EstabelecimentoCadastroComponent implements OnInit {
       numEstabelecimento: [_estabeblecimento.numEstabelecimento, Validators.required],
       status: [_estabeblecimento.status, Validators.required],
       opeId: [_estabeblecimento.opeId, Validators.required],
-      cocId: [coc_id, Validators.required]
+      cocId: [coc_id, Validators.required],
+      token: [_estabeblecimento.token, Validators.required],
+      email: [_estabeblecimento.email, [Validators.required, Validators.email]]
     });
   }
 
@@ -194,6 +197,8 @@ export class EstabelecimentoCadastroComponent implements OnInit {
     _estabelecimento.status = controls.status.value;
     _estabelecimento.numEstabelecimento = controls.numEstabelecimento.value;
     _estabelecimento.opeId = controls.opeId.value;
+    _estabelecimento.email = controls.email.value;
+    _estabelecimento.token = controls.token.value;
 
     _estabelecimento.listaRelContaEstabelecimento.push({ id: 0, cocId: controls.cocId.value, estId: _estabelecimento.id, contaCaixa:null, estabelecimento: null, creditoAutomatico: 'S' });
 

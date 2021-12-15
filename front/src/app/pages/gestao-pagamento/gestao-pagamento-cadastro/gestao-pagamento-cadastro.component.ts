@@ -1,3 +1,4 @@
+import { GestaoPagamentoService } from './../../../@core/services/gestao-pagamento-service';
 import { GestaoPagamentoModel } from './../../../@core/models/gestao-pagamento.model';
 import { ContaCaixaService } from './../../../@core/services/conta-caixa.service';
 import { FormaPagtoService } from './../../../@core/services/forma-pagto.service';
@@ -10,6 +11,9 @@ import { Component, OnInit } from '@angular/core';
 import { ClienteModel } from '../../../@core/models/cliente.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastService } from '../../../@core/services/toast.service';
+import { isNumeric } from 'rxjs/internal-compatibility';
+import { ContentObserver } from '@angular/cdk/observers';
+import { ToastPadrao } from '../../../@core/enums/toast.enum';
 
 @Component({
   selector: 'ngx-gestao-pagamento-cadastro',
@@ -29,6 +33,7 @@ export class GestaoPagamentoCadastroComponent implements OnInit {
     private clienteService: ClienteService,
     private formaPagtoService: FormaPagtoService,
     private contaCaixaService: ContaCaixaService,
+    private gestaoPagtoService: GestaoPagamentoService,
     private fb: FormBuilder,
     private route : Router,
     private activatedRoute: ActivatedRoute,
@@ -100,6 +105,10 @@ export class GestaoPagamentoCadastroComponent implements OnInit {
     if (this.validacao() === false)
       return;
 
+    let conteudoModelPreparado = this.prepararModel();
+
+    this.inserir(conteudoModelPreparado);
+
   }
 
   validacao() : boolean {
@@ -115,11 +124,55 @@ export class GestaoPagamentoCadastroComponent implements OnInit {
       return false;
     }
 
+    if (!this.ehNumeric(controls.vlLiquido.value)){
+      this.existeErro = true;
+      return false;
+    }
+    
     return true;
   }
 
   voltar(): void {
     this.route.navigateByUrl('/pages/gestao-pagto');
+  }
+
+  prepararModel() : GestaoPagamentoModel { 
+    const controls = this.formulario.controls;
+    const _model = new GestaoPagamentoModel();
+
+    _model.id = controls.id.value == null ? 0 : controls.id.value;
+    _model.dtHrLancamento = controls.dtHrLancamento.value;
+    _model.descricao = controls.descricao.value;
+    _model.tipo = controls.tipo.value;
+    _model.vlLiquido = controls.vlLiquido.value;
+    _model.cliId = controls.cliId.value;
+    _model.fopId = controls.fopId.value;
+    _model.rceId = controls.rceId.value;
+
+    return _model;
+  }
+
+  inserir(_model: GestaoPagamentoModel) {
+    this.gestaoPagtoService.inserir(_model).subscribe(
+      res => {
+        if (!res.success) {
+          this.toastService.showToast(ToastPadrao.DANGER, 'Erro ao realizar o cadastro', res.data);
+          return;
+        }
+
+        this.toastService.showToast(ToastPadrao.SUCCESS, 'Cadastro realizado com sucesso!');
+        this.route.navigateByUrl('/pages/gestao-pagto');
+      },
+      erro => {
+        console.log(erro);
+        this.toastService.showToast(ToastPadrao.DANGER, 'Erro ao realizar o cadastro');
+      }
+    )
+  }
+
+
+  ehNumeric(value) {
+    return /^\d+(?:\,\d+)?$/.test(value);
   }
 
 }
