@@ -36,4 +36,8 @@ export class ContaCaixaService {
   buscarContaCaixaEstabelecimento() {
     return this.http.get<ModeloBase>(`${this.caminhoApi}/buscar-conta-caixa-estabelecimento`);
   }
+
+  buscarContaCaixaEstabelecimentoPorId(id: number) {
+    return this.http.get<ModeloBase>(`${this.caminhoApi}/buscar-conta-caixa-estabelecimento/${id}`);
+  }
 }

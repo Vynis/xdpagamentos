@@ -16,22 +16,21 @@ namespace XdPagamentosApi.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class GestaoPagamentoController : BaseController
+    public class GestaoExtratoController : BaseController
     {
         private readonly IGestaoPagamentoService _gestaoPagamentoService;
         private readonly IMapper _mapper;
         private readonly IUsuarioService _usuarioService;
 
-        public GestaoPagamentoController(IGestaoPagamentoService gestaoPagamentoService, IMapper mapper, IUsuarioService usuarioService)
+        public GestaoExtratoController(IGestaoPagamentoService gestaoPagamentoService, IMapper mapper, IUsuarioService usuarioService)
         {
             _gestaoPagamentoService = gestaoPagamentoService;
             _mapper = mapper;
             _usuarioService = usuarioService;
         }
 
-
-        [HttpPost("buscar-gestao-pagamento-filtro")]
-        [SwaggerGroup("GestaoPagamento")]
+        [HttpPost("buscar-gestao-extrato-filtro")]
+        [SwaggerGroup("GestaoExtrato")]
         public async Task<IActionResult> BuscarFiltro(PaginationFilter filtro)
         {
             try
@@ -40,35 +39,35 @@ namespace XdPagamentosApi.WebApi.Controllers
                 if (filtro.Filtro.Count() == 0)
                     return Response("Selecione os filtros obrigatorios", false);
 
-                if (!ValidaFiltro(filtro,"DtHrLancamento") || !ValidaFiltro(filtro, "CliId"))
+                if (!ValidaFiltro(filtro, "DtHrLancamento") || !ValidaFiltro(filtro, "CliId"))
                     return Response("Selecione os filtros obrigatorios", false);
 
                 var retornoGestaoPagamento = new DtoRetornoGestaoPagamento();
 
                 var listaFiltroPadrao = new List<FiltroItem>();
                 listaFiltroPadrao.AddRange(filtro.Filtro);
-                listaFiltroPadrao.Add(new FiltroItem { FilterType = "equals", Property = "Grupo", Value = "EC" });
+                listaFiltroPadrao.Add(new FiltroItem { FilterType = "equals", Property = "Grupo", Value = "EG" });
 
                 filtro.Filtro = listaFiltroPadrao;
 
-                var listaPagamentos = _mapper.Map<DtoGestaoPagamento[]>( await _gestaoPagamentoService.BuscarComFiltro(filtro));
+                var listaPagamentos = _mapper.Map<DtoGestaoPagamento[]>(await _gestaoPagamentoService.BuscarComFiltro(filtro));
 
                 retornoGestaoPagamento.listaGestaoPagamentos = listaPagamentos;
 
                 if (listaPagamentos.Count() == 0)
                     return Response(retornoGestaoPagamento);
 
-                var dadosCliente = listaPagamentos.FirstOrDefault().CliId;
+                var dadosConta = listaPagamentos.FirstOrDefault().RceId;
 
                 //Saldo Atual
-                var dadosGeral = await _gestaoPagamentoService.BuscarExpressao(x => x.CliId.Equals(dadosCliente));
+                var dadosGeral = await _gestaoPagamentoService.BuscarExpressao(x => x.RceId.Equals(dadosConta));
 
                 retornoGestaoPagamento.SaldoAtual = (dadosGeral.Where(x => x.Tipo.Equals("C")).Sum(x => Convert.ToDecimal(x.VlLiquido)) - dadosGeral.Where(x => x.Tipo.Equals("D")).Sum(x => Convert.ToDecimal(x.VlLiquido))).ToString();
 
                 //Saldo Anterior
                 var dataHrLancamento = filtro.Filtro.Where(x => x.Property.Equals("DtHrLancamento") && x.FilterType.Equals("greaterThanEquals")).FirstOrDefault().Value.ToString();
 
-                var dadosSaldoAnterior = await _gestaoPagamentoService.BuscarExpressao(x => x.DtHrLancamento < DateTime.Parse(dataHrLancamento) && x.CliId.Equals(dadosCliente));
+                var dadosSaldoAnterior = await _gestaoPagamentoService.BuscarExpressao(x => x.DtHrLancamento < DateTime.Parse(dataHrLancamento) && x.CliId.Equals(dadosConta));
 
                 retornoGestaoPagamento.SaldoAnterior = (dadosSaldoAnterior.Where(x => x.Tipo.Equals("C")).Sum(x => Convert.ToDecimal(x.VlLiquido)) - dadosSaldoAnterior.Where(x => x.Tipo.Equals("D")).Sum(x => Convert.ToDecimal(x.VlLiquido))).ToString();
 
@@ -81,8 +80,9 @@ namespace XdPagamentosApi.WebApi.Controllers
             }
         }
 
+
         [HttpPost("inserir")]
-        [SwaggerGroup("GestaoPagamento")]
+        [SwaggerGroup("GestaoExtrato")]
         public async Task<IActionResult> Inserir(DtoGestaoPagamento dto)
         {
             try
@@ -96,9 +96,9 @@ namespace XdPagamentosApi.WebApi.Controllers
                 dto.UsuNome = usuarioLogado.Nome;
                 dto.UsuCpf = usuarioLogado.CPF;
                 dto.DtHrAcaoUsuario = DateTime.Now;
-                dto.Grupo = "EC";
-                dto.CodRef = "LANC-CLIENTE-CRED-DEB";
-                dto.VlBruto = "0,00";
+                dto.Grupo = "EG";
+                dto.CodRef = "LANC-EXTRATO-CRED-DEB";
+                dto.VlLiquido = "0,00";
 
                 var response = await _gestaoPagamentoService.Adicionar(_mapper.Map<GestaoPagamento>(dto));
 
@@ -106,31 +106,6 @@ namespace XdPagamentosApi.WebApi.Controllers
                     return Response("Erro ao cadastrar", false);
 
                 return Response("Cadastro com sucesso!");
-
-            }
-            catch (Exception ex)
-            {
-                return Response(ex.Message, false);
-            }
-        }
-
-        [HttpDelete("excluir/{id}")]
-        [SwaggerGroup("GestaoPagamento")]
-        public async Task<IActionResult> Excluir(int id)
-        {
-            try
-            {
-                var buscar = await _gestaoPagamentoService.ObterPorId(id);
-
-                if (buscar == null)
-                    return Response("Erro ao excluir", false);
-
-                var response = await _gestaoPagamentoService.Excluir(buscar);
-
-                if (!response)
-                    return Response("Erro ao excluir", false);
-
-                return Response("Excluído com sucesso!");
 
             }
             catch (Exception ex)

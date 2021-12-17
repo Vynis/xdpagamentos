@@ -46,6 +46,9 @@ const routes: Routes = [{
       path: 'gestao-pagto',
       loadChildren: () => import('./gestao-pagamento/gestao-pagamento.module').then(m => m.GestaoPagamentoModule)
     },
+    { 
+      path: 'gestao-extrato', 
+      loadChildren: () => import('./gestao-extrato/gestao-extrato.module').then(m => m.GestaoExtratoModule) },
     {
       path: '',
       redirectTo: 'dashboard',

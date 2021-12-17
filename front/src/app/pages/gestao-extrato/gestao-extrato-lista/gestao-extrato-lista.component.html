@@ -1,0 +1,122 @@
+<nb-card >
+  <nb-card-header>
+      Filtro
+  </nb-card-header>
+  <nb-card-body>
+      <nb-alert *ngIf="existeErro" status="danger" closable>Favor preencher todos os campos obrigatorios!</nb-alert>
+
+      <div  [formGroup]="formularioFiltro">
+          <div class="row">
+              <div class="col-md-6">
+                  <div class="form-group">
+                      <label for="contaCaixa" class="label">*Conta Caixa</label><br>
+                      <nb-select placeholder="" (selectedChange)="itemSelecionado($event)" fullWidth  status="primary" formControlName="contaCaixa" >
+                          <nb-option *ngFor="let conta of listaContaCaixa" [value]="conta.id" >{{conta.descricao}}</nb-option>
+                        </nb-select>
+                  </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                    <label for="cliente" class="label">*Estabelecimento</label><br>
+                    <nb-select placeholder="" fullWidth  status="primary" formControlName="estabelecimento" >
+                        <nb-option [value]="0" >--Todos--</nb-option>
+                        <<nb-option *ngFor="let estabelecimento of lisRelContaEstabelecimento" [value]="estabelecimento.id" >{{estabelecimento.estabelecimento.nome}} - {{estabelecimento.estabelecimento.cnpjCpf}} ({{estabelecimento.id}}) </nb-option> -->
+                      </nb-select>
+                </div>
+              </div>
+
+          </div>
+          <div class="row">
+
+              <div class="col-md-3">
+                  <div class="form-group">
+                      <label for="status" class="label">*Período inicial de lançamento</label><br>
+                      <input nbInput placeholder="" fullWidth formControlName="dtInicial" [nbDatepicker]="dtInicial">
+                      <nb-datepicker #dtInicial [min]="min" [max]="max" format="dd/MM/yyyy"></nb-datepicker>
+                  </div>
+              </div>
+              <div class="col-md-3">
+                  <div class="form-group">
+                      <label for="status" class="label">*Período final da laçamento</label><br>
+                      <input nbInput placeholder="" fullWidth formControlName="dtFinal" [nbDatepicker]="dtFinal">
+                      <nb-datepicker #dtFinal [min]="min" [max]="max" format="dd/MM/yyyy"></nb-datepicker>
+                  </div>
+              </div>
+              <div class="col-md-3">
+                  <div class="form-group">
+                      <label for="status" class="label">Descrição do lançamento</label><br>    
+                      <input type="text" nbInput fullWidth placeholder="" formControlName="descricao">      
+                  </div>
+              </div>
+              <div class="col-md-3">
+                  <div class="form-group">
+                      <label for="status" class="label">Nome do cliente</label><br>    
+                      <input type="text" nbInput fullWidth placeholder="" formControlName="nomeCliente">      
+                  </div>
+              </div>
+          </div>
+      </div>
+
+  </nb-card-body>
+  <nb-card-footer>
+      <button (click)="pesquisar()" type="submit" nbButton status="primary">Filtrar</button>
+  </nb-card-footer>
+</nb-card>
+<nb-card *ngIf="realizouFiltro" >
+  <nb-card-header>Resumo dos Lançamentos</nb-card-header>
+  <nb-card-body>
+      <div class="row">
+          <div  class="col-md-6">
+              Cliente:<br>
+              <b>{{resumoLancamentos.cliente}}</b>
+          </div>
+          <div class="col-md-6">
+              Período lançamentos:<br>
+              <b>{{resumoLancamentos.periodo}}</b>
+          </div>
+      </div><br>
+      <div class="row">
+          <div class="col-md-3">
+              Saldo anterior:<br>
+              <b>{{resumoLancamentos.saldoAnterior}}</b>
+          </div>
+          <div class="col-md-3">
+              Entradas:<br>
+              <b>{{resumoLancamentos.entradas}}</b>
+          </div>
+          <div class="col-md-3">
+              Saídas:<br>
+              <b>{{resumoLancamentos.saidas}}</b>
+          </div>
+          <div class="col-md-3">
+              Saldo atual:<br>
+              <b>{{resumoLancamentos.saldoAtual}}</b>
+          </div>
+      </div>
+  </nb-card-body>
+</nb-card>
+
+<nb-card  >
+  <nb-card-header>
+      <div class="row">
+          <div class="col-sm-10" style="padding-top: 15px;">
+              Lista de Gestão de Pagamento
+          </div>
+          <div  class="col-sm-2" style="text-align: right">
+              <a  nbButton status="primary" routerLink="../cadastro/add" >Novo</a>
+          </div>
+      </div>
+    
+  </nb-card-header>
+
+  <nb-card-body>
+    <ng2-smart-table 
+    #table
+    [settings]="settings" 
+    [source]="source" 
+    (custom)="onCustom($event)"
+    >
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>

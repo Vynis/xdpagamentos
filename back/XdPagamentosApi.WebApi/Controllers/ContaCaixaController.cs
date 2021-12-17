@@ -135,5 +135,22 @@ namespace XdPagamentosApi.WebApi.Controllers
                 return Response(ex.Message, false);
             }
         }
+
+        [HttpGet("buscar-conta-caixa-estabelecimento/{id}")]
+        [SwaggerGroup("ContaCaixa")]
+        public async Task<IActionResult> BuscarTodosComEstabelecimento(int id)
+        {
+            try
+            {
+                var response = await _relContaEstabelecimentoService.BuscarExpressao(x => x.Estabelecimento.Status.Equals("A") && x.CocId.Equals(id));
+
+                return Response(response.ToList().OrderBy(c => c.Id));
+            }
+            catch (Exception ex)
+            {
+
+                return Response(ex.Message, false);
+            }
+        }
     }
 }

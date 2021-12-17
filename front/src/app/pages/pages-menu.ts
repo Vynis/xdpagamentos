@@ -94,7 +94,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
       },
       {
         title: 'Gestão de Extratos',
-        link: '/pages/ui-features/search-fields',
+        link: '/pages/gestao-extrato',
       },
       {
         title: 'Resumo Gestão de Pagto',
