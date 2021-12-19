@@ -18,7 +18,7 @@
 
               <div class="col-md-6">
                 <div class="form-group">
-                    <label for="cliente" class="label">*Estabelecimento</label><br>
+                    <label for="cliente" class="label">Estabelecimento</label><br>
                     <nb-select placeholder="" fullWidth  status="primary" formControlName="estabelecimento" >
                         <nb-option [value]="0" >--Todos--</nb-option>
                         <<nb-option *ngFor="let estabelecimento of lisRelContaEstabelecimento" [value]="estabelecimento.id" >{{estabelecimento.estabelecimento.nome}} - {{estabelecimento.estabelecimento.cnpjCpf}} ({{estabelecimento.id}}) </nb-option> -->
@@ -67,11 +67,15 @@
   <nb-card-header>Resumo dos Lançamentos</nb-card-header>
   <nb-card-body>
       <div class="row">
-          <div  class="col-md-6">
-              Cliente:<br>
-              <b>{{resumoLancamentos.cliente}}</b>
+          <div  class="col-md-4">
+              Conta Caixa:<br>
+              <b>{{resumoLancamentos.contaCaixa}}</b>
           </div>
-          <div class="col-md-6">
+          <div  class="col-md-4">
+            Estabelecimento<br>
+            <b>{{resumoLancamentos.estabelecimento}}</b>
+          </div>
+          <div class="col-md-4">
               Período lançamentos:<br>
               <b>{{resumoLancamentos.periodo}}</b>
           </div>
@@ -101,7 +105,7 @@
   <nb-card-header>
       <div class="row">
           <div class="col-sm-10" style="padding-top: 15px;">
-              Lista de Gestão de Pagamento
+              Lista de Gestão de Extrato das Contas Caixa
           </div>
           <div  class="col-sm-2" style="text-align: right">
               <a  nbButton status="primary" routerLink="../cadastro/add" >Novo</a>

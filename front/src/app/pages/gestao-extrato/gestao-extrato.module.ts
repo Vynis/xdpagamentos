@@ -15,6 +15,7 @@ import { FormaPagtoService } from '../../@core/services/forma-pagto.service';
 import { InterceptService } from '../../@core/utils/intercept.service';
 import { GestaoExtratoListaComponent } from './gestao-extrato-lista/gestao-extrato-lista.component';
 import { GestaoExtratoCadastroComponent } from './gestao-extrato-cadastro/gestao-extrato-cadastro.component';
+import { GestaoExtratoService } from '../../@core/services/gestao-extrato-service';
 
 
 @NgModule({
@@ -51,7 +52,8 @@ import { GestaoExtratoCadastroComponent } from './gestao-extrato-cadastro/gestao
       multi: true
     },
     FormaPagtoService,
-    ContaCaixaService
+    ContaCaixaService,
+    GestaoExtratoService
   ]
 })
 export class GestaoExtratoModule { }

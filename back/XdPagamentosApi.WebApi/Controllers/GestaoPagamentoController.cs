@@ -61,7 +61,7 @@ namespace XdPagamentosApi.WebApi.Controllers
                 var dadosCliente = listaPagamentos.FirstOrDefault().CliId;
 
                 //Saldo Atual
-                var dadosGeral = await _gestaoPagamentoService.BuscarExpressao(x => x.CliId.Equals(dadosCliente));
+                var dadosGeral = await _gestaoPagamentoService.BuscarExpressao(x => x.CliId.Equals(dadosCliente) && x.Grupo.Equals("EC"));
 
                 retornoGestaoPagamento.SaldoAtual = (dadosGeral.Where(x => x.Tipo.Equals("C")).Sum(x => Convert.ToDecimal(x.VlLiquido)) - dadosGeral.Where(x => x.Tipo.Equals("D")).Sum(x => Convert.ToDecimal(x.VlLiquido))).ToString();
 

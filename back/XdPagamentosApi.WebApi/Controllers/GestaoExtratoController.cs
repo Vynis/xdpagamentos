@@ -39,10 +39,10 @@ namespace XdPagamentosApi.WebApi.Controllers
                 if (filtro.Filtro.Count() == 0)
                     return Response("Selecione os filtros obrigatorios", false);
 
-                if (!ValidaFiltro(filtro, "DtHrLancamento") || !ValidaFiltro(filtro, "CliId"))
+                if (!ValidaFiltro(filtro, "DtHrLancamento") || !ValidaFiltro(filtro, "RelContaEstabelecimento.CocId"))
                     return Response("Selecione os filtros obrigatorios", false);
 
-                var retornoGestaoPagamento = new DtoRetornoGestaoPagamento();
+                var retornoGestaoPagamento = new DtoRetornoGestaoExtrato();
 
                 var listaFiltroPadrao = new List<FiltroItem>();
                 listaFiltroPadrao.AddRange(filtro.Filtro);
@@ -60,7 +60,7 @@ namespace XdPagamentosApi.WebApi.Controllers
                 var dadosConta = listaPagamentos.FirstOrDefault().RceId;
 
                 //Saldo Atual
-                var dadosGeral = await _gestaoPagamentoService.BuscarExpressao(x => x.RceId.Equals(dadosConta));
+                var dadosGeral = await _gestaoPagamentoService.BuscarExpressao(x => x.RceId.Equals(dadosConta) && x.Grupo.Equals("EG"));
 
                 retornoGestaoPagamento.SaldoAtual = (dadosGeral.Where(x => x.Tipo.Equals("C")).Sum(x => Convert.ToDecimal(x.VlLiquido)) - dadosGeral.Where(x => x.Tipo.Equals("D")).Sum(x => Convert.ToDecimal(x.VlLiquido))).ToString();
 

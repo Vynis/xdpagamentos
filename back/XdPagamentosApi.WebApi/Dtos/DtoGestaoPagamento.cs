@@ -55,5 +55,16 @@ namespace XdPagamentosApi.WebApi.Dtos
                 return $"{cpf}/{usuario}";
             }
         }
+
+        public string EstabelecimentoFormatada
+        {
+            get
+            {
+                if (RelContaEstabelecimento != null)
+                    return $"{RelContaEstabelecimento.Estabelecimento.Nome} ({RelContaEstabelecimento.Estabelecimento.CnpjCpf})";
+                else
+                    return "";
+            }
+        }
     }
 }

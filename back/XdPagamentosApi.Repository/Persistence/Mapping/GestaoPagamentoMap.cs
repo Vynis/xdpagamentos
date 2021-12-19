@@ -36,7 +36,7 @@ namespace XdPagamentosApi.Repository.Persistence.Mapping
             builder.Property(c => c.DtHrSolicitacoCliente).HasColumnName("gep_dt_hr_solicitado_cliente");
 
 
-            builder.HasOne(c => c.Cliente).WithMany(c => c.ListaGestaoPagamento).HasForeignKey(c => c.CliId);
+            builder.HasOne(c => c.Cliente).WithMany(c => c.ListaGestaoPagamento).HasForeignKey(c => c.CliId).IsRequired(false);
             builder.HasOne(c => c.FormaPagto).WithMany(c => c.ListaGestaoPagamento).HasForeignKey(c => c.FopId);
             builder.HasOne(c => c.RelContaEstabelecimento).WithMany(c => c.ListaGestaoPagamento).HasForeignKey(c => c.RceId);
 

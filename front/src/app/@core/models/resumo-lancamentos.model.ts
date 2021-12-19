@@ -1,10 +1,13 @@
-export class ResumoLancamentosModel {
+export class ResumoLancamentosModel {    
     cliente: string;
     periodo: string;
     saldoAnterior: string;
     entradas: string;
     saidas: string;
     saldoAtual: string;
+
+    contaCaixa: string;
+    estabelecimento: string;
 
     /**
      *
