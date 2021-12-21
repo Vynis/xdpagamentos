@@ -46,7 +46,7 @@ export class UserService extends UserData {
   ];
 
   getUsers(): Observable<any> {
-    return this.http.get(`${environment.api}/Usuario/buscar-dados-usuario`);
+    return this.http.get(`${environment.api}/Cliente/buscar-dados-cliente`);
   }
 
   getContacts(): Observable<Contacts[]> {

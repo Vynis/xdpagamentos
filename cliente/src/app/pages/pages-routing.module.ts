@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 
 import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { ECommerceComponent } from './e-commerce/e-commerce.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
 
 const routes: Routes = [{
@@ -12,7 +11,7 @@ const routes: Routes = [{
   children: [
     {
       path: 'dashboard',
-      component: ECommerceComponent,
+      component: DashboardComponent,
     },
     {
       path: 'iot-dashboard',
@@ -21,22 +20,6 @@ const routes: Routes = [{
     {
       path: 'usuario',
       loadChildren: () =>  import('./usuario/usuario.module').then(m => m.UsuarioModule)
-    },
-    { 
-      path: 'cliente',
-      loadChildren: () => import('./cliente/cliente.module').then(m => m.ClienteModule) 
-    },
-    {
-      path: 'terminal',
-      loadChildren: () => import('./terminal/terminal.module').then(m => m.TerminalModule)
-    },
-    {
-      path: 'conta',
-      loadChildren: () => import('./conta-caixa/conta-caixa.module').then(m => m.ContaCaixaModule)
-    },
-    {
-      path: 'estabelecimento',
-      loadChildren: () => import('./estabelecimento/estabelecimento.module').then(m => m.EstabelecimentoModule)
     },
     {
       path: '',

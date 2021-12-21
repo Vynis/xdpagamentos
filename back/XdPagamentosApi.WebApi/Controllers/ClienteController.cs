@@ -10,6 +10,7 @@ using XdPagamentosApi.Services.Interfaces;
 using XdPagamentosApi.WebApi.Configuracao.Swagger;
 using XdPagamentosApi.WebApi.Dtos;
 using XdPagamentosApi.WebApi.Shared;
+using XdPagamentosApi.WebApi.Shared.Extensions;
 
 namespace XdPagamentosApi.WebApi.Controllers
 {
@@ -26,6 +27,26 @@ namespace XdPagamentosApi.WebApi.Controllers
             _clienteService = clienteService;
             _tipoTransacaoService = tipoTransacaoService;
             _mapper = mapper;
+        }
+
+        [HttpGet("buscar-dados-cliente")]
+        [SwaggerGroup("Cliente")]
+        public async Task<IActionResult> BuscarUsuario()
+        {
+            try
+            {
+                var response = await _clienteService.BuscarExpressao(x => x.Id == Convert.ToInt32(User.Identity.Name.ToString().Descriptar()) && x.Status.Equals("A"));
+
+                if (!response.Any())
+                    return Response("Usuario não encontrado", false);
+
+                return Ok(new { name = response.FirstOrDefault().Nome, picture = "" });
+
+            }
+            catch (Exception ex)
+            {
+                return Response(ex.Message, false);
+            }
         }
 
         [HttpGet("buscar-por-ativos")]
@@ -139,6 +160,10 @@ namespace XdPagamentosApi.WebApi.Controllers
                         return Response("Cpf/Cnpj já cadastrado", false);
 
                 }
+
+
+                dtoCliente.Senha = dados.Senha;
+                dtoCliente.NomeAgrupamento = dados.NomeAgrupamento;
 
 
                 var response = await _clienteService.Atualizar(_mapper.Map<Cliente>(dtoCliente));

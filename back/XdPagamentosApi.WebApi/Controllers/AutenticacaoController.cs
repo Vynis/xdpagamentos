@@ -94,7 +94,7 @@ namespace XdPagamentosApi.WebApi.Controllers
                 var usuario = _mapper.Map<DtoUsuarioLogado>(resposta.FirstOrDefault());
 
                 if (usuario == null)
-                    return Response(new { usuario = string.Empty, token = string.Empty, }) ;
+                    return BadRequest("Usuário ou senha incorreto!");
 
                 var token = TokenService.GenerateToken(usuario);
 
