@@ -1,0 +1,63 @@
+<nb-card >
+    <nb-card-header>
+        Filtro
+    </nb-card-header>
+    <nb-card-body>
+        <nb-alert *ngIf="existeErro" status="danger" closable>Favor preencher todos os campos obrigatorios!</nb-alert>
+
+        <div  [formGroup]="formularioFiltro">
+            <div class="row">
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="status" class="label">*Período inicial de lançamento</label><br>
+                        <input nbInput placeholder="" fullWidth formControlName="dtInicial" [nbDatepicker]="dtInicial">
+                        <nb-datepicker #dtInicial [min]="min" [max]="max" format="dd/MM/yyyy"></nb-datepicker>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="status" class="label">*Período final da laçamento</label><br>
+                        <input nbInput placeholder="" fullWidth formControlName="dtFinal" [nbDatepicker]="dtFinal">
+                        <nb-datepicker #dtFinal [min]="min" [max]="max" format="dd/MM/yyyy"></nb-datepicker>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label for="estabelecimento" class="label">Tipo</label><br>
+                    <nb-select placeholder="" fullWidth  status="primary" formControlName="tipo" >
+                        <nb-option value="T">Todos</nb-option>
+                        <nb-option value="C">Credito</nb-option>
+                        <nb-option value="D">Debito</nb-option>
+                      </nb-select>
+                </div>
+            </div>
+        </div>
+
+    </nb-card-body>
+    <nb-card-footer>
+        <button (click)="pesquisar()" type="submit" nbButton status="primary">Filtrar</button>
+    </nb-card-footer>
+</nb-card>
+<nb-card  >
+    <nb-card-header>
+        <div class="row">
+            <div class="col-sm-9" style="padding-top: 15px;">
+                Extrato
+            </div>
+            <div  class="col-sm-3" style="text-align: right">
+                <a  nbButton status="success" routerLink="../cadastro/add" >Solicitar Pagamento</a>
+            </div>
+        </div>
+      
+    </nb-card-header>
+  
+    <nb-card-body>
+      <ng2-smart-table 
+      #table
+      [settings]="settings" 
+      [source]="source" 
+      (custom)="onCustom($event)"
+      >
+      </ng2-smart-table>
+    </nb-card-body>
+  </nb-card>

@@ -3,5 +3,7 @@ export enum FilterTypeConstants {
     CONTAINS = "contains",
     STARTSWITH = "startWith",
     LESSTHAN = "lessThan",
-    GREATERTHAN = "greaterThan"
+    GREATERTHAN = "greaterThan",
+    GREATERTHANEQUALS = "greaterThanEquals",
+    LESSTHANEQUALS = "lessThanEquals"
 }

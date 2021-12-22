@@ -81,6 +81,37 @@ namespace XdPagamentosApi.WebApi.Controllers
             }
         }
 
+        [HttpPost("buscar-gestao-pagamento-filtro-cliente")]
+        [SwaggerGroup("GestaoPagamento")]
+        public async Task<IActionResult> BuscarFiltroCliente(PaginationFilter filtro)
+        {
+            try
+            {
+
+                if (filtro.Filtro.Count() == 0)
+                    return Response("Selecione os filtros obrigatorios", false);
+
+                if (!ValidaFiltro(filtro, "DtHrLancamento"))
+                    return Response("Selecione os filtros obrigatorios", false);
+
+                var listaFiltroPadrao = new List<FiltroItem>();
+                listaFiltroPadrao.AddRange(filtro.Filtro);
+                listaFiltroPadrao.Add(new FiltroItem { FilterType = "equals", Property = "Grupo", Value = "EC" });
+                listaFiltroPadrao.Add(new FiltroItem { FilterType = "equals", Property = "CliId", Value = User.Identity.Name.ToString().Descriptar() });
+
+                filtro.Filtro = listaFiltroPadrao;
+
+                var listaPagamentos = _mapper.Map<DtoGestaoPagamento[]>(await _gestaoPagamentoService.BuscarComFiltro(filtro));
+
+                return Response(listaPagamentos);
+            }
+            catch (Exception ex)
+            {
+
+                return Response(ex.Message, false);
+            }
+        }
+
         [HttpPost("inserir")]
         [SwaggerGroup("GestaoPagamento")]
         public async Task<IActionResult> Inserir(DtoGestaoPagamento dto)

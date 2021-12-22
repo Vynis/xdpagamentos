@@ -66,5 +66,12 @@ namespace XdPagamentosApi.WebApi.Dtos
                     return "";
             }
         }
+
+        public string TipoFormatado
+        {
+            get {
+                return Tipo.Equals("C") ? "C - Crédito" : "D - Débito";
+            }
+        }
     }
 }

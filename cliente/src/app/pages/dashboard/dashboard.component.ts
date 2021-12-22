@@ -85,7 +85,7 @@ export class DashboardComponent implements OnDestroy {
               private authService: AuthServiceService
               ) {
 
-    this.authService.validaPermissaoTela(SessoesEnum.DASHBOARD);
+    //this.authService.validaPermissaoTela(SessoesEnum.DASHBOARD);
 
     this.themeService.getJsTheme()
       .pipe(takeWhile(() => this.alive))

@@ -17,7 +17,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
       },
       {
         title: 'Extrato',
-        link: '/pages/terminal',
+        link: '/pages/extrato',
       },
     ],
   }

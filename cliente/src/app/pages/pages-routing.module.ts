@@ -21,6 +21,10 @@ const routes: Routes = [{
       path: 'usuario',
       loadChildren: () =>  import('./usuario/usuario.module').then(m => m.UsuarioModule)
     },
+    { 
+      path: 'extrato', 
+      loadChildren: () => import('./extrato/extrato.module').then(m => m.ExtratoModule) 
+    },
     {
       path: '',
       redirectTo: 'dashboard',
