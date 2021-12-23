@@ -40,5 +40,14 @@ namespace XdPagamentosApi.Repository.Class
 
             return await query.AsNoTracking().ToArrayAsync();
         }
+
+        public async override Task<IEnumerable<GestaoPagamento>> BuscarExpressao(Expression<Func<GestaoPagamento, bool>> predicado)
+        {
+
+            IQueryable<GestaoPagamento> query = _mySqlContext.GestaoPagamentos.Where(predicado).Include(c => c.Cliente);
+
+            return await query.AsNoTracking().ToListAsync();
+
+        }
     }
 }

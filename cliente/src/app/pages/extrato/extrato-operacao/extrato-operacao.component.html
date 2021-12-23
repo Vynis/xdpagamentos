@@ -1,1 +1,40 @@
-<p>extrato-operacao works!</p>
+<nb-card> 
+    <nb-card-header><h3>Solicitação de Pagamento</h3></nb-card-header>
+    <nb-card-body>
+        <nb-alert *ngIf="existeErro" status="danger" closable>Favor preencher todos os campos obrigatorios!</nb-alert>
+        <form *ngIf="cliente"  [formGroup]="formulario">
+            <div class="row">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4">
+                    <h5>Limite de solicitação:</h5> <br>
+                    <h6>R$ {{cliente.limiteCredito}}</h6>
+                </div>
+                <div class="col-sm-3"></div>
+            </div><br><br>
+            <div class="row">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                      <label for="valorSolicitadoCliente" class="label">*Valor</label>
+                      <input type="text" class="form-control" maxlength="45"
+                      [ngClass]="{'is-invalid': formulario.get('valorSolicitadoCliente').errors  && formulario.get('valorSolicitadoCliente').touched}"
+                        nbInput fullWidth placeholder="0,00" formControlName="valorSolicitadoCliente" />
+                        <div *ngIf="    formulario.get('valorSolicitadoCliente').hasError('required')  && formulario.get('valorSolicitadoCliente').touched" class="invalid-feedback">
+                          Campo é obrigatório.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </nb-card-body>
+    <nb-card-footer>
+        <div class="row">
+            <div class="col-sm-1">
+                <button nbButton (click)="submit()" status="success" >Enviar</button>
+            </div>
+            <div class="col-sm-1">
+                <button nbButton (click)="voltar()" >Voltar</button>
+            </div>
+        </div>
+      </nb-card-footer>
+</nb-card>

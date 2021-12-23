@@ -13,6 +13,7 @@ import { OrderModule } from 'ngx-order-pipe';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptService } from '../../@core/utils/intercept.service';
 import { NbMomentDateModule } from '@nebular/moment';
+import { ClienteService } from '../../@core/services/cliente.service';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { NbMomentDateModule } from '@nebular/moment';
         useClass: InterceptService,
       multi: true
     },
-    GestaoPagamentoService
+    GestaoPagamentoService,
+    ClienteService
   ]
 })
 export class ExtratoModule { }

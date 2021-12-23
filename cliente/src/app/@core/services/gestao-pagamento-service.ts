@@ -32,6 +32,8 @@ export class GestaoPagamentoService extends GestaoPagamentoData {
         return this.http.get<ModeloBase>(`${this.caminhoApi}/saldo-atual`);
     }
 
-    
+    solicitarPagto(model: GestaoPagamentoModel) {
+        return this.http.post<ModeloBase>(`${this.caminhoApi}/solicitar-pagto-cliente`, model);
+    }
 
 }

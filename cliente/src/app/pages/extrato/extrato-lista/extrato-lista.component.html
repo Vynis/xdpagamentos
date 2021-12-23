@@ -45,7 +45,7 @@
                 Extrato
             </div>
             <div  class="col-sm-3" style="text-align: right">
-                <a  nbButton status="success" routerLink="../cadastro/add" >Solicitar Pagamento</a>
+                <a  nbButton status="success" routerLink="../operacao" >Solicitar Pagamento</a>
             </div>
         </div>
       
@@ -58,6 +58,8 @@
       [source]="source" 
       (custom)="onCustom($event)"
       >
-      </ng2-smart-table>
+      </ng2-smart-table> <br>
+
+      Valor total: <b>R$ {{total}}</b>
     </nb-card-body>
   </nb-card>

@@ -117,6 +117,21 @@ namespace XdPagamentosApi.WebApi.Controllers
             }
         }
 
+        [HttpGet("buscar-dados-cliente-logado")]
+        [SwaggerGroup("Cliente")]
+        public async Task<IActionResult> BuscarDadosClienteLogado()
+        {
+            try
+            {
+                return Response(await _clienteService.ObterPorId(Convert.ToInt32(User.Identity.Name.ToString().Descriptar())));
+            }
+            catch (Exception ex)
+            {
+
+                return Response(ex.Message, false);
+            }
+        }
+
         [HttpPost("inserir")]
         [SwaggerGroup("Cliente")]
         public async Task<IActionResult> Inserir(DtoCliente dtoCliente)

@@ -37,8 +37,8 @@ namespace XdPagamentosApi.Repository.Persistence.Mapping
 
 
             builder.HasOne(c => c.Cliente).WithMany(c => c.ListaGestaoPagamento).HasForeignKey(c => c.CliId).IsRequired(false);
-            builder.HasOne(c => c.FormaPagto).WithMany(c => c.ListaGestaoPagamento).HasForeignKey(c => c.FopId);
-            builder.HasOne(c => c.RelContaEstabelecimento).WithMany(c => c.ListaGestaoPagamento).HasForeignKey(c => c.RceId);
+            builder.HasOne(c => c.FormaPagto).WithMany(c => c.ListaGestaoPagamento).HasForeignKey(c => c.FopId).IsRequired(false);
+            builder.HasOne(c => c.RelContaEstabelecimento).WithMany(c => c.ListaGestaoPagamento).HasForeignKey(c => c.RceId).IsRequired(false);
 
         }
     }

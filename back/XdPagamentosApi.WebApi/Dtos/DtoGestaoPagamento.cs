@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -45,7 +46,7 @@ namespace XdPagamentosApi.WebApi.Dtos
 
         public string UsuarioFormatada { 
             get {
-                if (string.IsNullOrEmpty(UsuNome) || string.IsNullOrEmpty(UsuCpf))
+                if (string.IsNullOrEmpty(UsuNome) || string.IsNullOrEmpty(UsuCpf) || UsuNome.Equals("-") || UsuCpf.Equals("-"))
                     return "";
 
                 var cpf = $"{UsuCpf.Substring(0,3)}.***.***-{UsuCpf.Substring(9, 2)}";
@@ -70,7 +71,33 @@ namespace XdPagamentosApi.WebApi.Dtos
         public string TipoFormatado
         {
             get {
-                return Tipo.Equals("C") ? "C - Crédito" : "D - Débito";
+                return string.IsNullOrEmpty(Tipo) ? "" : Tipo.Equals("C") ? "C - Crédito" : "D - Débito";
+            }
+        }
+
+        public string ValorFormatado
+        {
+            get
+            {
+                return string.IsNullOrEmpty(VlLiquido) || VlLiquido.Equals("0,00") ? string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", ValorSolicitadoCliente)   : string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", VlLiquido)  ;
+            }
+        }
+
+        public string StatusFormatado
+        {
+            get
+            {
+                switch (Status)
+                {
+                    case "AP":
+                        return "AP - APROVADO";
+                    case "PE":
+                        return "PE - PENDENTE";
+                    case "CA":
+                        return "CA - CANCELADO";
+                    default:
+                        return "";
+                }
             }
         }
     }

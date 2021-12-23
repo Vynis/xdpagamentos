@@ -22,12 +22,14 @@ namespace XdPagamentosApi.WebApi.Controllers
         private readonly IGestaoPagamentoService _gestaoPagamentoService;
         private readonly IMapper _mapper;
         private readonly IUsuarioService _usuarioService;
+        private readonly IClienteService _clienteService;
 
-        public GestaoPagamentoController(IGestaoPagamentoService gestaoPagamentoService, IMapper mapper, IUsuarioService usuarioService)
+        public GestaoPagamentoController(IGestaoPagamentoService gestaoPagamentoService, IMapper mapper, IUsuarioService usuarioService, IClienteService clienteService)
         {
             _gestaoPagamentoService = gestaoPagamentoService;
             _mapper = mapper;
             _usuarioService = usuarioService;
+            _clienteService = clienteService;
         }
 
 
@@ -104,7 +106,11 @@ namespace XdPagamentosApi.WebApi.Controllers
 
                 var listaPagamentos = _mapper.Map<DtoGestaoPagamento[]>(await _gestaoPagamentoService.BuscarComFiltro(filtro));
 
-                return Response(listaPagamentos);
+                var totalCredito = listaPagamentos.Where(x => x.Tipo.Equals("C")).Sum(x => decimal.Parse(x.ValorFormatado, new NumberFormatInfo() { NumberDecimalSeparator = "," }));
+                var totalDebito = listaPagamentos.Where(x => x.Tipo.Equals("D")).Sum(x => decimal.Parse(x.ValorFormatado, new NumberFormatInfo() { NumberDecimalSeparator = "," }));
+                var total = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", totalCredito - totalDebito) ;
+
+                return Response( new { listaPagamentos, total });
             }
             catch (Exception ex)
             {
@@ -178,12 +184,61 @@ namespace XdPagamentosApi.WebApi.Controllers
         {
             try
             {
-                var buscar = await _gestaoPagamentoService.BuscarExpressao(x => x.CliId.Equals(Convert.ToInt32(User.Identity.Name.ToString().Descriptar())) && x.Grupo.Equals("EC"));
+                var buscar = await _gestaoPagamentoService.BuscarExpressao(x => x.CliId.Equals(Convert.ToInt32(User.Identity.Name.ToString().Descriptar())) && x.Grupo.Equals("EC") && x.Status.Equals("AP"));
 
                 var somaCredito = buscar.ToList().Where(x => x.Tipo.Equals("C")).Sum(x => decimal.Parse(x.VlLiquido, new NumberFormatInfo() { NumberDecimalSeparator = "," }));
                 var somaDebito = buscar.ToList().Where(x => x.Tipo.Equals("D")).Sum(x => decimal.Parse(x.VlLiquido, new NumberFormatInfo() { NumberDecimalSeparator = "," }));
 
                 return Response(new { saldoCliente = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", somaCredito - somaDebito)  });
+            }
+            catch (Exception ex)
+            {
+                return Response(ex.Message, false);
+            }
+        }
+
+        [HttpPost("solicitar-pagto-cliente")]
+        [SwaggerGroup("GestaoPagamento")]
+        public async Task<IActionResult> SolicitarPagtoCliente(DtoGestaoPagamento dto)
+        {
+            try
+            {
+
+                var buscar = await _gestaoPagamentoService.BuscarExpressao(x => x.CliId.Equals(Convert.ToInt32(User.Identity.Name.ToString().Descriptar())) && x.Grupo.Equals("EC") && x.Status.Equals("PE"));
+
+                var somaDebito = buscar.ToList().Where(x => x.Tipo.Equals("D")).Sum(x => decimal.Parse(x.ValorSolicitadoCliente, new NumberFormatInfo() { NumberDecimalSeparator = "," }));
+
+                var cliente = await  _clienteService.ObterPorId(Convert.ToInt32(User.Identity.Name.ToString().Descriptar()));
+
+                var limiteCredito = string.IsNullOrEmpty(cliente.LimiteCredito) ? "0,00" : cliente.LimiteCredito;
+
+                if ((decimal.Parse(dto.ValorSolicitadoCliente, new NumberFormatInfo() { NumberDecimalSeparator = "," }) + somaDebito) > decimal.Parse(limiteCredito, new NumberFormatInfo() { NumberDecimalSeparator = "," }))
+                    return Response("Limite de crédito excedido", false);
+
+
+                dto.UsuNome = "-";
+                dto.UsuCpf = "-";
+                dto.Descricao = "Solicitação de pagamento";
+                dto.DtHrAcaoUsuario = DateTime.Now;
+                dto.Grupo = "EC";
+                dto.CodRef = "LANC-CLIENTE-CRED-DEB";
+                dto.VlBruto = "0,00";
+                dto.VlLiquido = "0,00";
+                dto.DtHrSolicitacoCliente = DateTime.Now;
+                dto.DtHrLancamento = DateTime.Now;
+                dto.Tipo = "D";
+                dto.Status = "PE";
+                dto.CliId = Convert.ToInt32(User.Identity.Name.ToString().Descriptar());
+                dto.FopId = 0;
+                dto.RceId = 0;
+
+                var response = await _gestaoPagamentoService.Adicionar(_mapper.Map<GestaoPagamento>(dto));
+
+                if (!response)
+                    return Response("Erro ao cadastrar", false);
+
+                return Response("Cadastro com sucesso!");
+
             }
             catch (Exception ex)
             {

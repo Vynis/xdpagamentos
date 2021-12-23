@@ -50,4 +50,8 @@ export class ClienteService {
     return this.http.get<ModeloBase>(`${this.caminhoApi}/bucar-grupo-clientes`);
   }
 
+  buscaDadosCliente() {
+    return this.http.get<ModeloBase>(`${this.caminhoApi}/buscar-dados-cliente-logado`);
+  }
+
 }

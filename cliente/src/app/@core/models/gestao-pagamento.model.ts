@@ -15,6 +15,8 @@ export class GestaoPagamentoModel {
     usuCpf: string;
     dtHrAcaoUsuario: Date;
     dtHrCredito: Date;
+    status: string;
+    valorSolicitadoCliente: string;
 
     /**
      *

@@ -27,6 +27,7 @@ export class ClienteModel {
     tipoPessoa: string;
     listaTipoTransacao: TipoTransacaoModel[] = [];
     nomeAgrupamento: string;
+    limiteCredito: string;
 
     /**
      *

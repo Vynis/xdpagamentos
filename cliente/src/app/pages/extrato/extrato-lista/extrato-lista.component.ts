@@ -23,6 +23,7 @@ export class ExtratoListaComponent implements OnInit {
   source: LocalDataSource = new LocalDataSource();
   realizouFiltro: boolean = false;
   @ViewChild('table') smartTable: Ng2SmartTableComponent;
+  total: string = '0,00';
 
   columns = {
     id: {
@@ -41,9 +42,13 @@ export class ExtratoListaComponent implements OnInit {
       title: 'Tipo',
       type: 'string',
     },
-    vlLiquido: {
+    valorFormatado: {
       title: 'Valor',
       type: 'string',
+    },
+    statusFormatado: {
+      title: 'Status',
+      type: 'string'
     }
   }
 
@@ -72,7 +77,8 @@ export class ExtratoListaComponent implements OnInit {
       res => {
         if (res.success) {
           this.realizouFiltro = true;
-          this.source.load(res.data);
+          this.source.load(res.data.listaPagamentos);
+          this.total = res.data.total;
         }
       }
     )
