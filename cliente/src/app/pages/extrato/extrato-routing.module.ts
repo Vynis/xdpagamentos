@@ -25,7 +25,7 @@ const routes: Routes = [
     ]
   }
 ];
-
+//TEste
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
