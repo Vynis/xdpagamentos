@@ -1,3 +1,4 @@
+import { GestaoPagamentoService } from './services/gestao-pagamento-service';
 import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NbAuthJWTToken, NbAuthModule, NbDummyAuthStrategy, NbPasswordAuthStrategy } from '@nebular/auth';
@@ -53,6 +54,7 @@ import { VisitorsAnalyticsService } from './mock/visitors-analytics.service';
 import { SecurityCamerasService } from './mock/security-cameras.service';
 import { MockDataModule } from './mock/mock-data.module';
 import { environment } from '../../environments/environment';
+import { GestaoPagamentoData } from './data/gestao-pagto';
 
 const socialLinks = [
   {
@@ -92,6 +94,7 @@ const DATA_SERVICES = [
   { provide: StatsProgressBarData, useClass: StatsProgressBarService },
   { provide: VisitorsAnalyticsData, useClass: VisitorsAnalyticsService },
   { provide: SecurityCamerasData, useClass: SecurityCamerasService },
+  { provide: GestaoPagamentoData, useClass: GestaoPagamentoService}
 ];
 
 export class NbSimpleRoleProvider extends NbRoleProvider {

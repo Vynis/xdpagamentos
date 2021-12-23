@@ -1,16 +1,18 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "../../../environments/environment";
+import { GestaoPagamentoData } from "../data/gestao-pagto";
 import { PaginationFilterModel } from "../models/configuracao/paginationfilter.model";
 import { GestaoPagamentoModel } from "../models/gestao-pagamento.model";
 import { ModeloBase } from "../models/modelo-balse";
 
 @Injectable()
-export class GestaoPagamentoService { 
+export class GestaoPagamentoService extends GestaoPagamentoData { 
     
     caminhoApi: string = '';
 
     constructor(private http: HttpClient) { 
+        super();
         this.caminhoApi =  `${environment.api}/GestaoPagamento`;
     }
 
@@ -24,6 +26,10 @@ export class GestaoPagamentoService {
 
     remover(id) {
         return this.http.delete<ModeloBase>(`${this.caminhoApi}/excluir/${id}`);
+    }
+
+    saldoAtual() {
+        return this.http.get<ModeloBase>(`${this.caminhoApi}/saldo-atual`);
     }
 
     

@@ -5,6 +5,7 @@ import { UserData } from '../../../@core/data/users';
 import { LayoutService } from '../../../@core/utils';
 import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { GestaoPagamentoData } from '../../../@core/data/gestao-pagto';
 
 @Component({
   selector: 'ngx-header',
@@ -16,6 +17,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
   userPictureOnly: boolean = false;
   user: any;
+  saldo: string = '0,00';
 
   themes = [
     {
@@ -45,11 +47,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
               private themeService: NbThemeService,
               private userService: UserData,
               private layoutService: LayoutService,
-              private breakpointService: NbMediaBreakpointsService) {
+              private breakpointService: NbMediaBreakpointsService,
+              private gestaoPagamentoService: GestaoPagamentoData) {
   }
 
   ngOnInit() {
     this.currentTheme = this.themeService.currentTheme;
+
+    this.buscarSaldo();
 
     this.userService.getUsers()
       .pipe(takeUntil(this.destroy$))
@@ -90,5 +95,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
   navigateHome() {
     this.menuService.navigateHome();
     return false;
+  }
+
+  buscarSaldo() {
+    this.gestaoPagamentoService.saldoAtual().subscribe(
+      res => {
+        if (!res.success)
+          return;
+        
+        this.saldo = res.data.saldoCliente;
+        console.log(res.data);
+      }
+    )
   }
 }
