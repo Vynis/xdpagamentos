@@ -14,6 +14,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptService } from '../../@core/utils/intercept.service';
 import { NbMomentDateModule } from '@nebular/moment';
 import { ClienteService } from '../../@core/services/cliente.service';
+import { CurrencyMaskModule } from 'ng2-currency-mask';
+
 
 @NgModule({
   declarations: [
@@ -36,7 +38,8 @@ import { ClienteService } from '../../@core/services/cliente.service';
     NbToggleModule,
     OrderModule,
     NbDatepickerModule,
-    NbMomentDateModule
+    NbMomentDateModule,
+    CurrencyMaskModule
   ],
   providers: [
     InterceptService,

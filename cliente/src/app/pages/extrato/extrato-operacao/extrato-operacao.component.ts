@@ -7,6 +7,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { ToastService } from '../../../@core/services/toast.service';
 import { ToastPadrao } from '../../../@core/enums/toast.enum';
+import { formatarNumero } from '../../../@core/utils/funcoes';
 
 @Component({
   selector: 'ngx-extrato-operacao',
@@ -63,10 +64,10 @@ export class ExtratoOperacaoComponent implements OnInit {
       return false;
     }
 
-    if (!this.ehNumeric(controls.valorSolicitadoCliente.value)){
-      this.existeErro = true;
-      return false;
-    }
+    // if (!this.ehNumeric(controls.valorSolicitadoCliente.value)){
+    //   this.existeErro = true;
+    //   return false;
+    // }
 
     return true;
   }
@@ -78,7 +79,7 @@ export class ExtratoOperacaoComponent implements OnInit {
 
     const _model = new GestaoPagamentoModel();
 
-    _model.valorSolicitadoCliente = this.formulario.controls.valorSolicitadoCliente.value;
+    _model.valorSolicitadoCliente = formatarNumero(this.formulario.controls.valorSolicitadoCliente.value);
 
     this.gestaoPagtoService.solicitarPagto(_model).subscribe(
       res => {

@@ -18,7 +18,7 @@
                       <label for="valorSolicitadoCliente" class="label">*Valor</label>
                       <input type="text" class="form-control" maxlength="45"
                       [ngClass]="{'is-invalid': formulario.get('valorSolicitadoCliente').errors  && formulario.get('valorSolicitadoCliente').touched}"
-                        nbInput fullWidth placeholder="0,00" formControlName="valorSolicitadoCliente" />
+                        nbInput fullWidth placeholder="0,00" formControlName="valorSolicitadoCliente" currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', align: 'left'  }"/>
                         <div *ngIf="    formulario.get('valorSolicitadoCliente').hasError('required')  && formulario.get('valorSolicitadoCliente').touched" class="invalid-feedback">
                           Campo é obrigatório.
                         </div>
