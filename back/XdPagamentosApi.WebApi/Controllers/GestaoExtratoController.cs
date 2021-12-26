@@ -100,6 +100,7 @@ namespace XdPagamentosApi.WebApi.Controllers
                 dto.Grupo = "EG";
                 dto.CodRef = "LANC-EXTRATO-CRED-DEB";
                 dto.VlLiquido = "0,00";
+                dto.ValorSolicitadoCliente = "0,00";
 
                 var response = await _gestaoPagamentoService.Adicionar(_mapper.Map<GestaoPagamento>(dto));
 

@@ -1,5 +1,5 @@
 import { FormaPagtoService } from './../../@core/services/forma-pagto.service';
-import { LOCALE_ID, NgModule } from '@angular/core';
+import { DEFAULT_CURRENCY_CODE, LOCALE_ID, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { GestaoPagamentoRoutingModule } from './gestao-pagamento-routing.module';
@@ -16,6 +16,7 @@ import { InterceptService } from '../../@core/utils/intercept.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ContaCaixaService } from '../../@core/services/conta-caixa.service';
 import { NbMomentDateModule } from '@nebular/moment';
+import { CurrencyMaskModule } from 'ng2-currency-mask';
 
 
 @NgModule({
@@ -39,13 +40,18 @@ import { NbMomentDateModule } from '@nebular/moment';
     NbToggleModule,
     OrderModule,
     NbDatepickerModule,
-    NbMomentDateModule
+    NbMomentDateModule,
+    CurrencyMaskModule
   ],
   providers: [
     InterceptService,
     {
       provide: LOCALE_ID, useValue: 'pt-BR'
     },
+    {
+      provide:  DEFAULT_CURRENCY_CODE,
+      useValue: 'BRL'
+   },
     {
       provide: HTTP_INTERCEPTORS,
         useClass: InterceptService,

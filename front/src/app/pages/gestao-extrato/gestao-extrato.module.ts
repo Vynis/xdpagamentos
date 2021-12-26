@@ -16,6 +16,7 @@ import { InterceptService } from '../../@core/utils/intercept.service';
 import { GestaoExtratoListaComponent } from './gestao-extrato-lista/gestao-extrato-lista.component';
 import { GestaoExtratoCadastroComponent } from './gestao-extrato-cadastro/gestao-extrato-cadastro.component';
 import { GestaoExtratoService } from '../../@core/services/gestao-extrato-service';
+import { CurrencyMaskModule } from 'ng2-currency-mask';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { GestaoExtratoService } from '../../@core/services/gestao-extrato-servic
     NbToggleModule,
     OrderModule,
     NbDatepickerModule,
-    NbMomentDateModule
+    NbMomentDateModule,
+    CurrencyMaskModule
   ],
   providers: [
     InterceptService,

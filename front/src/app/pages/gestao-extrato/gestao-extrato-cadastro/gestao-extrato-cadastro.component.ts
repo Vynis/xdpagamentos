@@ -10,6 +10,7 @@ import { ContaCaixaService } from '../../../@core/services/conta-caixa.service';
 import { FormaPagtoService } from '../../../@core/services/forma-pagto.service';
 import { GestaoExtratoService } from '../../../@core/services/gestao-extrato-service';
 import { ToastService } from '../../../@core/services/toast.service';
+import { formatarNumero } from '../../../@core/utils/funcoes';
 
 @Component({
   selector: 'ngx-gestao-extrato-cadastro',
@@ -103,10 +104,10 @@ export class GestaoExtratoCadastroComponent implements OnInit {
       return false;
     }
 
-    if (!this.ehNumeric(controls.vlBruto.value)){
-      this.existeErro = true;
-      return false;
-    }
+    // if (!this.ehNumeric(controls.vlBruto.value)){
+    //   this.existeErro = true;
+    //   return false;
+    // }
     
     return true;
   }
@@ -123,7 +124,7 @@ export class GestaoExtratoCadastroComponent implements OnInit {
     _model.dtHrLancamento = controls.dtHrLancamento.value;
     _model.descricao = controls.descricao.value;
     _model.tipo = controls.tipo.value;
-    _model.vlBruto = controls.vlBruto.value;
+    _model.vlBruto = formatarNumero(controls.vlBruto.value);
     _model.fopId = controls.fopId.value;
     _model.rceId = controls.rceId.value;
 

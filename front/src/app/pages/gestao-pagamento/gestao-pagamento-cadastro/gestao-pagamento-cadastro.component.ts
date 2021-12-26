@@ -14,6 +14,7 @@ import { ToastService } from '../../../@core/services/toast.service';
 import { isNumeric } from 'rxjs/internal-compatibility';
 import { ContentObserver } from '@angular/cdk/observers';
 import { ToastPadrao } from '../../../@core/enums/toast.enum';
+import { formatarNumero } from '../../../@core/utils/funcoes';
 
 @Component({
   selector: 'ngx-gestao-pagamento-cadastro',
@@ -155,10 +156,10 @@ export class GestaoPagamentoCadastroComponent implements OnInit {
       return false;
     }
 
-    if (!this.ehNumeric(controls.vlLiquido.value)){
-      this.existeErro = true;
-      return false;
-    }
+    // if (!this.ehNumeric(controls.vlLiquido.value)){
+    //   this.existeErro = true;
+    //   return false;
+    // }
 
     if (this.ehAprovacao)
       if (controls.status.value === null || controls.status.value === '') {
@@ -181,7 +182,7 @@ export class GestaoPagamentoCadastroComponent implements OnInit {
     _model.dtHrLancamento = controls.dtHrLancamento.value;
     _model.descricao = controls.descricao.value;
     _model.tipo = controls.tipo.value;
-    _model.vlLiquido = controls.vlLiquido.value;
+    _model.vlLiquido = formatarNumero(controls.vlLiquido.value);
     _model.cliId = controls.cliId.value;
     _model.fopId = controls.fopId.value;
     _model.rceId = controls.rceId.value;

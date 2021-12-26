@@ -45,7 +45,7 @@
                         <label for="status" class="label">*Valor</label><br>    
                         <input class="form-control"
                         [ngClass]="{'is-invalid': formulario.get('vlLiquido').errors  && formulario.get('vlLiquido').touched}"
-                        type="text" nbInput fullWidth placeholder="" formControlName="vlLiquido">  
+                        type="text" nbInput fullWidth placeholder="" formControlName="vlLiquido" currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', align: 'left'  }">  
                         <div *ngIf="formulario.get('vlLiquido').hasError('required')  && formulario.get('vlLiquido').touched" class="invalid-feedback">
                             Campo é obrigatório.
                           </div>      

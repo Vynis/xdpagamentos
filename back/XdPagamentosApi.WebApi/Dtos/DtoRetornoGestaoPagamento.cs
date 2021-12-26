@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,13 +14,13 @@ namespace XdPagamentosApi.WebApi.Dtos
         public string Entradas { 
             get
             {
-                return $"{listaGestaoPagamentos.Where(x => x.Tipo.Equals("C")).Sum(x => Convert.ToDecimal(x.VlLiquido)).ToString()} (C)";
+                return $"{listaGestaoPagamentos.Where(x => x.Tipo.Equals("C")).Sum(x => decimal.Parse(x.VlLiquido, new NumberFormatInfo() { NumberDecimalSeparator = "," }))} (C)";
             }
         }
         public string Saidas { 
             get
             {
-                return $"{listaGestaoPagamentos.Where(x => x.Tipo.Equals("D")).Sum(x => Convert.ToDecimal(x.VlLiquido)).ToString()} (D)";
+                return $"{listaGestaoPagamentos.Where(x => x.Tipo.Equals("D")).Sum(x => decimal.Parse(x.VlLiquido, new NumberFormatInfo() { NumberDecimalSeparator = "," }))} (D)";
             }
         }
         public string SaldoParcial { get; set; }

@@ -15,6 +15,7 @@ import { ResumoLancamentosModel } from '../../../@core/models/resumo-lancamentos
 import { ToastService } from '../../../@core/services/toast.service';
 import { SweetalertService } from '../../../@core/services/sweetalert.service';
 import { SweetAlertIcons } from '../../../@core/enums/sweet-alert-icons-enum';
+import { formatarNumero } from '../../../@core/utils/funcoes';
 
 @Component({
   templateUrl: './gestao-pagamento-lista.component.html',
@@ -109,7 +110,7 @@ export class GestaoPagamentoListaComponent implements OnInit {
       descricao: [''],
       dtInicial: [new Date()],
       dtFinal: [new Date()],
-      valorliquido: [''],
+      valorliquido: [null],
       tipo: ['T'],
       status: ['T']
     })
@@ -162,11 +163,11 @@ export class GestaoPagamentoListaComponent implements OnInit {
       listaItem.push(item);
     }
 
-    if (controls.valorliquido.value !== ''){ 
+    if (controls.valorliquido.value !== null){ 
       var item  = new FiltroItemModel();
       item.property = 'VlLiquido';
       item.filterType = FilterTypeConstants.EQUALS;
-      item.value = controls.valorliquido.value;
+      item.value = formatarNumero(controls.valorliquido.value);
       listaItem.push(item);
     }
 
