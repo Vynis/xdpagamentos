@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="status" class="label">Descrição do lançamento</label><br>    
                         <input type="text" nbInput fullWidth placeholder="" formControlName="descricao">      
@@ -50,6 +50,16 @@
                         <nb-option value="T">Todos</nb-option>
                         <nb-option value="C">Credito</nb-option>
                         <nb-option value="D">Debito</nb-option>
+                      </nb-select>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="status" class="label">Status</label><br>
+                    <nb-select placeholder="" fullWidth  status="primary" formControlName="status" >
+                        <nb-option value="T">Todos</nb-option>
+                        <nb-option value="AP">AP - APROVADO</nb-option>
+                        <nb-option value="PE">PE - PENDENTE</nb-option>
+                        <nb-option value="CA">CA - CANCELADO</nb-option>
                       </nb-select>
                 </div>
             </div>

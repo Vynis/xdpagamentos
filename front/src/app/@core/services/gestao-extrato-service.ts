@@ -24,8 +24,6 @@ export class GestaoExtratoService {
 
     remover(id) {
         return this.http.delete<ModeloBase>(`${this.caminhoApi}/excluir/${id}`);
-    }
-
-    
+    }    
 
 }

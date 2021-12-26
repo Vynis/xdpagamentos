@@ -119,6 +119,21 @@ namespace XdPagamentosApi.WebApi.Controllers
             }
         }
 
+        [HttpGet("buscar-por-id/{id}")]
+        [SwaggerGroup("GestaoPagamento")]
+        public async Task<IActionResult> BuscarPorId(int id)
+        {
+            try
+            {
+                return Response(await _gestaoPagamentoService.ObterPorId(id));
+            }
+            catch (Exception ex)
+            {
+
+                return Response(ex.Message, false);
+            }
+        }
+
         [HttpPost("inserir")]
         [SwaggerGroup("GestaoPagamento")]
         public async Task<IActionResult> Inserir(DtoGestaoPagamento dto)
@@ -137,8 +152,52 @@ namespace XdPagamentosApi.WebApi.Controllers
                 dto.Grupo = "EC";
                 dto.CodRef = "LANC-CLIENTE-CRED-DEB";
                 dto.VlBruto = "0,00";
+                dto.ValorSolicitadoCliente = "0,00";
 
                 var response = await _gestaoPagamentoService.Adicionar(_mapper.Map<GestaoPagamento>(dto));
+
+                if (!response)
+                    return Response("Erro ao cadastrar", false);
+
+                return Response("Cadastro com sucesso!");
+
+            }
+            catch (Exception ex)
+            {
+                return Response(ex.Message, false);
+            }
+        }
+
+        [HttpPut("alterar")]
+        [SwaggerGroup("GestaoPagamento")]
+        public async Task<IActionResult> Alterar(DtoGestaoPagamento dto)
+        {
+            try
+            {
+                var dados = await _gestaoPagamentoService.ObterPorId(dto.Id);
+
+                if (dados == null)
+                    return Response("Erro ao cadastrar", false);
+
+                var usuarioLogado = await _usuarioService.ObterPorId(Convert.ToInt32(User.Identity.Name.ToString().Descriptar()));
+
+                if (usuarioLogado == null)
+                    return Response("Erro ao cadastrar", false);
+
+                dados.UsuNome = usuarioLogado.Nome;
+                dados.UsuCpf = usuarioLogado.CPF;
+                dados.DtHrAcaoUsuario = DateTime.Now;
+                dados.Descricao = dto.Descricao;
+                dados.DtHrLancamento = dto.DtHrLancamento;
+                dados.Tipo = dto.Tipo;
+                dados.VlLiquido = dto.VlLiquido;
+                dados.VlBruto = dto.VlLiquido;
+                dados.FopId = dto.FopId;
+                dados.CliId = dto.CliId;
+                dados.RceId = dto.RceId;
+                dados.Status = dto.Status;
+
+                var response = await _gestaoPagamentoService.Atualizar(_mapper.Map<GestaoPagamento>(dados));
 
                 if (!response)
                     return Response("Erro ao cadastrar", false);

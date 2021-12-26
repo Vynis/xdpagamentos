@@ -53,6 +53,10 @@ export class GestaoPagamentoListaComponent implements OnInit {
       title: 'Vl. Sol. Cliente',
       type: 'string',
     },
+    statusFormatado: {
+      title: 'Status',
+      type: 'string',
+    },
     tipo: {
       title: 'Tipo',
       type: 'string',
@@ -82,11 +86,19 @@ export class GestaoPagamentoListaComponent implements OnInit {
     this.settings.columns = this.columns;
     this.settings.actions.custom = [];
     this.settings.actions.custom.push({ name: AcoesPadrao.REMOVER, title: '<i title="Remover" class="nb-trash"></i>'});
+    this.settings.actions.custom.push({ name: 'Aprovar', title: '<i title="Aprovar" class="nb-checkmark"></i>'});
     this.settings.rowClassFunction = (row) => { 
-      if (row.data.codRef === 'LANC-CLIENTE-CRED-DEB')
+      if (row.data.codRef === 'LANC-CLIENTE-CRED-DEB'){
+
+        if (row.data.status !== 'PE')
+          return 'aprove';
+
         return ''
-      else
-        return 'remove'
+      }
+      else {
+        return 'remove aprove'
+      }
+        
     };
 
   }
@@ -98,7 +110,8 @@ export class GestaoPagamentoListaComponent implements OnInit {
       dtInicial: [new Date()],
       dtFinal: [new Date()],
       valorliquido: [''],
-      tipo: ['T']
+      tipo: ['T'],
+      status: ['T']
     })
   }
 
@@ -165,6 +178,14 @@ export class GestaoPagamentoListaComponent implements OnInit {
       listaItem.push(item);
      }
 
+     if (controls.status.value !== 'T'){
+      var item  = new FiltroItemModel();
+      item.property = 'Status';
+      item.filterType = FilterTypeConstants.EQUALS;
+      item.value = controls.status.value;
+      listaItem.push(item);
+     }
+
 
     filtro.filtro = listaItem;
     this.buscarDados(filtro);
@@ -209,11 +230,10 @@ export class GestaoPagamentoListaComponent implements OnInit {
 
   onCustom(event) {
     switch (event.action) {
-      case AcoesPadrao.EDITAR:
-        this.route.navigateByUrl(`/pages/conta/cadastro/edit/${event.data.id}`);
+      case 'Aprovar':
+        this.route.navigateByUrl(`/pages/gestao-pagto/cadastro/aprovar/${event.data.id}`);
         break;
       case AcoesPadrao.REMOVER:
-        console.log(event);
         this.sweetAlertService.msgPadrao().then(
           res => {
             if (res.isConfirmed){
@@ -221,7 +241,7 @@ export class GestaoPagamentoListaComponent implements OnInit {
             } 
           }
         )
-        break;        
+        break;   
       default:
         break;
     }

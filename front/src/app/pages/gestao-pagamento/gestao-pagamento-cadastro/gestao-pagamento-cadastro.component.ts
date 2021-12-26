@@ -28,6 +28,7 @@ export class GestaoPagamentoCadastroComponent implements OnInit {
   listaFormaPagto: FormaPagtoModel[] = [];
   listaContaCaixa: RelContaEstabelecimentoModel[] = [];
   gestaoPagtoOld: GestaoPagamentoModel;
+  ehAprovacao: boolean = false;
 
   constructor(
     private clienteService: ClienteService,
@@ -44,8 +45,22 @@ export class GestaoPagamentoCadastroComponent implements OnInit {
     this.buscaClientes();
     this.buscarFormaPagto();
     this.buscarContaCaixa();
-    const model = new GestaoPagamentoModel();
-    this.createForm(model);
+
+
+
+    this.activatedRoute.params.subscribe(params => {
+      const id = params.id;
+      if (id && id > 0) {
+        //this.authService.validaPermissaoTela(SessoesEnum.ALTERAR_USUARIOS);
+        this.tituloPagina = `Aprovar solicitacão do cliente - Nº ${id}`;
+        this.buscaPorId(id);
+      }
+      else {
+        //this.authService.validaPermissaoTela(SessoesEnum.CADASTRO_USUARIOS);
+        const model = new GestaoPagamentoModel();
+        this.createForm(model);
+      }
+    });
   }
 
   createForm(_model: GestaoPagamentoModel) {
@@ -53,13 +68,14 @@ export class GestaoPagamentoCadastroComponent implements OnInit {
 
     this.formulario = this.fb.group({
       id: [_model.id, Validators.required],
-      dtHrLancamento: [_model.dtHrLancamento, Validators.required],
+      dtHrLancamento: [new Date(_model.dtHrLancamento), Validators.required],
       descricao: [_model.descricao, Validators.required],
       tipo: [_model.tipo, Validators.required],
-      vlLiquido: [_model.vlLiquido, Validators.required],
+      vlLiquido: [this.ehAprovacao ? _model.valorSolicitadoCliente : _model.vlLiquido, Validators.required],
       cliId: [_model.cliId, Validators.required],
       fopId: [_model.fopId, Validators.required],
       rceId : [_model.rceId, Validators.required],
+      status: [_model.status]
     })
 
   }
@@ -67,13 +83,13 @@ export class GestaoPagamentoCadastroComponent implements OnInit {
 
   buscaClientes() {
     this.clienteService.buscarAtivos().subscribe(
-      res => {
+      res => {      
         if (!res.success)
           return;
 
         this.listaClientes = res.data;
       }
-    )
+    )   
   }
 
   buscarFormaPagto() {
@@ -99,6 +115,18 @@ export class GestaoPagamentoCadastroComponent implements OnInit {
     )
   }
 
+  buscaPorId(id) {
+    this.gestaoPagtoService.buscaPorId(id).subscribe(
+      res => {
+        if (!res.success)
+          return;
+
+        this.ehAprovacao = true;
+        this.createForm(res.data);
+      }
+    )
+  }
+
   submit(): void {
     this.existeErro = false;
 
@@ -107,7 +135,10 @@ export class GestaoPagamentoCadastroComponent implements OnInit {
 
     let conteudoModelPreparado = this.prepararModel();
 
-    this.inserir(conteudoModelPreparado);
+    if (this.ehAprovacao)
+      this.alterar(conteudoModelPreparado);
+    else
+      this.inserir(conteudoModelPreparado);
 
   }
 
@@ -128,6 +159,12 @@ export class GestaoPagamentoCadastroComponent implements OnInit {
       this.existeErro = true;
       return false;
     }
+
+    if (this.ehAprovacao)
+      if (controls.status.value === null || controls.status.value === '') {
+        this.existeErro = true;
+        return false;
+      }
     
     return true;
   }
@@ -148,6 +185,9 @@ export class GestaoPagamentoCadastroComponent implements OnInit {
     _model.cliId = controls.cliId.value;
     _model.fopId = controls.fopId.value;
     _model.rceId = controls.rceId.value;
+    
+    if (this.ehAprovacao)
+      _model.status = controls.status.value;
 
     return _model;
   }
@@ -170,6 +210,23 @@ export class GestaoPagamentoCadastroComponent implements OnInit {
     )
   }
 
+  alterar(_model: GestaoPagamentoModel) {
+    this.gestaoPagtoService.alterar(_model).subscribe(
+      res => {
+        if (!res.success) {
+          this.toastService.showToast(ToastPadrao.DANGER, 'Erro ao realizar o alteracao', res.data);
+          return;
+        }
+
+        this.toastService.showToast(ToastPadrao.SUCCESS, 'Aprovação realizado com sucesso!');
+        this.route.navigateByUrl('/pages/gestao-pagto');
+      },
+      erro => {
+        console.log(erro);
+        this.toastService.showToast(ToastPadrao.DANGER, 'Erro ao realizar o cadastro');
+      }
+    )
+  }
 
   ehNumeric(value) {
     return /^\d+(?:\,\d+)?$/.test(value);

@@ -22,9 +22,18 @@ export class GestaoPagamentoService {
         return this.http.post<ModeloBase>(`${this.caminhoApi}/inserir`, model);
     }
 
+    alterar(model : GestaoPagamentoModel) {
+        return this.http.put<ModeloBase>(`${this.caminhoApi}/alterar`, model);
+    }
+
     remover(id) {
         return this.http.delete<ModeloBase>(`${this.caminhoApi}/excluir/${id}`);
     }
+
+    buscaPorId(id: number) {
+        return this.http.get<ModeloBase>(`${this.caminhoApi}/buscar-por-id/${id}`);
+    }
+
 
     
 

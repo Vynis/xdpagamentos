@@ -24,10 +24,10 @@ const routes: Routes = [
         component: GestaoPagamentoCadastroComponent
       },
       {
-        path: 'cadastro/edit/:id',
+        path: 'cadastro/aprovar/:id',
         component: GestaoPagamentoCadastroComponent
       },
-    ]
+    ]   
   }
 ];
 
