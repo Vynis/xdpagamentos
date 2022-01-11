@@ -47,7 +47,7 @@ export class GestaoExtratoListaComponent implements OnInit {
       title: 'Descrição',
       type: 'string',
     },
-    vlBruto: {
+    valorBrutoFormatado: {
       title: 'Vl. Bruto',
       type: 'string',
     },

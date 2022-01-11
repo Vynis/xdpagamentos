@@ -66,8 +66,8 @@ namespace XdPagamentosApi.WebApi.Controllers
                 if (!response)
                     return Response("Não foi possível fazer operacao", false);
 
-                if (!notificacoes.NumTerminal.Equals("1730545744"))
-                    return Ok();
+                //if (!notificacoes.NumTerminal.Equals("1730545744"))
+                //    return Ok();
 
                 //Salva a ordem de pagamento
                 var resonseOrdemPagto = await _logNotificacoesService.GerarOrdemPagamento(retornoPagSeguro, estabelecimento);

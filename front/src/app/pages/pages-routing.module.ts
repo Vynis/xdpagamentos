@@ -48,7 +48,12 @@ const routes: Routes = [{
     },
     { 
       path: 'gestao-extrato', 
-      loadChildren: () => import('./gestao-extrato/gestao-extrato.module').then(m => m.GestaoExtratoModule) },
+      loadChildren: () => import('./gestao-extrato/gestao-extrato.module').then(m => m.GestaoExtratoModule) 
+    },
+    { 
+      path: 'transferencia-transacao', 
+      loadChildren: () => import('./transferencia-transacao/transferencia-transacao.module').then(m => m.TransferenciaTransacaoModule) 
+    },
     {
       path: '',
       redirectTo: 'dashboard',

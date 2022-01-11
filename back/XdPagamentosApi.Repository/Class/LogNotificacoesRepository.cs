@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,6 +46,12 @@ namespace XdPagamentosApi.Repository.Class
             }
             else
             {
+
+                var respostTipoTransacaoPadrao = await _mySqlContext.TipoTransacoes.Where(c => c.CliId.Equals(0) && c.QtdParcelas.Equals(transacao.QtdParcelas) && c.Status.Equals("A")).AsNoTracking().FirstOrDefaultAsync();
+
+                if (respostTipoTransacaoPadrao != null)
+                    transacao.TitPercDesconto = respostTipoTransacaoPadrao.PercDesconto;
+
                 //Consulta se o numero de terminal e validado
                 var respostaTerminal = await _mySqlContext.Terminais.Where(c => c.NumTerminal.Trim().Equals(transacao.NumTerminal.Trim())).AsNoTracking().Include(c => c.ListaRelClienteTerminal).FirstOrDefaultAsync();
 
@@ -76,8 +83,8 @@ namespace XdPagamentosApi.Repository.Class
         {
             transacao.DtOperacao = dtoTransactionPagSeguro.Date;
             transacao.DtCredito = dtoTransactionPagSeguro.EscrowEndDate;
-            transacao.VlBruto = dtoTransactionPagSeguro.GrossAmount.ToString();
-            transacao.VlLiquido = dtoTransactionPagSeguro.NetAmount.ToString();
+            transacao.VlBruto = dtoTransactionPagSeguro.GrossAmount.ToString(CultureInfo.GetCultureInfo("pt-BR"));
+            transacao.VlLiquido = dtoTransactionPagSeguro.NetAmount.ToString(CultureInfo.GetCultureInfo("pt-BR"));
             transacao.EstId = Convert.ToInt32(estabelecimento);
             transacao.NumTerminal = dtoTransactionPagSeguro.DeviceInfo?.SerialNumber;
             transacao.NumCartao = $"** ** ** {dtoTransactionPagSeguro.DeviceInfo?.Holder}";
@@ -95,6 +102,7 @@ namespace XdPagamentosApi.Repository.Class
             transacao.EstId = Convert.ToInt32(estabelecimento);
             transacao.Descricao = "";
             transacao.StatusCodigo = dtoTransactionPagSeguro.Status;
+            transacao.DtGravacao = null;
         }
 
         private async Task BuscaTipoOperadora(Transacao transacao)
@@ -151,7 +159,17 @@ namespace XdPagamentosApi.Repository.Class
 
             var chave = $"{dtoTransactionPagSeguro.PrimaryReceiver.PublicKey}/{dtoTransactionPagSeguro.Code}";
 
-            var valida = await _mySqlContext.Transacoes.Where(c => c.Chave.Equals(chave) && c.StatusCodigo.Equals(dtoTransactionPagSeguro.Status) ).AsNoTracking().FirstOrDefaultAsync();
+            if (dtoTransactionPagSeguro.Status.Equals(6))
+            {
+                var validaCancelado = await _mySqlContext.Transacoes.Where(c => c.Chave.Equals(chave) && c.StatusCodigo.Equals(6) ).AsNoTracking().FirstOrDefaultAsync();
+
+                if (validaCancelado != null)
+                    return false;
+
+                return true;
+            }
+
+            var valida = await _mySqlContext.Transacoes.Where(c => c.Chave.Equals(chave) && ( c.StatusCodigo.Equals(3) || c.StatusCodigo.Equals(4)) ).AsNoTracking().FirstOrDefaultAsync();
 
             if (valida != null)
                 return false;
@@ -166,7 +184,7 @@ namespace XdPagamentosApi.Repository.Class
 
                 var tipoValor = await BuscaStatusTransacao(dtoTransactionPagSeguro);
 
-                var vlLiquido = tipoValor.Equals("D") ?  $"-{Convert.ToDecimal(transacao.VlLiquido)}" : Convert.ToDecimal(transacao.VlLiquido).ToString();
+                var vlLiquido = tipoValor.Equals("D") ?  $"-{transacao.VlLiquido}" : transacao.VlLiquido.ToString();
 
                 var pagamento = new Pagamentos
                 {
@@ -182,7 +200,7 @@ namespace XdPagamentosApi.Repository.Class
                     EstId = transacao.EstId,
                     DtEmissao = transacao.DtOperacao,
                     DtCredito = transacao.DtCredito,
-                    Valor = vlLiquido,
+                    Valor =  vlLiquido ,
                     ListaPagamentos = new List<Pagamentos> { pagamento },
                     Status = "NP"
                 };
@@ -208,7 +226,8 @@ namespace XdPagamentosApi.Repository.Class
                     Descricao = $"Ordem de pagamento - {ordemPagto.Id}",
                     Tipo = await BuscaStatusTransacao(dtoTransactionPagSeguro),
                     VlBruto = "0,00",
-                    VlLiquido = transacao.VlLiquido.Replace("-",""),
+                    VlLiquido = transacao.VlLiquido.Replace("-", ""),
+                    ValorSolicitadoCliente = "0,00",
                     Grupo = "EC",
                     FopId = 2,
                     CliId = transacao.CliId,

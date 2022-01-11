@@ -3,6 +3,7 @@
     public class FilterTypeConstants
     {
         public new const string Equals = "equals";
+        public const string NotEquals = "notequals";
         public const string Contains = "contains";
         public const string StartsWith = "startWith";
         public const string LessThan = "lessThan";

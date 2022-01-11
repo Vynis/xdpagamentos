@@ -25,10 +25,10 @@ namespace XdPagamentosApi.Repository.Persistence.Mapping
             builder.Property(c => c.Estabelecimento).HasColumnName("est_nome");
             builder.Property(c => c.ClidId).HasColumnName("tra_cli_id");
             builder.Property(c => c.Cliente).HasColumnName("cli_nome");
-            builder.Property(c => c.VlLiquido).HasColumnName("tra_vl_liquido");
+            builder.Property(c => c.VlLiquido).HasColumnName("tra_vl_liquido"); 
             builder.Property(c => c.VlTxAdmin).HasColumnName("tra_tx_adm");
             builder.Property(c => c.VlTxAdminPercentual).HasColumnName("tra_tx_adm_percentual");
-            builder.Property(c => c.EstId).HasColumnName("est_id");
+            builder.Property(c => c.EstId).HasColumnName("tra_est_id");     
 
         }
     }

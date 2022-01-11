@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -28,12 +29,12 @@ namespace XdPagamentosApi.WebApi.Dtos
 
         public string VlBrutoFormatado
         {
-            get => $"R$ { Convert.ToDecimal(VlBruto) }";
+            get => $"R$ { string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", Convert.ToDecimal(VlBruto)) }";
         }
 
         public string VlLiquidoFormatado
         {
-            get => $"R$ { Convert.ToDecimal(VlLiquido) }";
+            get => $"R$ { string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", Convert.ToDecimal(VlLiquido)) }";
         }
 
         public string VlTaxaAdminFormatado

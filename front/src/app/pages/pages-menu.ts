@@ -78,15 +78,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
     children: [
       {
         title: 'Transferência de Transações',
-        link: '/pages/ui-features/grid',
-      },
-      {
-        title: 'Criação de Ordem de Pagto',
-        link: '/pages/geracao-pagto',
-      },
-      {
-        title: 'Restauração de Ordem de Pagto',
-        link: '/pages/ui-features/typography',
+        link: '/pages/transferencia-transacao',
       },
       {
         title: 'Gestão de Pagto de Clientes',
@@ -95,10 +87,6 @@ export const MENU_ITEMS: NbMenuItem[] = [
       {
         title: 'Gestão de Extratos',
         link: '/pages/gestao-extrato',
-      },
-      {
-        title: 'Resumo Gestão de Pagto',
-        link: '/pages/ui-features/search-fields',
       }
     ],
   },

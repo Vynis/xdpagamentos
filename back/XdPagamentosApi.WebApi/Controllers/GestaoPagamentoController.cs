@@ -66,14 +66,14 @@ namespace XdPagamentosApi.WebApi.Controllers
                 //Saldo Atual
                 var dadosGeral = await _gestaoPagamentoService.BuscarExpressao(x => x.CliId.Equals(dadosCliente) && x.Grupo.Equals("EC"));
 
-                retornoGestaoPagamento.SaldoAtual = (dadosGeral.Where(x => x.Tipo.Equals("C")).Sum(x => decimal.Parse(x.VlLiquido, new NumberFormatInfo() { NumberDecimalSeparator = "," })) - dadosGeral.Where(x => x.Tipo.Equals("D")).Sum(x => decimal.Parse(x.VlLiquido, new NumberFormatInfo() { NumberDecimalSeparator = "," }))).ToString();
+                retornoGestaoPagamento.SaldoAtual = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", (dadosGeral.Where(x => x.Tipo.Equals("C")).Sum(x => decimal.Parse(x.VlLiquido, new NumberFormatInfo() { NumberDecimalSeparator = "," })) - dadosGeral.Where(x => x.Tipo.Equals("D")).Sum(x => decimal.Parse(x.VlLiquido, new NumberFormatInfo() { NumberDecimalSeparator = "," }))));
 
                 //Saldo Anterior
                 var dataHrLancamento = filtro.Filtro.Where(x => x.Property.Equals("DtHrLancamento") && x.FilterType.Equals("greaterThanEquals")).FirstOrDefault().Value.ToString();
 
                 var dadosSaldoAnterior = await _gestaoPagamentoService.BuscarExpressao(x => x.DtHrLancamento < DateTime.Parse(dataHrLancamento) && x.CliId.Equals(dadosCliente));
 
-                retornoGestaoPagamento.SaldoAnterior = (dadosSaldoAnterior.Where(x => x.Tipo.Equals("C")).Sum(x => decimal.Parse(x.VlLiquido, new NumberFormatInfo() { NumberDecimalSeparator = "," })) - dadosSaldoAnterior.Where(x => x.Tipo.Equals("D")).Sum(x => decimal.Parse(x.VlLiquido, new NumberFormatInfo() { NumberDecimalSeparator = "," }))).ToString();
+                retornoGestaoPagamento.SaldoAnterior = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", (dadosSaldoAnterior.Where(x => x.Tipo.Equals("C")).Sum(x => decimal.Parse(x.VlLiquido, new NumberFormatInfo() { NumberDecimalSeparator = "," })) - dadosSaldoAnterior.Where(x => x.Tipo.Equals("D")).Sum(x => decimal.Parse(x.VlLiquido, new NumberFormatInfo() { NumberDecimalSeparator = "," }))));
 
                 return Response(retornoGestaoPagamento);
             }

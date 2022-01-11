@@ -22,7 +22,7 @@ namespace XdPagamentosApi.Domain.Models
         public int CliId { get; set; }
         public Cliente Cliente { get; set; }
         public int OpeId { get; set; }
-        public DateTime DtGravacao { get; set; }
+        public DateTime? DtGravacao { get; set; }
         public string TipoTransacao { get; set; }
         public string OrigemAjuste { get; set; }
         public string MeioCaptura { get; set; }

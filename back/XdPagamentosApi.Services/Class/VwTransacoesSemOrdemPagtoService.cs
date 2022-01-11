@@ -26,5 +26,10 @@ namespace XdPagamentosApi.Services.Class
         {
             return await _vwTransacoesSemOrdemPagtoRepository.ListaTransacoesSemOrdemPagto(paginationFilter);
         }
+
+        public async Task<List<TransacoesSemOrdemPagtoPorTerminal>> ListaTransacoesSemOrdemPagtoTerminal(PaginationFilter paginationFilter)
+        {
+            return await _vwTransacoesSemOrdemPagtoRepository.ListaTransacoesSemOrdemPagtoTerminal(paginationFilter);
+        }
     }
 }

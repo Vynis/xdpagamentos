@@ -47,37 +47,46 @@ namespace XdPagamentosApi.WebApi.Controllers
 
                 var listaFiltroPadrao = new List<FiltroItem>();
                 listaFiltroPadrao.AddRange(filtro.Filtro);
-                listaFiltroPadrao.Add(new FiltroItem { FilterType = "equals", Property = "Grupo", Value = "EG" });
 
                 filtro.Filtro = listaFiltroPadrao;
 
                 var listaPagamentos = _mapper.Map<DtoGestaoPagamento[]>(await _gestaoPagamentoService.BuscarComFiltro(filtro));
 
-                retornoGestaoPagamento.listaGestaoPagamentos = listaPagamentos;
+                var listaPagamentoFormatado = listaPagamentos.ToList().Where(x => x.Grupo.Equals("EG") || !x.VlBruto.Equals("0,00")).ToArray();
 
-                if (listaPagamentos.Count() == 0)
+                retornoGestaoPagamento.listaGestaoPagamentos = listaPagamentoFormatado;
+
+                if (listaPagamentoFormatado.Count() == 0)
                     return Response(retornoGestaoPagamento);
 
-                var dadosConta = listaPagamentos.FirstOrDefault().RceId;
+                var dadosConta = listaPagamentoFormatado.FirstOrDefault().RceId;
 
                 //Saldo Atual
-                var dadosGeral = await _gestaoPagamentoService.BuscarExpressao(x => x.RceId.Equals(dadosConta) && x.Grupo.Equals("EG"));
+                var dadosGeral = await _gestaoPagamentoService.BuscarExpressao(x => x.RceId.Equals(dadosConta) && (x.Grupo.Equals("EG") || !x.VlBruto.Equals("0,00")) );
 
-                retornoGestaoPagamento.SaldoAtual = (dadosGeral.Where(x => x.Tipo.Equals("C")).Sum(x => decimal.Parse(x.VlLiquido, new NumberFormatInfo() { NumberDecimalSeparator = "," })) - dadosGeral.Where(x => x.Tipo.Equals("D")).Sum(x => decimal.Parse(x.VlLiquido, new NumberFormatInfo() { NumberDecimalSeparator = "," }))).ToString();
+                retornoGestaoPagamento.SaldoAtual = (dadosGeral.Where(x => x.Tipo.Equals("C")).Sum(x => decimal.Parse(x.VlBruto, new NumberFormatInfo() { NumberDecimalSeparator = "," })) - dadosGeral.Where(x => x.Tipo.Equals("D")).Sum(x => decimal.Parse(x.VlBruto, new NumberFormatInfo() { NumberDecimalSeparator = "," }))).ToString(CultureInfo.GetCultureInfo("pt-BR"));
 
                 //Saldo Anterior
-                var dataHrLancamento = filtro.Filtro.Where(x => x.Property.Equals("DtHrLancamento") && x.FilterType.Equals("greaterThanEquals")).FirstOrDefault().Value.ToString();
+                var dataHrLancamento = filtro.Filtro.Where(x => x.Property.Equals("DtHrLancamento") && x.FilterType.Equals("greaterThanEquals")).FirstOrDefault().Value?.ToString();
 
-                var dadosSaldoAnterior = await _gestaoPagamentoService.BuscarExpressao(x => x.DtHrLancamento < DateTime.Parse(dataHrLancamento) && x.CliId.Equals(dadosConta));
+                if (dataHrLancamento != null)
+                {
+                    var dadosSaldoAnterior = await _gestaoPagamentoService.BuscarExpressao(x => x.DtHrLancamento < DateTime.Parse(dataHrLancamento) && x.CliId.Equals(dadosConta));
 
-                retornoGestaoPagamento.SaldoAnterior = (dadosSaldoAnterior.Where(x => x.Tipo.Equals("C")).Sum(x => decimal.Parse(x.VlLiquido, new NumberFormatInfo() { NumberDecimalSeparator = "," })) - dadosSaldoAnterior.Where(x => x.Tipo.Equals("D")).Sum(x => decimal.Parse(x.VlLiquido, new NumberFormatInfo() { NumberDecimalSeparator = "," }))).ToString();
+                    retornoGestaoPagamento.SaldoAnterior = (dadosSaldoAnterior.Where(x => x.Tipo.Equals("C")).Sum(x => decimal.Parse(x.VlBruto, new NumberFormatInfo() { NumberDecimalSeparator = "," })) - dadosSaldoAnterior.Where(x => x.Tipo.Equals("D")).Sum(x => decimal.Parse(x.VlBruto, new NumberFormatInfo() { NumberDecimalSeparator = "," }))).ToString(CultureInfo.GetCultureInfo("pt-BR"));
+                }
+                else
+                {
+                    retornoGestaoPagamento.SaldoAnterior = "0,00";
+                }
 
+              
                 return Response(retornoGestaoPagamento);
             }
             catch (Exception ex)
             {
 
-                return Response(ex.Message, false);
+                return Response(ex.Message, false); 
             }
         }
 

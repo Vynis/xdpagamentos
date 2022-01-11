@@ -83,6 +83,14 @@ namespace XdPagamentosApi.WebApi.Dtos
             }
         }
 
+        public string ValorBrutoFormatado
+        {
+            get
+            {
+                return VlBruto.ToString(CultureInfo.GetCultureInfo("pt-BR"));
+            }
+        }
+
         public string StatusFormatado
         {
             get

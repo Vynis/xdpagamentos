@@ -11,6 +11,8 @@ namespace FiltrDinamico.Core.Interpreters
             {
                 case FilterTypeConstants.Equals:
                     return new EqualsInterpreter<TType>(filtroItem);
+                case FilterTypeConstants.NotEquals:
+                    return new NotEqualsInterpreter<TType>(filtroItem);
                 case FilterTypeConstants.Contains:
                     return new ContainsInterpreter<TType>(filtroItem);
                 case FilterTypeConstants.GreaterThan:

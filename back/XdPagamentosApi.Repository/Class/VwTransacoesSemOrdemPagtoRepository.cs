@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -28,16 +29,16 @@ namespace XdPagamentosApi.Repository.Class
 
             try
             {
-                if (parametros.ClientesSelecionados.Count() == 0)
+                if (parametros.TerminaisSelecionados.Count() == 0)
                     return false;
 
 
-                foreach (var item in parametros.ClientesSelecionados)
+                foreach (var item in parametros.TerminaisSelecionados)
                 {
                     //Cadastrar ordem de Pagamento e Pagamento
                     var pagamento = new Pagamentos
                     {
-                        CliId = item.IdCliente,
+                        CliId = parametros.IdCliente,
                         Data = parametros.DataLancamentoCredito,
                     };
 
@@ -47,12 +48,12 @@ namespace XdPagamentosApi.Repository.Class
                     decimal valorLiquidoTotal = 0;
                     decimal valorBrutoTotal = 0;
 
-                    parametros.ClientesSelecionados.Where(x => x.IdCliente == item.IdCliente).ToList().ForEach(x => x.ListaTransacoes.ForEach(c => valorLiquidoTotal += Convert.ToDecimal(c.VlLiquido)));
-                    parametros.ClientesSelecionados.Where(x => x.IdCliente == item.IdCliente).ToList().ForEach(x => x.ListaTransacoes.ForEach(c => valorBrutoTotal += Convert.ToDecimal(c.VlBruto)));
+                    parametros.TerminaisSelecionados.Where(x => x.NumTerminal == item.NumTerminal).ToList().ForEach(x => x.ListaTransacoes.ForEach(c => valorLiquidoTotal += Convert.ToDecimal(c.VlLiquido, new NumberFormatInfo() { NumberDecimalSeparator = "," })));
+                    parametros.TerminaisSelecionados.Where(x => x.NumTerminal == item.NumTerminal).ToList().ForEach(x => x.ListaTransacoes.ForEach(c => valorBrutoTotal += Convert.ToDecimal(c.VlBruto, new NumberFormatInfo() { NumberDecimalSeparator = "," })));
 
                     decimal valorTotal = valorBrutoTotal - valorLiquidoTotal;
 
-                    var idEstabelecimento = (await _mySqlContext.Estabelecimentos.Where(c => c.NumEstabelecimento == item.NumEstabelecimento).AsNoTracking().FirstOrDefaultAsync()).Id;
+                    var idEstabelecimento = item.ListaTransacoes.FirstOrDefault().EstId;
 
 
                     var ordemPagto = new OrdemPagto
@@ -115,7 +116,7 @@ namespace XdPagamentosApi.Repository.Class
 
             var listaTransacoesSemOrdem = new List<TransacoesSemOrdemPagtoPorCliente>();
 
-            foreach(var cliente in clientes)
+            foreach (var cliente in clientes)
             {
                 var itemTransacoesSemOrdem = new TransacoesSemOrdemPagtoPorCliente
                 {
@@ -130,7 +131,59 @@ namespace XdPagamentosApi.Repository.Class
                     listaTransacoesSemOrdem.Add(itemTransacoesSemOrdem);
             }
 
+            var transacoesSemCliente = transacoes.Where(x => x.ClidId.Equals(0)).ToList();
+            var estabelecimentosSemCliente = transacoes.Where(x => x.ClidId.Equals(0)).GroupBy(x => x.EstId).Select(x => new { EstId = x.Key });
+
+            if (transacoesSemCliente.Count() > 0)
+            {
+                foreach (var estabelecimento in estabelecimentosSemCliente)
+                {
+
+                    var buscaEstabelecimento = _mySqlContext.Estabelecimentos.Where(x => x.Id.Equals(estabelecimento.EstId)).ToListAsync().Result.FirstOrDefault();
+
+                    var itemTransacoesSemOrdem = new TransacoesSemOrdemPagtoPorCliente
+                    {
+                        IdCliente = 0,
+                        NomeCliente = "Cliente não identificado",
+                        NomeEstabelcimento = buscaEstabelecimento.Nome,
+                        NumEstabelecimento = buscaEstabelecimento.NumEstabelecimento,
+                        ListaTransacoes = transacoes.Where(x => x.ClidId.Equals(0) && x.EstId.Equals(estabelecimento.EstId)).ToList()
+                    };
+
+                    listaTransacoesSemOrdem.Add(itemTransacoesSemOrdem);
+                }
+
+
+            }
+
             return listaTransacoesSemOrdem;
+        }
+
+        public async Task<List<TransacoesSemOrdemPagtoPorTerminal>> ListaTransacoesSemOrdemPagtoTerminal(PaginationFilter paginationFilter)
+        {
+
+            Expression<Func<VwTransacoesSemOrdemPagto, bool>> expressionDynamic = p => p.Id != 0;
+
+            var transacoes = new List<VwTransacoesSemOrdemPagto>();
+
+            if (paginationFilter.Filtro.Count() > 0)
+            {
+                expressionDynamic = _filtroDinamico.FromFiltroItemList<VwTransacoesSemOrdemPagto>(paginationFilter.Filtro.ToList());
+
+                IQueryable<VwTransacoesSemOrdemPagto> query = _mySqlContext.VwTransacoesSemOrdemPagtos.Where(expressionDynamic);
+
+                transacoes = await query.AsNoTracking().ToListAsync();  
+            }
+            else
+                transacoes = await _mySqlContext.VwTransacoesSemOrdemPagtos.ToListAsync();
+
+            var grupoTerminal = transacoes.GroupBy(c => c.NumTerminal).Select(c => new { NumTerminal = c.Key });
+
+            var listaTransacaoPorTerminal = new List<TransacoesSemOrdemPagtoPorTerminal>();
+
+            grupoTerminal.ToList().ForEach(c => listaTransacaoPorTerminal.Add(new TransacoesSemOrdemPagtoPorTerminal { NumTerminal = c.NumTerminal, ListaTransacoes = transacoes.ToList().Where(x => x.NumTerminal.Equals(c.NumTerminal)).ToList() }));
+
+            return listaTransacaoPorTerminal;
         }
     }
 }

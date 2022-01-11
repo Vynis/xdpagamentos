@@ -10,6 +10,8 @@ namespace XdPagamentosApi.Repository.Interfaces
     {
         Task<List<TransacoesSemOrdemPagtoPorCliente>> ListaTransacoesSemOrdemPagto(PaginationFilter paginationFilter);
 
+        Task<List<TransacoesSemOrdemPagtoPorTerminal>> ListaTransacoesSemOrdemPagtoTerminal(PaginationFilter paginationFilter);
+
         Task<bool> Gerar(ParamOrdemPagto parametros);
     }
 }
