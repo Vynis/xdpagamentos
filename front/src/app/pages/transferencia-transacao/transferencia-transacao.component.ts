@@ -1,3 +1,5 @@
+import { ClienteModel } from './../../@core/models/cliente.model';
+import { ClienteService } from './../../@core/services/cliente.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NbDateService } from '@nebular/theme';
@@ -27,6 +29,7 @@ export class TransferenciaTransacaoComponent implements OnInit {
   listaRelContaCaixaEstabeleicmento: RelContaEstabelecimentoModel[] = [];
   listaTransacoesSemOrdemPagto: TransacoesSemOrdemPagtoPorTerminalModel[] = [];
   listaTransacoesSemOrdemPagtoSelecionado: TransacoesSemOrdemPagtoPorTerminalModel[] = [];
+  listaClientes: ClienteModel[] = [];
   formularioFiltro: FormGroup;
   formularioGeracao: FormGroup;
   min: Date;
@@ -40,6 +43,7 @@ export class TransferenciaTransacaoComponent implements OnInit {
     private estabelecimentoService: EstabelecimentoService,
     private contaCaixaService: ContaCaixaService, 
     private transferenciaPagtoService: TransferenciaPagtoService,
+    private clienteService: ClienteService,
     private fb: FormBuilder,
     protected dateService: NbDateService<Date>,
     private toastService : ToastService,
@@ -51,6 +55,7 @@ export class TransferenciaTransacaoComponent implements OnInit {
   ngOnInit(): void {
     this.buscarEstabelecimentos();
     this.buscarContaCaixaRelEstabelecimento();
+    this.buscaClientes();
 
     this.createFormFiltro();
     this.createFormGeracao();
@@ -70,6 +75,7 @@ export class TransferenciaTransacaoComponent implements OnInit {
   createFormGeracao() {
     this.formularioGeracao = this.fb.group({
       conta: [null, Validators.required],
+      cliente: [null, Validators.required],
       dtLancamento: [new Date(), Validators.required]
     })
   }
@@ -109,6 +115,16 @@ export class TransferenciaTransacaoComponent implements OnInit {
     )
   }
 
+  buscaClientes() {
+    this.clienteService.buscarAtivos().subscribe(
+      res => {
+        if (res.success) {
+          this.listaClientes = res.data;
+        }
+      }
+    )
+  }
+
 
   tranformaNomeEstabelecimento(texto) {
     if (texto.length > 15)
@@ -117,7 +133,7 @@ export class TransferenciaTransacaoComponent implements OnInit {
     return texto;
   }
 
-  selecionaCliente(evento: boolean, item : TransacoesSemOrdemPagtoPorTerminalModel) {
+  selecionaTerminal(evento: boolean, item : TransacoesSemOrdemPagtoPorTerminalModel) {
     if (evento) {
       this.listaTransacoesSemOrdemPagtoSelecionado.push(item);
     }
@@ -211,9 +227,11 @@ export class TransferenciaTransacaoComponent implements OnInit {
       return false;
     }
 
-    if (this.listaTransacoesSemOrdemPagtoSelecionado.length == 0)
+    if (this.listaTransacoesSemOrdemPagtoSelecionado.length == 0) {
+      this.existeErro2 = true;
       return false;
-
+    }
+      
     return true;
   }
 
@@ -227,8 +245,9 @@ export class TransferenciaTransacaoComponent implements OnInit {
     var parametro = new ParamOrdemPagtoModel();
 
     parametro.idConta = controls.conta.value;
+    parametro.idCliente = controls.cliente.value;
     parametro.dataLancamentoCredito = controls.dtLancamento.value;
-    //parametro.clientesSelecionados = this.listaTransacoesSemOrdemPagtoSelecionado;
+    parametro.terminaisSelecionados = this.listaTransacoesSemOrdemPagtoSelecionado;
 
     this.transferenciaPagtoService.gerarOrdemPagto(parametro).subscribe(
       res => {
@@ -238,6 +257,7 @@ export class TransferenciaTransacaoComponent implements OnInit {
         }
 
         this.toastService.showToast(ToastPadrao.SUCCESS, 'Ordem de pagamento gerado com sucesso!');
+        this.listaTransacoesSemOrdemPagtoSelecionado = [];
         this.pesquisar();
       }
     )

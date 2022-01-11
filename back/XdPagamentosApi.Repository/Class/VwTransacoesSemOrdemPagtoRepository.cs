@@ -35,52 +35,71 @@ namespace XdPagamentosApi.Repository.Class
 
                 foreach (var item in parametros.TerminaisSelecionados)
                 {
-                    //Cadastrar ordem de Pagamento e Pagamento
-                    var pagamento = new Pagamentos
+                    var listaTransacoes = new List<Transacao>();
+                    item.ListaTransacoes.ForEach(x => listaTransacoes.Add(BuscaTransacao(x.Id).Result));
+
+                    foreach (var transacao in listaTransacoes)
                     {
-                        CliId = parametros.IdCliente,
-                        Data = parametros.DataLancamentoCredito,
-                    };
+                        transacao.CliId = parametros.IdCliente;
 
-                    var listaPagamento = new List<Pagamentos>();
-                    listaPagamento.Add(pagamento);
+                        var tipoValor = await BuscaStatusTransacao(transacao.StatusCodigo);
 
-                    decimal valorLiquidoTotal = 0;
-                    decimal valorBrutoTotal = 0;
-
-                    parametros.TerminaisSelecionados.Where(x => x.NumTerminal == item.NumTerminal).ToList().ForEach(x => x.ListaTransacoes.ForEach(c => valorLiquidoTotal += Convert.ToDecimal(c.VlLiquido, new NumberFormatInfo() { NumberDecimalSeparator = "," })));
-                    parametros.TerminaisSelecionados.Where(x => x.NumTerminal == item.NumTerminal).ToList().ForEach(x => x.ListaTransacoes.ForEach(c => valorBrutoTotal += Convert.ToDecimal(c.VlBruto, new NumberFormatInfo() { NumberDecimalSeparator = "," })));
-
-                    decimal valorTotal = valorBrutoTotal - valorLiquidoTotal;
-
-                    var idEstabelecimento = item.ListaTransacoes.FirstOrDefault().EstId;
+                        var vlLiquido = tipoValor.Equals("D") ? $"-{transacao.VlLiquido}" : transacao.VlLiquido.ToString();
 
 
-                    var ordemPagto = new OrdemPagto
-                    {
-                        FopId = 0,
-                        Valor = valorTotal.ToString(),
-                        Status = "NP",
-                        DtEmissao = parametros.DataLancamentoCredito,
-                        EstId = idEstabelecimento,
-                        //ListaPagamentos = listaPagamento
-                    };
+                        //Tabela de Pagamentos
+                        var pagamento = new Pagamentos
+                        {
+                            CliId = parametros.IdCliente,
+                            Data = transacao.DtOperacao,
+                        };
 
-                    _mySqlContext.OrdemPagtos.Add(ordemPagto);
-                    await _mySqlContext.SaveChangesAsync();
+                        //Tabela de Ordem de Pagamento
+                        var  ordemPagto = new OrdemPagto
+                        {
+                            EstId = transacao.EstId,
+                            DtEmissao = transacao.DtOperacao,
+                            DtCredito = transacao.DtCredito,
+                            Valor = vlLiquido,
+                            ListaPagamentos = new List<Pagamentos> { pagamento },
+                            Status = "NP"
+                        };
 
-                    //Atualiza a tabela ta de transacoes com id do pagamento
-                    //var idPagamento = ordemPagto.ListaPagamentos.FirstOrDefault().Id;
+                        //Salva a tabela de Ordem de Pagamento e Pagamento
+                        _mySqlContext.OrdemPagtos.Add(ordemPagto);
+                        await _mySqlContext.SaveChangesAsync();
 
-                    //foreach (var transacao in item.ListaTransacoes)
-                    //{
-                    //    var transacaoBD = await _mySqlContext.Transacoes.Where(c => c.Id.Equals(transacao.Id)).AsNoTracking().FirstOrDefaultAsync();
+                        //Tabela de Gestao de Pagamento
+                        var gestaoPagamento = new GestaoPagamento
+                        {
+                            DtHrLancamento = transacao.DtOperacao,
+                            DtHrCredito = parametros.DataLancamentoCredito,
+                            Descricao = $"Ordem de pagamento - {ordemPagto.Id}",
+                            Tipo = await BuscaStatusTransacao(transacao.StatusCodigo),
+                            VlBruto = "0,00",
+                            VlLiquido = transacao.VlLiquido.Replace("-", ""),
+                            ValorSolicitadoCliente = "0,00",
+                            Grupo = "EC",
+                            FopId = 2,
+                            CliId = transacao.CliId,
+                            RceId = parametros.IdConta,
+                            CodRef = $"ORPID{ordemPagto.Id}",
+                            Status = "AP"
+                        };
 
-                    //    transacaoBD.PagId = idPagamento;
+                        //Salva na tabela de Gestao de Pagamento
+                        _mySqlContext.Add(gestaoPagamento);
+                        await _mySqlContext.SaveChangesAsync();
 
-                    //    _mySqlContext.Transacoes.Update(transacaoBD);
-                    //    await _mySqlContext.SaveChangesAsync();
-                    //}
+                        transacao.PagId = pagamento.Id;
+                        transacao.DtGravacao = DateTime.Now;
+
+                        //Atualiza a tabela de transacoes
+                        _mySqlContext.Update(transacao);
+                        await _mySqlContext.SaveChangesAsync();
+                    }
+
+
                 }
 
                 return true;
@@ -185,5 +204,33 @@ namespace XdPagamentosApi.Repository.Class
 
             return listaTransacaoPorTerminal;
         }
+
+        public async Task<Transacao> BuscaTransacao(int Id)
+        {
+            try
+            {
+                var transacao = await _mySqlContext.Transacoes.Where(x => x.Id.Equals(Id)).FirstOrDefaultAsync();
+
+                return transacao;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        private async Task<string> BuscaStatusTransacao(int Id)
+        {
+            var resposta = await _mySqlContext.StatusTransacoes.Where(c => c.Id.Equals(Id)).AsNoTracking().FirstOrDefaultAsync();
+
+            if (resposta != null)
+                return resposta.Tipo;
+
+            return "";
+        }
+
+
+
     }
 }

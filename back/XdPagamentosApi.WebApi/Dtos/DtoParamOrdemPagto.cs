@@ -8,7 +8,9 @@ namespace XdPagamentosApi.WebApi.Dtos
     public class DtoParamOrdemPagto
     {
         public int IdConta { get; set; }
+        public int IdCliente { get; set; }
         public DateTime DataLancamentoCredito { get; set; }
         public List<DtoTransacoesSemOrdemPagtoPorCliente> ClientesSelecionados { get; set; }
+        public List<DtoTransacoesSemOrdemPagtoPorTerminal> TerminaisSelecionados { get; set; }
     }
 }

@@ -52,16 +52,23 @@
       <div  [formGroup]="formularioGeracao">
           <nb-alert *ngIf="existeErro2" status="danger" closable>Favor preencher todos os campos obrigatorios!</nb-alert>
           <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-4">
                   <div class="form-group">
-                      <label for="conta" class="label">Conta onde ocrreu o crédito</label><br>
-                      <nb-select placeholder=""  status="primary" formControlName="conta" >
-                          <nb-option [value]="null">Todos</nb-option>
-                          <nb-option *ngFor="let conta of listaRelContaCaixaEstabeleicmento" [value]="conta.id">{{conta.contaCaixa.descricao}} | {{conta.estabelecimento.nome}} </nb-option>
+                      <label for="conta" class="label">Cliente</label><br>
+                      <nb-select placeholder=""  status="primary" formControlName="cliente" >
+                          <nb-option *ngFor="let cliente of listaClientes" [value]="cliente.id">{{cliente.nome}} - ({{ cliente.tipoPessoa == 'PF' ? 'CPF' :  'CNPJ' }}: {{cliente.cnpjCpf}}) </nb-option>
                         </nb-select>            
                   </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-4">
+                <div class="form-group">
+                    <label for="conta" class="label">Conta onde ocrreu o crédito</label><br>
+                    <nb-select placeholder=""  status="primary" formControlName="conta" >
+                        <nb-option *ngFor="let conta of listaRelContaCaixaEstabeleicmento" [value]="conta.id">{{conta.contaCaixa.descricao}} | {{conta.estabelecimento.nome}} </nb-option>
+                      </nb-select>            
+                </div>
+            </div>
+              <div class="col-md-4">
                   <div class="form-group">
                       <label for="status" class="label">Data de lançamento dos créditos</label><br>
                       <input nbInput placeholder="" formControlName="dtLancamento" [nbDatepicker]="formpicker1">
@@ -82,7 +89,7 @@
   </nb-card-header>
   <nb-card-body>
       <nb-card *ngFor="let operacao of listaTransacoesSemOrdemPagto" accent="info">
-          <nb-card-header><nb-checkbox (checkedChange)="selecionaCliente($event, operacao)" ><h6>NUM. TERMINAL: <b> {{operacao.numTerminal}} </b> </h6> </nb-checkbox></nb-card-header>
+          <nb-card-header><nb-checkbox (checkedChange)="selecionaTerminal($event, operacao)" ><h6>NUM. TERMINAL: <b> {{operacao.numTerminal}} </b> </h6> </nb-checkbox></nb-card-header>
           <nb-card-body>
               <div class="row">
                   <div class="col-md-12" >
@@ -122,7 +129,9 @@
           </nb-card-footer>
       </nb-card>
      
-      <!-- {{listaTransacoesSemOrdemPagto | json}} -->
+      <div *ngIf="listaTransacoesSemOrdemPagto.length === 0">
+        Não há nehum dado para exibir
+      </div>
   </nb-card-body>
 
 </nb-card>
