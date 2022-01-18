@@ -20,7 +20,8 @@ namespace XdPagamentosApi.WebApi.Configuracao.Token
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
                 Subject = new ClaimsIdentity(new Claim[] {
-                    new Claim(ClaimTypes.Name, user.Id.ToString().Criptografar())
+                    new Claim(ClaimTypes.Name, user.Id.ToString().Criptografar()),
+                    new Claim(ClaimTypes.NameIdentifier, user.Tipo)
                 }),
                 Expires = DateTime.UtcNow.AddHours(4),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

@@ -48,6 +48,8 @@ namespace XdPagamentosApi.WebApi.Controllers
                 if (usuario == null)
                     return BadRequest("Usuário ou senha incorreto!");
 
+                usuario.Tipo = "SistemaAdm";
+
                 var token = TokenService.GenerateToken(usuario);
 
                 return Response(new { usuario, token });
@@ -92,9 +94,11 @@ namespace XdPagamentosApi.WebApi.Controllers
 
 
                 var usuario = _mapper.Map<DtoUsuarioLogado>(resposta.FirstOrDefault());
-
+                
                 if (usuario == null)
                     return BadRequest("Usuário ou senha incorreto!");
+
+                usuario.Tipo = "SistemaCliente";
 
                 var token = TokenService.GenerateToken(usuario);
 
