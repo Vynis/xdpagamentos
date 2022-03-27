@@ -3,9 +3,12 @@
         Filtro
     </nb-card-header>
     <nb-card-body>
-      <div class="form-inline">
-        <input type="text" #filtroNome nbInput fullWidth placeholder="Nome">
-      </div>
+        <form [formGroup]="formulario">
+            <div class="form-inline">
+                <input type="text" #filtroNome nbInput fullWidth placeholder="Nome" formControlName="nome">
+              </div>
+        </form>
+
     </nb-card-body>
     <nb-card-footer>
         <button type="submit" (click)="pesquisar()"  nbButton status="primary">Filtrar</button>

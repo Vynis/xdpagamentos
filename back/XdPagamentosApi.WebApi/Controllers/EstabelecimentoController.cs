@@ -48,7 +48,7 @@ namespace XdPagamentosApi.WebApi.Controllers
         {
             try
             {
-                return Response(await _estabelecimentoService.BuscarComFiltro(filtro));
+                return Response(_mapper.Map<DtoEstabelecimentoLista[]>(await _estabelecimentoService.BuscarComFiltro(filtro)));
             }
             catch (Exception ex)
             {

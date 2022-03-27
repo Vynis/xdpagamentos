@@ -12,12 +12,12 @@ const routes: Routes = [{
   children: [
     {
       path: 'dashboard',
-      component: ECommerceComponent,
-    },
-    {
-      path: 'iot-dashboard',
       component: DashboardComponent,
     },
+    // {
+    //   path: 'iot-dashboard',
+    //   component: DashboardComponent,
+    // },
     {
       path: 'usuario',
       loadChildren: () =>  import('./usuario/usuario.module').then(m => m.UsuarioModule)

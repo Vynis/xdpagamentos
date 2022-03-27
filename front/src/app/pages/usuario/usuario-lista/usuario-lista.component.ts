@@ -8,6 +8,7 @@ import { AuthServiceService } from '../../../@core/services/auth-service.service
 import { SessoesEnum } from '../../../@core/enums/sessoes.enum';
 import { NbDialogService } from '@nebular/theme';
 import { AlterarSenhaComponent } from '../alterar-senha/alterar-senha.component';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'ngx-usuario-lista',
@@ -17,7 +18,7 @@ import { AlterarSenhaComponent } from '../alterar-senha/alterar-senha.component'
 export class UsuarioListaComponent implements OnInit {
 
   
-  @ViewChild('filtroNome', { static: true }) filtroNome: ElementRef;
+  formulario: FormGroup;
 
   columns = {
     id: {
@@ -47,11 +48,19 @@ export class UsuarioListaComponent implements OnInit {
     private usuarioService: UsuarioService, 
     private route: Router,
     private authService: AuthServiceService,
+    private fb: FormBuilder,
     ) { 
     this.validaPermissao();
   }
 
   ngOnInit(): void {
+    this.createForm();
+  }
+
+  createForm() {
+    this.formulario = this.fb.group({
+      nome: [''],
+    })
   }
 
   private validaPermissao() {
@@ -106,7 +115,8 @@ export class UsuarioListaComponent implements OnInit {
   }
 
   pesquisar() {
-    this.buscaDados(this.filtroNome.nativeElement.value);
+    this.buscaDados(this.formulario.controls.nome.value);
+
   }
   
 

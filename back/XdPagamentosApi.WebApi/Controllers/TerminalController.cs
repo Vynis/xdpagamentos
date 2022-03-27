@@ -31,7 +31,7 @@ namespace XdPagamentosApi.WebApi.Controllers
         {
             try
             {
-                return Response(await _terminalService.BuscarComFiltro(filtro));
+                return Response(_mapper.Map<DtoTerminalLista[]>(await _terminalService.BuscarComFiltro(filtro)));
             }
             catch (Exception ex)
             {

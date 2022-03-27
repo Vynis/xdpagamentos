@@ -37,12 +37,16 @@ export class EstabelecimentoListaComponent implements OnInit {
       title: 'N. Estabelecimento',
       type: 'string',
     },
-    cidade: {
-      title: 'Cidade',
+    operadoraFormatado: {
+      title: 'Operadora',
       type: 'string',
     },
-    estado: {
-      title: 'UF',
+    contaFormatado: {
+      title: 'Conta Caixa',
+      type: 'string',
+    },
+    email: {
+      title: 'Email PagSeguro',
       type: 'string',
     },
     status: {
@@ -103,7 +107,7 @@ export class EstabelecimentoListaComponent implements OnInit {
     this.formulario = this.fb.group({
       tipo: ['0'],
       descricao: [''],
-      status: [null]
+      status: ['0']
     })
   }
 
@@ -143,7 +147,7 @@ export class EstabelecimentoListaComponent implements OnInit {
       listaItem.push(item);
     }
 
-    if (controls.status.value !== null) {
+    if (controls.status.value !== '0') {
       var item  = new FiltroItemModel();
       item.property = 'Status';
       item.filterType = FilterTypeConstants.EQUALS;

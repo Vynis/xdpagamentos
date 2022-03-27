@@ -28,6 +28,14 @@ export class TerminalListaComponent implements OnInit {
       title: 'Numero do Terminal',
       type: 'string',
     },
+    estabelecimentoFormatado: {
+      title: 'Estabelecimento',
+      type: 'string'
+    },
+    clienteFormatado: {
+      title: 'Cliente',
+      type: 'string'
+    },
     status: {
       title: 'Status',
       type: 'string',
@@ -57,7 +65,7 @@ export class TerminalListaComponent implements OnInit {
   createForm() {
     this.formulario = this.fb.group({
       numTerminal: [''],
-      status: [null]
+      status: ['0']
     })
   }
 
@@ -121,11 +129,11 @@ export class TerminalListaComponent implements OnInit {
       var item  = new FiltroItemModel();
       item.property = 'NumTerminal' ;
       item.filterType = FilterTypeConstants.EQUALS;
-      item.value = controls.descricao.value;
+      item.value = controls.numTerminal.value;
       listaItem.push(item);
     }
 
-    if (controls.status.value !== null) {
+    if (controls.status.value !== '0') {
       var item  = new FiltroItemModel();
       item.property = 'Status';
       item.filterType = FilterTypeConstants.EQUALS;

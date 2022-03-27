@@ -92,7 +92,7 @@ namespace XdPagamentosApi.WebApi.Controllers
         {
             try
             {
-                return Response(await _clienteService.BuscarComFiltro(filtro));
+                return Response(_mapper.Map<DtoClienteLista[]>(await _clienteService.BuscarComFiltro(filtro)));
             }
             catch (Exception ex)
             {
@@ -203,7 +203,16 @@ namespace XdPagamentosApi.WebApi.Controllers
             try
             {
 
-                var response = await _clienteService.AtualizarLista(_mapper.Map<List<Cliente>>(dtoCliente));
+                var listaClienteFormatada = new List<Cliente>();
+
+                foreach( var item in dtoCliente)
+                {
+                    var cliente = await _clienteService.ObterPorId(item.Id);
+                    cliente.NomeAgrupamento = item.NomeAgrupamento;
+                    listaClienteFormatada.Add(cliente);
+                }
+
+                var response = await _clienteService.AtualizarLista(listaClienteFormatada);
 
                 if (!response)
                     return Response("Erro ao alterar", false);
@@ -223,9 +232,16 @@ namespace XdPagamentosApi.WebApi.Controllers
         {
             try
             {
-                dtoCliente.ForEach(x => x.NomeAgrupamento = "");
+                var listaClienteFormatada = new List<Cliente>();
 
-                var response = await _clienteService.AtualizarLista(_mapper.Map<List<Cliente>>(dtoCliente));
+                foreach (var item in dtoCliente)
+                {
+                    var cliente = await _clienteService.ObterPorId(item.Id);
+                    cliente.NomeAgrupamento = "";
+                    listaClienteFormatada.Add(cliente);
+                }
+
+                var response = await _clienteService.AtualizarLista(listaClienteFormatada);
 
                 if (!response)
                     return Response("Erro ao alterar", false);

@@ -30,12 +30,12 @@ namespace XdPagamentosApi.Repository.Class
             if (paginationFilter.Filtro.Count() > 0)
                 expressionDynamic = _filtroDinamico.FromFiltroItemList<Terminal>(paginationFilter.Filtro.ToList());
             else
-                return base.ObterTodos().Result.ToArray();
+                return await _mySqlContext.Terminais.AsNoTracking().Include(c => c.Estabelecimento).Include(c => c.ListaRelClienteTerminal).Include("ListaRelClienteTerminal.Cliente").ToArrayAsync();
 
             IQueryable<Terminal> query = _mySqlContext.Terminais.Where(expressionDynamic);
 
             if (paginationFilter.Filtro.Count() > 0)
-                return await query.AsNoTracking().ToArrayAsync();
+                return await query.AsNoTracking().Include(c => c.Estabelecimento).Include(c => c.ListaRelClienteTerminal).Include("ListaRelClienteTerminal.Cliente").ToArrayAsync();
 
             return await query.AsNoTracking().OrderBy(c => c.NumTerminal).ToArrayAsync();
         }

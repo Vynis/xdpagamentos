@@ -23,14 +23,14 @@
           <div class="col-md-4">
               <label for="estabelecimento" class="label">Estabelecimento</label><br>
               <nb-select placeholder="Estabelecimento"  status="primary" formControlName="estabelecimento">
-                <nb-option [value]="null">Todos</nb-option>
+                <nb-option value="0">Todos</nb-option>
                 <nb-option *ngFor="let estabelecimento of listaEstabelecimentos" [value]="estabelecimento.id">{{estabelecimento.numEstabelecimento}} - {{estabelecimento.nome}} ({{estabelecimento.id}} )</nb-option>
                 </nb-select>
           </div>
           <div class="col-md-4">
               <label for="status" class="label">Status</label><br>
               <nb-select placeholder="Status"  status="primary" formControlName="status" >
-                  <nb-option [value]="null">Todos</nb-option>
+                  <nb-option value="0">Todos</nb-option>
                   <nb-option value="A">Ativo</nb-option>
                   <nb-option value="I">Inativo</nb-option>
                 </nb-select>
@@ -39,7 +39,7 @@
           <div *ngIf="agrupamento && listaGrupos.length > 0" class="col-md-4">
             <label for="filtroGrupo" class="label">Grupos</label><br>
             <nb-select placeholder="Grupo"  status="primary" formControlName="filtroGrupo">
-              <nb-option [value]="null">Todos</nb-option>
+              <nb-option value="0">Todos</nb-option>
               <nb-option *ngFor="let grupo of listaGrupos" [value]="grupo.nomeAgrupamento">{{grupo.nomeAgrupamento}}</nb-option>
               </nb-select>
           </div>
@@ -84,7 +84,7 @@
             <div  class="col-sm-2" style="text-align: right">
               <a  *ngIf="!agrupamento" nbButton status="primary" routerLink="../lista/AG" >Agrupamento</a>
             </div>
-            <div *ngIf="validaNovo" class="col-sm-1" style="text-align: right">
+            <div *ngIf="validaNovo && !agrupamento" class="col-sm-1" style="text-align: right">
                 <a  nbButton status="primary" routerLink="../cadastro/add" >Novo</a>
             </div>
         </div>

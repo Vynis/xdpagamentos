@@ -37,16 +37,16 @@ export class ClienteListaComponent implements OnInit {
       title: 'Nome',
       type: 'string',
     },
-    cnpjCpf: {
+    cnpjCpfFormatado: {
       title: 'Documento',
       type: 'string',
     },
-    cidade: {
-      title: 'Cidade',
+    estabelecimentoFormatado: {
+      title: 'Estabelecimento',
       type: 'string',
     },
-    estado: {
-      title: 'Estado',
+    limiteCredito: {
+      title: 'Limite Crédito',
       type: 'string',
     },
     status: {
@@ -68,16 +68,16 @@ export class ClienteListaComponent implements OnInit {
       title: 'Grupo',
       type: 'string',
     },
-    cnpjCpf: {
+    cnpjCpfFormatado: {
       title: 'Documento',
       type: 'string',
     },
-    cidade: {
-      title: 'Cidade',
+    estabelecimentoFormatado: {
+      title: 'Estabelecimento',
       type: 'string',
     },
-    estado: {
-      title: 'Estado',
+    limiteCredito: {
+      title: 'Limite Crédito',
       type: 'string',
     },
     status: {
@@ -147,10 +147,10 @@ export class ClienteListaComponent implements OnInit {
     this.formulario = this.fb.group({
       tipo: ['0'],
       descricao: [''],
-      estabelecimento: [null],
-      status: [null],
+      estabelecimento: ['0'],
+      status: ['0'],
       nomeAgrupamento: [''],
-      filtroGrupo: [''],
+      filtroGrupo: ['0'],
     })
   }
 
@@ -270,7 +270,7 @@ export class ClienteListaComponent implements OnInit {
       listaItem.push(item);
     }
 
-    if (controls.estabelecimento.value !== null) {
+    if (controls.estabelecimento.value !== '0') {
       var item  = new FiltroItemModel();
       item.property = 'EstId';
       item.filterType = FilterTypeConstants.EQUALS;
@@ -278,7 +278,7 @@ export class ClienteListaComponent implements OnInit {
       listaItem.push(item);
     }
 
-    if (controls.status.value !== null) {
+    if (controls.status.value !== '0') {
       var item  = new FiltroItemModel();
       item.property = 'Status';
       item.filterType = FilterTypeConstants.EQUALS;
@@ -287,7 +287,7 @@ export class ClienteListaComponent implements OnInit {
     }
 
     if (this.agrupamento) {
-      if (controls.filtroGrupo.value !== null) {
+      if (controls.filtroGrupo.value !== '0') {
         var item  = new FiltroItemModel();
         item.property = 'NomeAgrupamento';
         item.filterType = FilterTypeConstants.EQUALS;
@@ -310,8 +310,8 @@ export class ClienteListaComponent implements OnInit {
       return;
     }
 
-    if (this.selectedRows.length === 0 || this.selectedRows.length === 1) {
-      this.toastService.showToast(ToastPadrao.DANGER, 'Selecione mais de um cliente');
+    if (this.selectedRows.length === 0) {
+      this.toastService.showToast(ToastPadrao.DANGER, 'Selecione um cliente');
       return;
     }
 
