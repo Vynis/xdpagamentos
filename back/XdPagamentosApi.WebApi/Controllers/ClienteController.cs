@@ -144,6 +144,7 @@ namespace XdPagamentosApi.WebApi.Controllers
                     return Response("Cpf/Cnpj já cadastrado", false);
 
                 dtoCliente.Senha = SenhaHashService.CalculateMD5Hash("cli102030");
+                dtoCliente.LimiteCredito = HelperFuncoes.ValorMoedaBR(dtoCliente.LimiteCredito);
 
                 var response = await _clienteService.Adicionar(_mapper.Map<Cliente>(dtoCliente));
 
@@ -179,6 +180,7 @@ namespace XdPagamentosApi.WebApi.Controllers
 
                 dtoCliente.Senha = dados.Senha;
                 dtoCliente.NomeAgrupamento = dados.NomeAgrupamento;
+                dtoCliente.LimiteCredito = HelperFuncoes.ValorMoedaBR(dtoCliente.LimiteCredito);
 
 
                 var response = await _clienteService.Atualizar(_mapper.Map<Cliente>(dtoCliente));
@@ -255,17 +257,17 @@ namespace XdPagamentosApi.WebApi.Controllers
             }
         }
 
-        [HttpDelete("deletar")]
+        [HttpDelete("deletar/{id}")]
         [SwaggerGroup("Cliente")]
-        public async Task<IActionResult> Deletar(DtoCliente dtoCliente)
+        public async Task<IActionResult> Deletar(int id)
         {
             try
             {
 
-                var response = await _clienteService.Excluir(_mapper.Map<Cliente>(dtoCliente));
+                var response = await _clienteService.ExcluirComValidacao(id);
 
-                if (!response)
-                    return Response("Erro ao excluir", false);
+                if (response.Count() > 0)
+                    return Response(response, false);
 
                 return Response("Exclusão com sucesso!");
             }

@@ -12,6 +12,7 @@ import { FilterTypeConstants } from '../../../@core/enums/filter-type.enum';
 import { AuthServiceService } from '../../../@core/services/auth-service.service';
 import { SessoesEnum } from '../../../@core/enums/sessoes.enum';
 import { SweetalertService } from '../../../@core/services/sweetalert.service';
+import { SweetAlertIcons } from '../../../@core/enums/sweet-alert-icons-enum';
 
 @Component({
   selector: 'ngx-estabelecimento-lista',
@@ -29,7 +30,7 @@ export class EstabelecimentoListaComponent implements OnInit {
       title: 'Nome',
       type: 'string',
     },
-    cnpjCpf: {
+    cnpjCpfFormatado: {
       title: 'Documento',
       type: 'string',
     },
@@ -66,7 +67,8 @@ export class EstabelecimentoListaComponent implements OnInit {
     private estabelecimentoService: EstabelecimentoService,
     private route: Router,
     private fb: FormBuilder,
-    private authService: AuthServiceService
+    private authService: AuthServiceService,
+    private sweetAlertService: SweetalertService,
   ) { 
       this.validaPermissao();
   }
@@ -129,6 +131,15 @@ export class EstabelecimentoListaComponent implements OnInit {
       case AcoesPadrao.EDITAR:
         this.route.navigateByUrl(`/pages/estabelecimento/cadastro/edit/${event.data.id}`);
         break;
+      case AcoesPadrao.REMOVER:
+          this.sweetAlertService.msgPadrao().then(
+            res => {
+              if (res.isConfirmed){
+                this.deletar(event.data.id);
+              } 
+            }
+          )
+          break;        
       default:
         break;
     }
@@ -158,6 +169,26 @@ export class EstabelecimentoListaComponent implements OnInit {
     filtro.filtro = listaItem;
     this.buscaDados(filtro);
 
+  }
+
+  deletar(id: number) {
+    this.estabelecimentoService.remover(id).subscribe(
+      res => {
+        if (res.success) {
+          this.sweetAlertService.msgAvulsa('Deletado', SweetAlertIcons.SUCESS ,'');
+          this.pesquisar();
+        } else {
+
+          let erros = '';
+          res.data.forEach(e => {
+            erros+= `,${e}`
+          });
+
+          this.sweetAlertService.msgAvulsa('Erro',SweetAlertIcons.ERROR, `Não foi possivel excluir o registro porque tem vinculo com: ${erros.substring(1,erros.length)}`);
+
+        }
+      }
+    )
   }
 
 }

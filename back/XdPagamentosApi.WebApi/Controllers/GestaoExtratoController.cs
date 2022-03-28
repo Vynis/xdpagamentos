@@ -110,6 +110,7 @@ namespace XdPagamentosApi.WebApi.Controllers
                 dto.CodRef = "LANC-EXTRATO-CRED-DEB";
                 dto.VlLiquido = "0,00";
                 dto.ValorSolicitadoCliente = "0,00";
+                dto.VlBruto = HelperFuncoes.ValorMoedaBR(dto.VlBruto);
 
                 var response = await _gestaoPagamentoService.Adicionar(_mapper.Map<GestaoPagamento>(dto));
 

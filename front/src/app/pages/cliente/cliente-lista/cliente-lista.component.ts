@@ -233,7 +233,7 @@ export class ClienteListaComponent implements OnInit {
         this.sweetAlertService.msgPadrao().then(
           res => {
             if (res.isConfirmed){
-              this.sweetAlertService.msgAvulsa('Deletado', SweetAlertIcons.SUCESS ,'');
+              this.deletar(event.data.id);
             } 
           }
         )
@@ -362,6 +362,26 @@ export class ClienteListaComponent implements OnInit {
 
   onRowSelect(event) {
     this.selectedRows = event.selected;
+  }
+
+  deletar(id: number) {
+    this.clienteService.remover(id).subscribe(
+      res => {
+        if (res.success) {
+          this.sweetAlertService.msgAvulsa('Deletado', SweetAlertIcons.SUCESS ,'');
+          this.pesquisar();
+        } else {
+
+          let erros = '';
+          res.data.forEach(e => {
+            erros+= `,${e}`
+          });
+
+          this.sweetAlertService.msgAvulsa('Erro',SweetAlertIcons.ERROR, `Não foi possivel excluir o registro porque tem vinculo com: ${erros.substring(1,erros.length)}`);
+
+        }
+      }
+    )
   }
 
 }

@@ -9,6 +9,8 @@ import { SessoesEnum } from '../../../@core/enums/sessoes.enum';
 import { NbDialogService } from '@nebular/theme';
 import { AlterarSenhaComponent } from '../alterar-senha/alterar-senha.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { SweetalertService } from '../../../@core/services/sweetalert.service';
+import { SweetAlertIcons } from '../../../@core/enums/sweet-alert-icons-enum';
 
 @Component({
   selector: 'ngx-usuario-lista',
@@ -49,6 +51,7 @@ export class UsuarioListaComponent implements OnInit {
     private route: Router,
     private authService: AuthServiceService,
     private fb: FormBuilder,
+    private sweetAlertService: SweetalertService,
     ) { 
     this.validaPermissao();
   }
@@ -96,6 +99,15 @@ export class UsuarioListaComponent implements OnInit {
       case AcoesPadrao.EDITAR:
         this.route.navigateByUrl(`/pages/usuario/cadastro/edit/${event.data.id}`);
         break;
+      case AcoesPadrao.REMOVER:
+          this.sweetAlertService.msgPadrao().then(
+            res => {
+              if (res.isConfirmed){
+                this.deletar(event.data.id);
+              } 
+            }
+          )
+          break;         
       default:
         break;
     }
@@ -119,5 +131,24 @@ export class UsuarioListaComponent implements OnInit {
 
   }
   
+  deletar(id: number) {
+    this.usuarioService.remover(id).subscribe(
+      res => {
+        if (res.success) {
+          this.sweetAlertService.msgAvulsa('Deletado', SweetAlertIcons.SUCESS ,'');
+          this.pesquisar();
+        } else {
+
+          let erros = '';
+          res.data.forEach(e => {
+            erros+= `,${e}`
+          });
+
+          this.sweetAlertService.msgAvulsa('Erro',SweetAlertIcons.ERROR, `Não foi possivel excluir o registro porque tem vinculo com: ${erros.substring(1,erros.length)}`);
+
+        }
+      }
+    )
+  }
 
 }

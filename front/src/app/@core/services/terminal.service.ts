@@ -30,4 +30,8 @@ export class TerminalService {
     return this.http.put<ModeloBase>(`${this.caminhoApi}/alterar`, model);
   }
 
+  remover(id : number) {
+    return this.http.delete<ModeloBase>(`${this.caminhoApi}/deletar/${id}`);
+  }
+
 }

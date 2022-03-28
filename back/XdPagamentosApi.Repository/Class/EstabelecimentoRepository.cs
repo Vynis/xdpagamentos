@@ -56,13 +56,57 @@ namespace XdPagamentosApi.Repository.Class
 
         public override async Task<bool> Atualizar(Estabelecimento obj)
         {
-            var buscaRelacionamentoConta =  _mySqlContext.RelContaEstabelecimentos.Where(c => (c.EstId.Equals(obj.Id) && c.CreditoAutomatico.Equals("S")) || ( c.EstId.Equals(obj.Id) && c.CocId.Equals(obj.ListaRelContaEstabelecimento[0].CocId) )).AsNoTracking();
+            var buscaRelacionamentoConta = (await _mySqlContext.RelContaEstabelecimentos.Where(c => (c.EstId.Equals(obj.Id) && c.CreditoAutomatico.Equals("S")) || (c.EstId.Equals(obj.Id) && c.CocId.Equals(obj.ListaRelContaEstabelecimento[0].CocId))).ToArrayAsync()).FirstOrDefault();
+            buscaRelacionamentoConta.CocId = obj.ListaRelContaEstabelecimento[0].CocId;
 
-            if (buscaRelacionamentoConta.Count() > 0)
-                _mySqlContext.RelContaEstabelecimentos.RemoveRange(buscaRelacionamentoConta);
- 
+            var listaNova = new List<RelContaEstabelecimento>();
+            listaNova.Add(buscaRelacionamentoConta);
+
+            obj.ListaRelContaEstabelecimento = listaNova;   
             return await base.Atualizar(obj);
         }
 
+        public async Task<string[]> ExcluirComValidacao(int id)
+        {
+            var listaErros = new List<string>();
+
+            var estabelecimento = (await _mySqlContext.Estabelecimentos.Where(c => c.Id == id).Include(c => c.ListaTerminais).Include(c => c.ListaClientes).Include(c => c.ListaRelContaEstabelecimento).Include(c => c.ListaUsuarioEstabelecimentos).ToArrayAsync()).FirstOrDefault();
+
+            if (estabelecimento == null)
+                listaErros.Add("Estabelecimento não encontrado");
+
+            if (estabelecimento.ListaTerminais.Count() > 0)
+                listaErros.Add("Terminais");
+
+            if (estabelecimento.ListaClientes.Count() > 0)
+                listaErros.Add("Clientes");
+
+            if (estabelecimento.ListaUsuarioEstabelecimentos.Count() > 0)
+                listaErros.Add("Usuarios");
+
+            if (estabelecimento.ListaRelContaEstabelecimento.Count() > 0)
+                listaErros.Add("Conta Caixa");
+
+            var transacao = await _mySqlContext.Transacoes.Where(c => c.EstId == estabelecimento.Id).ToArrayAsync();
+
+            if (transacao.Count() > 0)
+                listaErros.Add("Transações");
+
+            var relContaEstabelecimento = await _mySqlContext.RelContaEstabelecimentos.Where(c => c.EstId == id).Include(c => c.ListaGestaoPagamento).ToArrayAsync();
+
+            foreach (var item in relContaEstabelecimento)
+                if (item.ListaGestaoPagamento.Count() > 0)
+                    listaErros.Add("Gestão de Pagamento");
+
+            if (listaErros.Count() == 0)
+            {
+                _mySqlContext.RelContaEstabelecimentos.RemoveRange(relContaEstabelecimento);
+                await _mySqlContext.SaveChangesAsync();
+
+                await base.Excluir(estabelecimento);
+            }
+                
+            return listaErros.ToArray();
+        }
     }
 }

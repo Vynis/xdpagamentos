@@ -16,6 +16,8 @@ import { ToastService } from '../../../@core/services/toast.service';
 import { SweetalertService } from '../../../@core/services/sweetalert.service';
 import { SweetAlertIcons } from '../../../@core/enums/sweet-alert-icons-enum';
 import { formatarNumero } from '../../../@core/utils/funcoes';
+import { AuthServiceService } from '../../../@core/services/auth-service.service';
+import { SessoesEnum } from '../../../@core/enums/sessoes.enum';
 
 @Component({
   templateUrl: './gestao-pagamento-lista.component.html',
@@ -78,7 +80,9 @@ export class GestaoPagamentoListaComponent implements OnInit {
     private toastService : ToastService,
     private sweetAlertService: SweetalertService,
     private route: Router,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder,
+    private authService: AuthServiceService,
+    ) { this.validaPermissao() }
 
   ngOnInit(): void {
     this.buscaClientes();
@@ -102,6 +106,23 @@ export class GestaoPagamentoListaComponent implements OnInit {
         
     };
 
+  }
+
+  private validaPermissao() { 
+    this.authService.validaPermissaoTela(SessoesEnum.LISTA_GESTAO_PAGTO_CLIENTE);
+    this.authService.permissaoUsuario().subscribe(res => {
+      if (!res.success)
+        return;
+
+      const validaExclusao = this.authService.validaPermissaoAvulsa(res.data, SessoesEnum.EXCLUIR_ESTABELECIMENTO);
+      const validaAlteracao = this.authService.validaPermissaoAvulsa(res.data, SessoesEnum.ALTERAR_ESTABELECIMENTO);
+      // this.validaNovo = this.authService.validaPermissaoAvulsa(res.data, SessoesEnum.CADASTRO_ESTABELECIMENTO);
+      // this.carregaPagina = true;
+
+      // this.buscaDados(new PaginationFilterModel);
+      // this.configuracaoesGrid(validaExclusao,validaAlteracao );
+
+    });
   }
 
   createFormFiltro() {

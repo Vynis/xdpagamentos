@@ -15,3 +15,12 @@ export const roundTo = (n, digits) => {
     var test = (Math.round(n) / multiplicator);
     return +(test.toFixed(digits));
 }
+
+
+export const formatarNumeroUS = (valor) => {
+    var result = valor.replace(/[^0-9]/g, '');
+    if (/[,\.]\d{2}$/.test(valor)) {
+        result = result.replace(/(\d{2})$/, '.$1');
+    }
+    return result;
+}

@@ -29,6 +29,12 @@
                                 <label for="cnpjCpf" class="label">{{ formulario.controls.tipoPessoa.value == 'PF' ? 'CPF ' : 'CNPJ' }}</label>
                                 <input type="text" class="form-control" maxlength="14"
                                   nbInput fullWidth [placeholder]="formulario.controls.tipoPessoa.value == 'PF' ? 'CPF ' : 'CNPJ'" formControlName="cnpjCpf"  />
+                                  <div *ngIf="formulario.get('cnpjCpf').getError('cpfNotValid')" class="invalid-feedback">
+                                    CPF invalido.
+                                  </div>
+                                  <div *ngIf="formulario.get('cnpjCpf').getError('cnpjNotValid')" class="invalid-feedback">
+                                    CNPJ invalido.
+                                  </div>
                             </div>
                         </div>
 
@@ -155,7 +161,7 @@
                       <div class="col-sm-3">
                         <div class="form-group">
                             <label for="limiteCredito" class="label">*Limite de Credito para saque</label>
-                            <input type="text" class="form-control" 
+                            <input type="text" class="form-control"  currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', align: 'left'  }"
                             [ngClass]="{'is-invalid': formulario.get('limiteCredito').errors  && formulario.get('limiteCredito').touched}"
                               nbInput fullWidth placeholder="Ex: 10,50" formControlName="limiteCredito" />
                               <div *ngIf="formulario.get('limiteCredito').hasError('required')  && formulario.get('limiteCredito').touched" class="invalid-feedback">

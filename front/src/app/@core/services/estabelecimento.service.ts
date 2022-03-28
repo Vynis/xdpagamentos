@@ -33,5 +33,9 @@ export class EstabelecimentoService {
   alterar(model : EstabelecimentoModel) {
     return this.http.put<ModeloBase>(`${this.caminhoApi}/alterar`, model);
   }
+
+  remover(id : number) {
+    return this.http.delete<ModeloBase>(`${this.caminhoApi}/deletar/${id}`);
+  }
   
 }

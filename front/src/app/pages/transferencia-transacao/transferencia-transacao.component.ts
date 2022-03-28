@@ -17,6 +17,8 @@ import { EstabelecimentoService } from '../../@core/services/estabelecimento.ser
 import { OrdemPagtoService } from '../../@core/services/ordem-pagto.service';
 import { ToastService } from '../../@core/services/toast.service';
 import { TransferenciaPagtoService } from '../../@core/services/transferencia-pago.service';
+import { AuthServiceService } from '../../@core/services/auth-service.service';
+import { SessoesEnum } from '../../@core/enums/sessoes.enum';
 
 @Component({
   selector: 'app-transferencia-transacao',
@@ -47,9 +49,11 @@ export class TransferenciaTransacaoComponent implements OnInit {
     private fb: FormBuilder,
     protected dateService: NbDateService<Date>,
     private toastService : ToastService,
+    private authService: AuthServiceService
     ) { 
       // this.min = this.dateService.addMonth(this.dateService.today(), -1);
       // this.max = this.dateService.addMonth(this.dateService.today(), 1);
+      this.validaPermissao();
     }
 
   ngOnInit(): void {
@@ -61,6 +65,25 @@ export class TransferenciaTransacaoComponent implements OnInit {
     this.createFormGeracao();
 
   }
+
+  private validaPermissao() { 
+    this.authService.validaPermissaoTela(SessoesEnum.LISTA_TRANSFERENCIA_TRANSACAO);
+    this.authService.permissaoUsuario().subscribe(res => {
+      if (!res.success)
+        return;
+
+      // const validaExclusao = this.authService.validaPermissaoAvulsa(res.data, SessoesEnum.EXCLUIR_ESTABELECIMENTO);
+      // const validaAlteracao = this.authService.validaPermissaoAvulsa(res.data, SessoesEnum.ALTERAR_ESTABELECIMENTO);
+      // this.validaNovo = this.authService.validaPermissaoAvulsa(res.data, SessoesEnum.CADASTRO_ESTABELECIMENTO);
+      // this.carregaPagina = true;
+
+      // this.buscaDados(new PaginationFilterModel);
+      // this.configuracaoesGrid(validaExclusao,validaAlteracao );
+
+    });
+  }
+
+  
 
   createFormFiltro() {
     this.formularioFiltro = this.fb.group({

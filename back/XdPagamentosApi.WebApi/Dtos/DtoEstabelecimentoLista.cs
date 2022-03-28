@@ -32,11 +32,12 @@ namespace XdPagamentosApi.WebApi.Dtos
             } 
         }
 
-        //public string CnpjCpfFormatado { 
-        //    get
-        //    {
-        //        return CnpjCpf.Length > 11 ? $"CNPJ - {CnpjCpf}" : $"CPF - {CnpjCpf}";
-        //    }
-        //}
+        public string CnpjCpfFormatado
+        {
+            get
+            {
+                return CnpjCpf.Length > 11 ? $"CNPJ - {CnpjCpf}" : $"CPF - {CnpjCpf}";
+            }
+        }
     }
 }

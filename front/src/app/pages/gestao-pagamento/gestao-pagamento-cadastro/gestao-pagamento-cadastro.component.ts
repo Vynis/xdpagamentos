@@ -186,6 +186,7 @@ export class GestaoPagamentoCadastroComponent implements OnInit {
     _model.cliId = controls.cliId.value;
     _model.fopId = controls.fopId.value;
     _model.rceId = controls.rceId.value;
+    _model.vlBruto = '0,00';
     
     if (this.ehAprovacao)
       _model.status = controls.status.value;

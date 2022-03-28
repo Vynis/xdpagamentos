@@ -15,6 +15,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthServiceService } from '../../../@core/services/auth-service.service';
 import { SessoesEnum } from '../../../@core/enums/sessoes.enum';
 import { OrderPipe } from 'ngx-order-pipe';
+import { formatarNumero, formatarNumeroUS } from '../../../@core/utils/funcoes';
+import { GenericValidator } from '../../../@core/utils/generic-validator';
 
 @Component({
   selector: 'ngx-cliente-cadastro',
@@ -79,7 +81,7 @@ export class ClienteCadastroComponent implements OnInit {
       tipoPessoa: [_cliente.tipoPessoa, Validators.required],
       estId: [_cliente.estId, Validators.required],
       nome: [_cliente.nome, Validators.required],
-      cnpjCpf: [_cliente.cnpjCpf],
+      cnpjCpf: [_cliente.cnpjCpf,[GenericValidator.isValidCpfCnpj()] ],
       endereco: [_cliente.endereco, Validators.required],
       cep: [_cliente.cep, Validators.required],
       bairro: [_cliente.bairro, Validators.required],
@@ -87,7 +89,7 @@ export class ClienteCadastroComponent implements OnInit {
       estado: [_cliente.estado, Validators.required],
       fone1: [_cliente.fone1],
       fone2: [_cliente.fone2, Validators.required],
-      email: [_cliente.email, [Validators.email]],
+      email: [_cliente.email, [Validators.email]],  
       status: [_cliente.status, Validators.required],
       possuiDadosBancario: [ _cliente.banId > 0 ? true : false , Validators.required],
       banId: [_cliente.banId],
@@ -179,6 +181,8 @@ export class ClienteCadastroComponent implements OnInit {
 
         this.listaTaxas = this.orderPipe.transform((<ClienteModel>res.data).listaTipoTransacao, 'qtdParcelas');
 
+        res.data.limiteCredito = formatarNumeroUS(res.data.limiteCredito);
+
         this.createForm(res.data);
 
 
@@ -228,10 +232,10 @@ export class ClienteCadastroComponent implements OnInit {
       return false;
     }
 
-    if (!this.ehNumeric(controls.limiteCredito.value)) {
-      this.existeErro = true;
-      return false;
-    }
+    // if (!this.ehNumeric(controls.limiteCredito.value)) {
+    //   this.existeErro = true;
+    //   return false;
+    // }
 
     return true;
   }
@@ -255,7 +259,7 @@ export class ClienteCadastroComponent implements OnInit {
     _cliente.fone2 = controls.fone2.value;
     _cliente.email = controls.email.value;
     _cliente.status = controls.status.value;
-    _cliente.limiteCredito = controls.limiteCredito.value;
+    _cliente.limiteCredito = formatarNumero(controls.limiteCredito.value);
 
     controls.taxas.value.forEach(taxa => {
       _cliente.listaTipoTransacao.push({id: 0, percDesconto: taxa.percDesconto, qtdParcelas: taxa.qtdParcelas, status: taxa.status, cliId: _cliente.id})

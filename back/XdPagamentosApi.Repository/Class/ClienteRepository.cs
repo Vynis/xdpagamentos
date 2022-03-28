@@ -108,5 +108,36 @@ namespace XdPagamentosApi.Repository.Class
 
             return await base.Excluir(obj);
         }
+
+        public async Task<string[]> ExcluirComValidacao(int id)
+        {
+            var listaErros = new List<string>();
+
+            var cliente = (await _mySqlContext.Clientes.Where(c => c.Id == id).Include(c => c.ListaGestaoPagamento).Include(c => c.ListaPagamentos).Include(c => c.ListaRelClienteTerminal).Include(c => c.ListaTipoTransacao).Include(c => c.ListaTransacoes).ToArrayAsync()).FirstOrDefault();
+
+            if (cliente == null)
+                listaErros.Add("Cliente não encontrado");
+
+            if (cliente.ListaRelClienteTerminal.Count() > 0)
+                listaErros.Add("Terminais");
+
+            if (cliente.ListaGestaoPagamento.Count() > 0)
+                listaErros.Add("Gestão de Pagamento");
+
+            if (cliente.ListaPagamentos.Count() > 0)
+                listaErros.Add("Transações");
+
+            if (listaErros.Count() == 0)
+            {
+                _mySqlContext.TipoTransacoes.RemoveRange(cliente.ListaTipoTransacao);
+                await _mySqlContext.SaveChangesAsync();
+
+                await base.Excluir(cliente);
+            }
+               
+
+            return listaErros.ToArray();
+
+        }
     }
 }

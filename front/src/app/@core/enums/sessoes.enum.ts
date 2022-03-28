@@ -20,5 +20,13 @@ export enum SessoesEnum {
     LISTA_CONTA_CAIXA = 'listacontacaixa',
     CADASTRO_CONTA_CAIXA = 'cadcontacaixa',
     ALTERAR_CONTA_CAIXA = 'altcontacaixa',
-    EXCLUIR_CONTA_CAIXA = 'exccontacaixa'
+    EXCLUIR_CONTA_CAIXA = 'exccontacaixa',
+    LISTA_GESTAO_PAGTO_CLIENTE = 'listagestaopagtocliente',
+    CADASTRO_GESTAO_PAGTO_CLIENTE = 'cadgestaopagtocliente',
+    EXCLUIR_GESTAO_PAGTO_CLIENTE = 'excgestaopagtocliente',
+    LISTA_GESTAO_EXTRATO = 'listagestaoextrato',
+    CADASTRO_GESTAO_EXTRATO = 'cadgestaoextrato',
+    EXCLUIR_GESTAO_EXTRATO = 'excgestaoextrato',
+    LISTA_TRANSFERENCIA_TRANSACAO = 'listatransftransacoes',
+    CADASTRO_TRANSFERENCIA_TRANSACAO = 'cadtransftransacoes'
 }

@@ -9,5 +9,7 @@ namespace XdPagamentosApi.Services.Interfaces
     public interface ITerminalService : IBaseService<Terminal>
     {
         Task<Terminal[]> BuscarComFiltro(PaginationFilter paginationFilter);
+
+        Task<String[]> ExcluirComValidacao(int id);
     }
 }

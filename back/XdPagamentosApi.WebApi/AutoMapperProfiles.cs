@@ -7,6 +7,7 @@ using XdPagamentosApi.Domain.Models;
 using XdPagamentosApi.Domain.Models.NotificacaoTransacao;
 using XdPagamentosApi.PagSeguro.TransferObjects.NotificacaoTransacao;
 using XdPagamentosApi.WebApi.Dtos;
+using XdPagamentosApi.WebApi.Shared;
 
 namespace XdPagamentosApi.WebApi
 {

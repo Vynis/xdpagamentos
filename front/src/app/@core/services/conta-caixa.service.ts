@@ -40,4 +40,8 @@ export class ContaCaixaService {
   buscarContaCaixaEstabelecimentoPorId(id: number) {
     return this.http.get<ModeloBase>(`${this.caminhoApi}/buscar-conta-caixa-estabelecimento/${id}`);
   }
+
+  remover(id : number) {
+    return this.http.delete<ModeloBase>(`${this.caminhoApi}/deletar/${id}`);
+  }
 }

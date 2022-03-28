@@ -9,5 +9,6 @@ namespace XdPagamentosApi.Services.Interfaces
     public interface IEstabelecimentoService : IBaseService<Estabelecimento>
     {
         Task<Estabelecimento[]> BuscarComFiltro(PaginationFilter paginationFilter);
+        Task<String[]> ExcluirComValidacao(int id);
     }
 }

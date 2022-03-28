@@ -8,7 +8,7 @@
                 <div class="row">
                     <div class="col-sm-8">
                         <div class="form-group">
-                            <label for="nome" class="label">*Razão Social</label>
+                            <label for="nome" class="label">*Nome/Razão Social</label>
                             <input type="text" class="form-control" maxlength="45"
                             [ngClass]="{'is-invalid': formulario.get('nome').errors  && formulario.get('nome').touched}"
                               nbInput fullWidth placeholder="" formControlName="nome"  />
@@ -19,12 +19,18 @@
                     </div>
                     <div class="col-sm-4">
                         <div class="form-group">
-                            <label for="cnpjCpf" class="label">*CNPJ</label>
+                            <label for="cnpjCpf" class="label">*CPF/CNPJ</label>
                             <input type="text" class="form-control" maxlength="14"
                             [ngClass]="{'is-invalid': formulario.get('cnpjCpf').errors  && formulario.get('cnpjCpf').touched}"
                               nbInput fullWidth placeholder="" formControlName="cnpjCpf" />
                               <div *ngIf="formulario.get('cnpjCpf').hasError('required')  && formulario.get('cnpjCpf').touched" class="invalid-feedback">
                                 Campo é obrigatório.
+                              </div>
+                              <div *ngIf="formulario.get('cnpjCpf').getError('cpfNotValid')" class="invalid-feedback">
+                                CPF invalido.
+                              </div>
+                              <div *ngIf="formulario.get('cnpjCpf').getError('cnpjNotValid')" class="invalid-feedback">
+                                CNPJ invalido.
                               </div>
                         </div>
                     </div>

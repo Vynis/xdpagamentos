@@ -64,5 +64,32 @@ namespace XdPagamentosApi.Repository.Class
 
             return await query.AsNoTracking().ToArrayAsync();
         }
+
+        public async Task<string[]> ExcluirComValidacao(int id)
+        {
+            var listaErros = new List<string>();
+
+            var terminal = (await _mySqlContext.Terminais.Where(c => c.Id == id).Include(c => c.ListaRelClienteTerminal).ToArrayAsync() ).FirstOrDefault();
+
+            if (terminal == null)
+                listaErros.Add("Terminal não encontrado");
+
+            var transacao = await _mySqlContext.Transacoes.Where(c => c.NumTerminal.Equals(terminal.NumTerminal)).ToArrayAsync();
+            
+            if (transacao.Count() > 0)
+                listaErros.Add("Transações");
+            
+               
+            if (listaErros.Count() == 0)
+            {
+                _mySqlContext.RelClienteTerminais.RemoveRange(terminal.ListaRelClienteTerminal);
+                await _mySqlContext.SaveChangesAsync();
+
+                await base.Excluir(terminal);
+            }
+                
+
+            return listaErros.ToArray();
+        }
     }
 }

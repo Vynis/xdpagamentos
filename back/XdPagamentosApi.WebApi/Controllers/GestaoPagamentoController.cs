@@ -153,6 +153,7 @@ namespace XdPagamentosApi.WebApi.Controllers
                 dto.CodRef = "LANC-CLIENTE-CRED-DEB";
                 dto.VlBruto = "0,00";
                 dto.ValorSolicitadoCliente = "0,00";
+                dto.VlLiquido = HelperFuncoes.ValorMoedaBR(dto.VlLiquido);
 
                 var response = await _gestaoPagamentoService.Adicionar(_mapper.Map<GestaoPagamento>(dto));
 
@@ -190,8 +191,8 @@ namespace XdPagamentosApi.WebApi.Controllers
                 dados.Descricao = dto.Descricao;
                 dados.DtHrLancamento = dto.DtHrLancamento;
                 dados.Tipo = dto.Tipo;
-                dados.VlLiquido = dto.VlLiquido;
-                dados.VlBruto = dto.VlLiquido;
+                dados.VlLiquido = HelperFuncoes.ValorMoedaBR(dto.VlLiquido);
+                dados.VlBruto = HelperFuncoes.ValorMoedaBR(dto.VlLiquido);
                 dados.FopId = dto.FopId;
                 dados.CliId = dto.CliId;
                 dados.RceId = dto.RceId;

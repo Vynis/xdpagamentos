@@ -21,5 +21,10 @@ namespace XdPagamentosApi.Services.Class
         {
             return await _terminalRepository.BuscarComFiltro(paginationFilter);
         }
+
+        public async Task<string[]> ExcluirComValidacao(int id)
+        {
+            return await _terminalRepository.ExcluirComValidacao(id);
+        }
     }
 }

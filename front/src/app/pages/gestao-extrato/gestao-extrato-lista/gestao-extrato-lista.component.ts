@@ -11,6 +11,8 @@ import { FilterTypeConstants } from '../../../@core/enums/filter-type.enum';
 import { FiltroItemModel } from '../../../@core/models/configuracao/filtroitem.model';
 import { PaginationFilterModel } from '../../../@core/models/configuracao/paginationfilter.model';
 import { AcoesPadrao } from '../../../@core/enums/acoes.enum';
+import { AuthServiceService } from '../../../@core/services/auth-service.service';
+import { SessoesEnum } from '../../../@core/enums/sessoes.enum';
 
 @Component({
   selector: 'ngx-gestao-extrato-lista',
@@ -68,7 +70,9 @@ export class GestaoExtratoListaComponent implements OnInit {
   constructor(
     private contaCaixaSerivce: ContaCaixaService, 
     private gestaoExtratoService: GestaoExtratoService,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder,
+    private authService: AuthServiceService,
+    ) { this.validaPermissao() }
 
   ngOnInit() {
     this.buscarContaCaixa();
@@ -83,6 +87,22 @@ export class GestaoExtratoListaComponent implements OnInit {
       else
         return 'remove'
     };
+  }
+
+  private validaPermissao() { 
+    this.authService.validaPermissaoTela(SessoesEnum.LISTA_GESTAO_EXTRATO);
+    this.authService.permissaoUsuario().subscribe(res => {
+      if (!res.success)
+        return;
+
+      const validaExclusao = this.authService.validaPermissaoAvulsa(res.data, SessoesEnum.EXCLUIR_GESTAO_EXTRATO);
+      // this.validaNovo = this.authService.validaPermissaoAvulsa(res.data, SessoesEnum.CADASTRO_ESTABELECIMENTO);
+      // this.carregaPagina = true;
+
+      // this.buscaDados(new PaginationFilterModel);
+      // this.configuracaoesGrid(validaExclusao,validaAlteracao );
+
+    });
   }
 
   createFormFiltro() {

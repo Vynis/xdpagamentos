@@ -15,6 +15,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptService } from '../../@core/utils/intercept.service';
 import { BancoService } from '../../@core/services/banco.service';
 import { OrderModule } from 'ngx-order-pipe';
+import { CurrencyMaskModule } from 'ng2-currency-mask';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { OrderModule } from 'ngx-order-pipe';
     Ng2SmartTableModule,
     NbTooltipModule,
     NbToggleModule,
-    OrderModule
+    OrderModule,
+    CurrencyMaskModule
   ],
   providers: [
     InterceptService,

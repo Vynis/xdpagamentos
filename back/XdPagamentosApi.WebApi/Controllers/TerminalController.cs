@@ -111,5 +111,25 @@ namespace XdPagamentosApi.WebApi.Controllers
                 return Response(ex.Message, false);
             }
         }
+
+        [HttpDelete("deletar/{id}")]
+        [SwaggerGroup("Terminal")]
+        public async Task<IActionResult> Deletar(int id)
+        {
+            try
+            {
+
+                var response = await _terminalService.ExcluirComValidacao(id);
+
+                if (response.Count() > 0)
+                    return Response(response, false);
+
+                return Response("Exclusão com sucesso!");
+            }
+            catch (Exception ex)
+            {
+                return Response(ex.Message, false);
+            }
+        }
     }
 }

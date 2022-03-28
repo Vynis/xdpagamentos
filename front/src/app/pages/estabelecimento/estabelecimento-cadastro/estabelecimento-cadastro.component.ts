@@ -12,6 +12,7 @@ import { EstabelecimentoService } from '../../../@core/services/estabelecimento.
 import { ToastService } from '../../../@core/services/toast.service';
 import { AuthServiceService } from '../../../@core/services/auth-service.service';
 import { SessoesEnum } from '../../../@core/enums/sessoes.enum';
+import { GenericValidator } from '../../../@core/utils/generic-validator';
 
 @Component({
   selector: 'ngx-estabelecimento-cadastro',
@@ -76,7 +77,7 @@ export class EstabelecimentoCadastroComponent implements OnInit {
     this.formulario = this.fb.group({
       id: [_estabeblecimento.id],
       nome: [_estabeblecimento.nome, Validators.required],
-      cnpjCpf: [_estabeblecimento.cnpjCpf, Validators.required],
+      cnpjCpf: [_estabeblecimento.cnpjCpf, [Validators.required, GenericValidator.isValidCpfCnpj()]],
       endereco: [_estabeblecimento.endereco, Validators.required],
       cep: [_estabeblecimento.cep, Validators.required],
       bairro: [_estabeblecimento.bairro, Validators.required],
@@ -241,5 +242,7 @@ export class EstabelecimentoCadastroComponent implements OnInit {
       }
     )
   }
+
+  
 
 }

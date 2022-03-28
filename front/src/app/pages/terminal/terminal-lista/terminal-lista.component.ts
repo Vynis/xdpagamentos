@@ -11,6 +11,8 @@ import { FiltroItemModel } from '../../../@core/models/configuracao/filtroitem.m
 import { FilterTypeConstants } from '../../../@core/enums/filter-type.enum';
 import { AuthServiceService } from '../../../@core/services/auth-service.service';
 import { SessoesEnum } from '../../../@core/enums/sessoes.enum';
+import { SweetalertService } from '../../../@core/services/sweetalert.service';
+import { SweetAlertIcons } from '../../../@core/enums/sweet-alert-icons-enum';
 
 @Component({
   selector: 'ngx-terminal-lista',
@@ -53,7 +55,8 @@ export class TerminalListaComponent implements OnInit {
     private toastService : ToastService,
     private route: Router,
     private fb: FormBuilder,
-    private authService: AuthServiceService
+    private authService: AuthServiceService,
+    private sweetAlertService: SweetalertService,
   ) {
       this.validaPermissao();
    }
@@ -115,6 +118,15 @@ export class TerminalListaComponent implements OnInit {
       case AcoesPadrao.EDITAR:
         this.route.navigateByUrl(`/pages/terminal/cadastro/edit/${event.data.id}`);
         break;
+      case AcoesPadrao.REMOVER:
+        this.sweetAlertService.msgPadrao().then(
+          res => {
+            if (res.isConfirmed){
+              this.deletar(event.data.id);
+            } 
+          }
+        )
+        break;
       default:
         break;
     }
@@ -144,6 +156,26 @@ export class TerminalListaComponent implements OnInit {
     filtro.filtro = listaItem;
     this.buscaDados(filtro);
 
+  }
+
+  deletar(id: number) {
+    this.terminalService.remover(id).subscribe(
+      res => {
+        if (res.success) {
+          this.sweetAlertService.msgAvulsa('Deletado', SweetAlertIcons.SUCESS ,'');
+          this.pesquisar();
+        } else {
+
+          let erros = '';
+          res.data.forEach(e => {
+            erros+= `,${e}`
+          });
+
+          this.sweetAlertService.msgAvulsa('Erro',SweetAlertIcons.ERROR, `Não foi possivel excluir o registro porque tem vinculo com: ${erros.substring(1,erros.length)}`);
+
+        }
+      }
+    )
   }
 
 }

@@ -20,14 +20,29 @@ namespace XdPagamentosApi.Repository.Class
             _mySqlContext = mySqlContext;
         }
 
-        public override Task<bool> Atualizar(ContaCaixa obj)
+        public override async Task<bool> Atualizar(ContaCaixa obj)
         {
             var relacionamento = _mySqlContext.RelContaEstabelecimentos.AsNoTracking().Where(c => c.CocId.Equals(obj.Id)).ToArray();
 
-            if (relacionamento.Length > 0)
-                _mySqlContext.RemoveRange(relacionamento);
+            var listaNova = new List<RelContaEstabelecimento>();
 
-            return base.Atualizar(obj);
+            foreach(var item in relacionamento)
+            {
+                var existeRegistro = obj.ListaRelContaEstabelecimento.Where(c => c.EstId == item.EstId).ToList().FirstOrDefault();
+
+                if (existeRegistro != null)
+                {
+                    obj.ListaRelContaEstabelecimento.Where(c =>  c.EstId == item.EstId).ToList().ForEach(c => c.Id = item.Id);
+                } 
+                else
+                {
+                    _mySqlContext.RelContaEstabelecimentos.Remove(item);
+                    await _mySqlContext.SaveChangesAsync();
+                }
+            }
+
+
+            return await base.Atualizar(obj);
         }
 
         public override async Task<ContaCaixa> ObterPorId(int Id)
@@ -43,6 +58,32 @@ namespace XdPagamentosApi.Repository.Class
             IQueryable<ContaCaixa> query = _mySqlContext.ContaCaixas.Where(predicado).Include(c => c.ListaRelContaEstabelecimento);
 
             return await query.AsNoTracking().ToArrayAsync();
+        }
+
+        public async Task<string[]> ExcluirComValidacao(int id)
+        {
+            var listaErros = new List<string>();
+
+            var contaCaixa = (await _mySqlContext.ContaCaixas.Where(c => c.Id == id).ToArrayAsync()).FirstOrDefault();
+
+            if (contaCaixa == null)
+                listaErros.Add("Conta Caixa não encontrado");
+
+            var relContaEstabelecimento = await _mySqlContext.RelContaEstabelecimentos.Where(c => c.CocId == id).Include(c => c.ListaGestaoPagamento).ToArrayAsync();
+
+            foreach( var item in relContaEstabelecimento)
+                if (item.ListaGestaoPagamento.Count() > 0)
+                    listaErros.Add($"Gestão de Pagamento (Estabelecimento: {item.EstId} | Qtd: {item.ListaGestaoPagamento.Count()})");
+  
+            if (listaErros.Count() == 0)
+            {
+                _mySqlContext.RelContaEstabelecimentos.RemoveRange(relContaEstabelecimento);
+                await _mySqlContext.SaveChangesAsync();
+
+                await base.Excluir(contaCaixa);
+            }
+
+            return listaErros.ToArray();
         }
     }
 }

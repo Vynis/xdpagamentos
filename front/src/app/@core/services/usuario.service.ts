@@ -33,4 +33,8 @@ export class UsuarioService {
   alterarSenha(usuarioSenha: UsuarioSenhaModel) {
     return this.http.put<ModeloBase>(`${this.caminhoApi}/alterar-senha`, usuarioSenha);
   }
+
+  remover(id : number) {
+    return this.http.delete<ModeloBase>(`${this.caminhoApi}/deletar/${id}`);
+  }
 }

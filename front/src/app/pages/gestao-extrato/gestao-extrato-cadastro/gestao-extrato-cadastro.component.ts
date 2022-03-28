@@ -127,6 +127,7 @@ export class GestaoExtratoCadastroComponent implements OnInit {
     _model.vlBruto = formatarNumero(controls.vlBruto.value);
     _model.fopId = controls.fopId.value;
     _model.rceId = controls.rceId.value;
+    _model.vlLiquido = '0,00';
 
     return _model;
   }

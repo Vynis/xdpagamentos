@@ -50,5 +50,28 @@ namespace XdPagamentosApi.Repository.Class
             return await base.Atualizar(obj);
         }
 
+        public async Task<string[]> ExcluirComValidacao(int id)
+        {
+            var listaErros = new List<string>();
+
+            var usuario = (await _mySqlContext.Usuarios.Where(c => c.Id == id).Include(c => c.ListaPermissao).Include(c => c.ListaUsuarioEstabelecimentos).AsNoTracking().ToArrayAsync()).FirstOrDefault();
+
+            if (usuario == null)
+                listaErros.Add("Usuario não encontrado");
+
+            if (listaErros.Count() == 0)
+            {
+                _mySqlContext.Permissoes.RemoveRange(usuario.ListaPermissao);
+                await _mySqlContext.SaveChangesAsync();
+
+                _mySqlContext.RelUsuarioEstabelecimentos.RemoveRange(usuario.ListaUsuarioEstabelecimentos);
+                await _mySqlContext.SaveChangesAsync();
+
+                await base.Excluir(usuario);
+            }
+
+            return listaErros.ToArray();
+
+        }
     }
 }
