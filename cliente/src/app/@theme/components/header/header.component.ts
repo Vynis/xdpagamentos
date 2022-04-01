@@ -18,6 +18,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userPictureOnly: boolean = false;
   user: any;
   saldo: string = '0,00';
+  limite: string = '0,00';
+  total: string = '0,00';
 
   themes = [
     {
@@ -104,6 +106,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
           return;
         
         this.saldo = res.data.saldoCliente;
+        this.limite = res.data.limiteCliente;
+        this.total = res.data.total;
         console.log(res.data);
       }
     )

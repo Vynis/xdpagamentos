@@ -12,10 +12,6 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'layout-outline',
     children: [
       {
-        title: 'Minha conta',
-        link: '/pages/cliente',
-      },
-      {
         title: 'Extrato',
         link: '/pages/extrato',
       },

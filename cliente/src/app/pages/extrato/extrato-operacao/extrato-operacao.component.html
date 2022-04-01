@@ -3,14 +3,14 @@
     <nb-card-body>
         <nb-alert *ngIf="existeErro" status="danger" closable>Favor preencher todos os campos obrigatorios!</nb-alert>
         <form *ngIf="cliente"  [formGroup]="formulario">
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-sm-4"></div>
                 <div class="col-sm-4">
                     <h5>Limite de solicitação:</h5> <br>
                     <h6>R$ {{cliente.limiteCredito}}</h6>
                 </div>
                 <div class="col-sm-3"></div>
-            </div><br><br>
+            </div><br><br> -->
             <div class="row">
                 <div class="col-sm-4"></div>
                 <div class="col-sm-4">

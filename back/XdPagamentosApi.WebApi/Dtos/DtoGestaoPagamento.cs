@@ -87,6 +87,9 @@ namespace XdPagamentosApi.WebApi.Dtos
         {
             get
             {
+                if (VlBruto == null)
+                    return "0,00";
+
                 return VlBruto.ToString(CultureInfo.GetCultureInfo("pt-BR"));
             }
         }

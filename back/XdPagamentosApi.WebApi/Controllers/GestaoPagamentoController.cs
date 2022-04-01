@@ -154,6 +154,7 @@ namespace XdPagamentosApi.WebApi.Controllers
                 dto.VlBruto = "0,00";
                 dto.ValorSolicitadoCliente = "0,00";
                 dto.VlLiquido = HelperFuncoes.ValorMoedaBR(dto.VlLiquido);
+                dto.Status = "AP";
 
                 var response = await _gestaoPagamentoService.Adicionar(_mapper.Map<GestaoPagamento>(dto));
 
@@ -248,8 +249,15 @@ namespace XdPagamentosApi.WebApi.Controllers
 
                 var somaCredito = buscar.ToList().Where(x => x.Tipo.Equals("C")).Sum(x => decimal.Parse(x.VlLiquido, new NumberFormatInfo() { NumberDecimalSeparator = "," }));
                 var somaDebito = buscar.ToList().Where(x => x.Tipo.Equals("D")).Sum(x => decimal.Parse(x.VlLiquido, new NumberFormatInfo() { NumberDecimalSeparator = "," }));
+                var limiteCliente = decimal.Parse((await _clienteService.ObterPorId(Convert.ToInt32(User.Identity.Name.ToString().Descriptar()))).LimiteCredito.Replace(".",""), new NumberFormatInfo() { NumberDecimalSeparator = "," });
 
-                return Response(new { saldoCliente = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", somaCredito - somaDebito)  });
+                return Response(
+                    new { 
+                        saldoCliente = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", somaCredito - somaDebito),
+                        limiteCliente = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", limiteCliente), 
+                        total = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", (somaCredito - somaDebito) + limiteCliente)  
+                    });
+
             }
             catch (Exception ex)
             {
@@ -266,14 +274,14 @@ namespace XdPagamentosApi.WebApi.Controllers
 
                 var buscar = await _gestaoPagamentoService.BuscarExpressao(x => x.CliId.Equals(Convert.ToInt32(User.Identity.Name.ToString().Descriptar())) && x.Grupo.Equals("EC") && x.Status.Equals("PE"));
 
-                var somaDebito = buscar.ToList().Where(x => x.Tipo.Equals("D")).Sum(x => decimal.Parse(x.ValorSolicitadoCliente, new NumberFormatInfo() { NumberDecimalSeparator = "," }));
+                //var somaDebito = buscar.ToList().Where(x => x.Tipo.Equals("D")).Sum(x => decimal.Parse(x.ValorSolicitadoCliente, new NumberFormatInfo() { NumberDecimalSeparator = "," }));
 
-                var cliente = await  _clienteService.ObterPorId(Convert.ToInt32(User.Identity.Name.ToString().Descriptar()));
+                //var cliente = await  _clienteService.ObterPorId(Convert.ToInt32(User.Identity.Name.ToString().Descriptar()));
 
-                var limiteCredito = string.IsNullOrEmpty(cliente.LimiteCredito) ? "0,00" : cliente.LimiteCredito;
+                //var limiteCredito = string.IsNullOrEmpty(cliente.LimiteCredito) ? "0,00" : cliente.LimiteCredito;
 
-                if ((decimal.Parse(dto.ValorSolicitadoCliente, new NumberFormatInfo() { NumberDecimalSeparator = "," }) + somaDebito) > decimal.Parse(limiteCredito, new NumberFormatInfo() { NumberDecimalSeparator = "," }))
-                    return Response("Limite de crédito excedido", false);
+                //if ((decimal.Parse(dto.ValorSolicitadoCliente, new NumberFormatInfo() { NumberDecimalSeparator = "," }) + somaDebito) > decimal.Parse(limiteCredito, new NumberFormatInfo() { NumberDecimalSeparator = "," }))
+                //    return Response("Limite de crédito excedido", false);
 
 
                 dto.UsuNome = "-";
@@ -291,6 +299,7 @@ namespace XdPagamentosApi.WebApi.Controllers
                 dto.CliId = Convert.ToInt32(User.Identity.Name.ToString().Descriptar());
                 dto.FopId = 0;
                 dto.RceId = 0;
+                dto.ValorSolicitadoCliente = HelperFuncoes.ValorMoedaBR(dto.ValorSolicitadoCliente);
 
                 var response = await _gestaoPagamentoService.Adicionar(_mapper.Map<GestaoPagamento>(dto));
 
