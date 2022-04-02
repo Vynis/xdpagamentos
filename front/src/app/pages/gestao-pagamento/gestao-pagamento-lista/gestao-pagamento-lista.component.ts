@@ -224,12 +224,15 @@ export class GestaoPagamentoListaComponent implements OnInit {
 
           this.settings.actions.custom = [];
           const controls = this.formularioFiltro.controls;
-          this.resumoLancamentos.cliente = this.listaClientes.filter(x => x.id == controls.cliente.value)[0].nome;
+          const cliente = this.listaClientes.filter(x => x.id == controls.cliente.value)[0];
+          this.resumoLancamentos.cliente = cliente.nome;
           this.resumoLancamentos.periodo = `De ${ new Date(controls.dtInicial.value).toLocaleDateString() } até ${ new Date(controls.dtFinal.value).toLocaleDateString() }`;
           this.resumoLancamentos.saldoAnterior = res.data.saldoAnterior;
           this.resumoLancamentos.entradas = res.data.entradas;
           this.resumoLancamentos.saidas = res.data.saidas;
           this.resumoLancamentos.saldoAtual = res.data.saldoAtual;
+          this.resumoLancamentos.limite = cliente.limiteCredito;
+          this.resumoLancamentos.saldoFinal = formatarNumero(Number(res.data.saldoAtual.replace('.','').replace(',','.')) + Number(cliente.limiteCredito.replace('.','').replace(',','.')));
         }
       }
     )

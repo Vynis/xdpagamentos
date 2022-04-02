@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using XdPagamentoApi.Shared.Helpers;
 using XdPagamentosApi.Domain.Models;
 using XdPagamentosApi.Services.Interfaces;
 using XdPagamentosApi.WebApi.Configuracao.Swagger;
@@ -66,14 +67,14 @@ namespace XdPagamentosApi.WebApi.Controllers
                 //Saldo Atual
                 var dadosGeral = await _gestaoPagamentoService.BuscarExpressao(x => x.CliId.Equals(dadosCliente) && x.Grupo.Equals("EC"));
 
-                retornoGestaoPagamento.SaldoAtual = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", (dadosGeral.Where(x => x.Tipo.Equals("C")).Sum(x => decimal.Parse(x.VlLiquido, new NumberFormatInfo() { NumberDecimalSeparator = "," })) - dadosGeral.Where(x => x.Tipo.Equals("D")).Sum(x => decimal.Parse(x.VlLiquido, new NumberFormatInfo() { NumberDecimalSeparator = "," }))));
+                retornoGestaoPagamento.SaldoAtual = HelperFuncoes.ValorMoedaBRDecimal(dadosGeral.Where(x => x.Tipo.Equals("C")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido)) - dadosGeral.Where(x => x.Tipo.Equals("D")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido)));
 
                 //Saldo Anterior
                 var dataHrLancamento = filtro.Filtro.Where(x => x.Property.Equals("DtHrLancamento") && x.FilterType.Equals("greaterThanEquals")).FirstOrDefault().Value.ToString();
 
                 var dadosSaldoAnterior = await _gestaoPagamentoService.BuscarExpressao(x => x.DtHrLancamento < DateTime.Parse(dataHrLancamento) && x.CliId.Equals(dadosCliente));
 
-                retornoGestaoPagamento.SaldoAnterior = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", (dadosSaldoAnterior.Where(x => x.Tipo.Equals("C")).Sum(x => decimal.Parse(x.VlLiquido, new NumberFormatInfo() { NumberDecimalSeparator = "," })) - dadosSaldoAnterior.Where(x => x.Tipo.Equals("D")).Sum(x => decimal.Parse(x.VlLiquido, new NumberFormatInfo() { NumberDecimalSeparator = "," }))));
+                retornoGestaoPagamento.SaldoAnterior = HelperFuncoes.ValorMoedaBRDecimal(dadosSaldoAnterior.Where(x => x.Tipo.Equals("C")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido)) - dadosSaldoAnterior.Where(x => x.Tipo.Equals("D")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido)));
 
                 return Response(retornoGestaoPagamento);
             }
@@ -106,8 +107,8 @@ namespace XdPagamentosApi.WebApi.Controllers
 
                 var listaPagamentos = _mapper.Map<DtoGestaoPagamento[]>(await _gestaoPagamentoService.BuscarComFiltro(filtro));
 
-                var totalCredito = listaPagamentos.Where(x => x.Tipo.Equals("C")).Sum(x => decimal.Parse(x.ValorFormatado, new NumberFormatInfo() { NumberDecimalSeparator = "," }));
-                var totalDebito = listaPagamentos.Where(x => x.Tipo.Equals("D")).Sum(x => decimal.Parse(x.ValorFormatado, new NumberFormatInfo() { NumberDecimalSeparator = "," }));
+                var totalCredito = listaPagamentos.Where(x => x.Tipo.Equals("C")).Sum(x => HelperFuncoes.FormataValorDecimal(x.ValorFormatado));
+                var totalDebito = listaPagamentos.Where(x => x.Tipo.Equals("D")).Sum(x => HelperFuncoes.FormataValorDecimal(x.ValorFormatado));
                 var total = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", totalCredito - totalDebito) ;
 
                 return Response( new { listaPagamentos, total });
@@ -153,7 +154,7 @@ namespace XdPagamentosApi.WebApi.Controllers
                 dto.CodRef = "LANC-CLIENTE-CRED-DEB";
                 dto.VlBruto = "0,00";
                 dto.ValorSolicitadoCliente = "0,00";
-                dto.VlLiquido = HelperFuncoes.ValorMoedaBR(dto.VlLiquido);
+                dto.VlLiquido = HelperFuncoes.ValorMoedaBRString(dto.VlLiquido);
                 dto.Status = "AP";
 
                 var response = await _gestaoPagamentoService.Adicionar(_mapper.Map<GestaoPagamento>(dto));
@@ -192,8 +193,8 @@ namespace XdPagamentosApi.WebApi.Controllers
                 dados.Descricao = dto.Descricao;
                 dados.DtHrLancamento = dto.DtHrLancamento;
                 dados.Tipo = dto.Tipo;
-                dados.VlLiquido = HelperFuncoes.ValorMoedaBR(dto.VlLiquido);
-                dados.VlBruto = HelperFuncoes.ValorMoedaBR(dto.VlLiquido);
+                dados.VlLiquido = HelperFuncoes.ValorMoedaBRString(dto.VlLiquido);
+                dados.VlBruto = HelperFuncoes.ValorMoedaBRString(dto.VlLiquido);
                 dados.FopId = dto.FopId;
                 dados.CliId = dto.CliId;
                 dados.RceId = dto.RceId;
@@ -247,9 +248,9 @@ namespace XdPagamentosApi.WebApi.Controllers
             {
                 var buscar = await _gestaoPagamentoService.BuscarExpressao(x => x.CliId.Equals(Convert.ToInt32(User.Identity.Name.ToString().Descriptar())) && x.Grupo.Equals("EC") && x.Status.Equals("AP"));
 
-                var somaCredito = buscar.ToList().Where(x => x.Tipo.Equals("C")).Sum(x => decimal.Parse(x.VlLiquido, new NumberFormatInfo() { NumberDecimalSeparator = "," }));
-                var somaDebito = buscar.ToList().Where(x => x.Tipo.Equals("D")).Sum(x => decimal.Parse(x.VlLiquido, new NumberFormatInfo() { NumberDecimalSeparator = "," }));
-                var limiteCliente = decimal.Parse((await _clienteService.ObterPorId(Convert.ToInt32(User.Identity.Name.ToString().Descriptar()))).LimiteCredito.Replace(".",""), new NumberFormatInfo() { NumberDecimalSeparator = "," });
+                var somaCredito = buscar.ToList().Where(x => x.Tipo.Equals("C")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido));
+                var somaDebito = buscar.ToList().Where(x => x.Tipo.Equals("D")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido));
+                var limiteCliente =HelperFuncoes.FormataValorDecimal(HelperFuncoes.ValorMoedaBRString((await _clienteService.ObterPorId(Convert.ToInt32(User.Identity.Name.ToString().Descriptar()))).LimiteCredito));
 
                 return Response(
                     new { 
@@ -299,7 +300,7 @@ namespace XdPagamentosApi.WebApi.Controllers
                 dto.CliId = Convert.ToInt32(User.Identity.Name.ToString().Descriptar());
                 dto.FopId = 0;
                 dto.RceId = 0;
-                dto.ValorSolicitadoCliente = HelperFuncoes.ValorMoedaBR(dto.ValorSolicitadoCliente);
+                dto.ValorSolicitadoCliente = HelperFuncoes.ValorMoedaBRString(dto.ValorSolicitadoCliente);
 
                 var response = await _gestaoPagamentoService.Adicionar(_mapper.Map<GestaoPagamento>(dto));
 

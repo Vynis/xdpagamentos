@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FiltrDinamico.Core\FiltrDinamico.Core.csproj" />
+    <ProjectReference Include="..\XdPagamentoApi.Shared\XdPagamentoApi.Shared.csproj" />
     <ProjectReference Include="..\XdPagamentosApi.Domain\XdPagamentosApi.Domain.csproj" />
   </ItemGroup>
 

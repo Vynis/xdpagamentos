@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using XdPagamentoApi.Shared.Helpers;
 using XdPagamentosApi.Domain.Models;
 using XdPagamentosApi.Services.Interfaces;
 using XdPagamentosApi.WebApi.Configuracao.Swagger;
@@ -110,7 +111,7 @@ namespace XdPagamentosApi.WebApi.Controllers
                 dto.CodRef = "LANC-EXTRATO-CRED-DEB";
                 dto.VlLiquido = "0,00";
                 dto.ValorSolicitadoCliente = "0,00";
-                dto.VlBruto = HelperFuncoes.ValorMoedaBR(dto.VlBruto);
+                dto.VlBruto = HelperFuncoes.ValorMoedaBRString(dto.VlBruto);
 
                 var response = await _gestaoPagamentoService.Adicionar(_mapper.Map<GestaoPagamento>(dto));
 

@@ -9,6 +9,7 @@ using XdPagamentosApi.Domain.Models;
 using XdPagamentosApi.Domain.Models.NotificacaoTransacao;
 using XdPagamentosApi.Repository.Interfaces;
 using XdPagamentosApi.Repository.Persistence.Context;
+using XdPagamentoApi.Shared.Helpers;
 
 namespace XdPagamentosApi.Repository.Class
 {
@@ -83,8 +84,8 @@ namespace XdPagamentosApi.Repository.Class
         {
             transacao.DtOperacao = dtoTransactionPagSeguro.Date;
             transacao.DtCredito = dtoTransactionPagSeguro.EscrowEndDate;
-            transacao.VlBruto = dtoTransactionPagSeguro.GrossAmount.ToString(CultureInfo.GetCultureInfo("pt-BR"));
-            transacao.VlLiquido = dtoTransactionPagSeguro.NetAmount.ToString(CultureInfo.GetCultureInfo("pt-BR"));
+            transacao.VlBruto = HelperFuncoes.ValorMoedaBRDouble(dtoTransactionPagSeguro.GrossAmount);
+            transacao.VlLiquido = HelperFuncoes.ValorMoedaBRDouble(dtoTransactionPagSeguro.NetAmount);
             transacao.EstId = Convert.ToInt32(estabelecimento);
             transacao.NumTerminal = dtoTransactionPagSeguro.DeviceInfo?.SerialNumber;
             transacao.NumCartao = $"** ** ** {dtoTransactionPagSeguro.DeviceInfo?.Holder}";
@@ -94,7 +95,7 @@ namespace XdPagamentosApi.Repository.Class
             transacao.TipoTransacao = "01";
             transacao.OrigemAjuste = "";
             transacao.MeioCaptura = dtoTransactionPagSeguro.Items.Item.Description;
-            transacao.TaxaComissaoOperador = ((Convert.ToDecimal(transacao.VlBruto) - Convert.ToDecimal(transacao.VlLiquido)) * 100 / Convert.ToDecimal(transacao.VlBruto)).ToString();
+            transacao.TaxaComissaoOperador = HelperFuncoes.ValorMoedaBRDouble((Convert.ToDouble(transacao.VlBruto) - Convert.ToDouble(transacao.VlLiquido)) * 100 / Convert.ToDouble(transacao.VlBruto)) ;
             transacao.PagId = 0;
             transacao.HisId = 0;
             transacao.CliId = 0;

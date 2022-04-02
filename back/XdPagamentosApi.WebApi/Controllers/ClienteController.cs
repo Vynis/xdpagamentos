@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using XdPagamentoApi.Shared.Helpers;
 using XdPagamentosApi.Domain.Models;
 using XdPagamentosApi.Services.Class;
 using XdPagamentosApi.Services.Interfaces;
@@ -144,7 +145,7 @@ namespace XdPagamentosApi.WebApi.Controllers
                     return Response("Cpf/Cnpj já cadastrado", false);
 
                 dtoCliente.Senha = SenhaHashService.CalculateMD5Hash("cli102030");
-                dtoCliente.LimiteCredito = HelperFuncoes.ValorMoedaBR(dtoCliente.LimiteCredito);
+                dtoCliente.LimiteCredito = HelperFuncoes.ValorMoedaBRString(dtoCliente.LimiteCredito);
 
                 var response = await _clienteService.Adicionar(_mapper.Map<Cliente>(dtoCliente));
 
@@ -180,7 +181,7 @@ namespace XdPagamentosApi.WebApi.Controllers
 
                 dtoCliente.Senha = dados.Senha;
                 dtoCliente.NomeAgrupamento = dados.NomeAgrupamento;
-                dtoCliente.LimiteCredito = HelperFuncoes.ValorMoedaBR(dtoCliente.LimiteCredito);
+                dtoCliente.LimiteCredito = HelperFuncoes.ValorMoedaBRString(dtoCliente.LimiteCredito);
 
 
                 var response = await _clienteService.Atualizar(_mapper.Map<Cliente>(dtoCliente));

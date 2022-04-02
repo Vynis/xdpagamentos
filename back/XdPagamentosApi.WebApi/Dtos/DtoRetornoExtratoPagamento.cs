@@ -14,13 +14,13 @@ namespace XdPagamentosApi.WebApi.Dtos
         public string Entradas { 
             get
             {
-                return $"{listaGestaoPagamentos.Where(x => x.Tipo.Equals("C")).Sum(x => decimal.Parse(x.VlBruto,new NumberFormatInfo() { NumberDecimalSeparator = "," })).ToString(CultureInfo.GetCultureInfo("pt-BR"))} (C)";
+                return $"{string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", listaGestaoPagamentos.Where(x => x.Tipo.Equals("C")).Sum(x => decimal.Parse(x.VlBruto.Replace(".", ""), new NumberFormatInfo() { NumberDecimalSeparator = "," })).ToString(CultureInfo.GetCultureInfo("pt-BR")))} (C)";
             }
         }
         public string Saidas { 
             get
             {
-                return $"{listaGestaoPagamentos.Where(x => x.Tipo.Equals("D")).Sum(x => decimal.Parse(x.VlBruto, new NumberFormatInfo() { NumberDecimalSeparator = "," })).ToString(CultureInfo.GetCultureInfo("pt-BR"))} (D)";
+                return $"{string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", listaGestaoPagamentos.Where(x => x.Tipo.Equals("D")).Sum(x => decimal.Parse(x.VlBruto.Replace(".", ""), new NumberFormatInfo() { NumberDecimalSeparator = "," })).ToString(CultureInfo.GetCultureInfo("pt-BR")))} (D)";
             }
         }
         public string SaldoParcial { get; set; }

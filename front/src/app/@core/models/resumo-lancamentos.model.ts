@@ -5,6 +5,8 @@ export class ResumoLancamentosModel {
     entradas: string;
     saidas: string;
     saldoAtual: string;
+    limite: string;
+    saldoFinal: string;
 
     contaCaixa: string;
     estabelecimento: string;
@@ -19,5 +21,6 @@ export class ResumoLancamentosModel {
         this.entradas = "-";
         this.saidas = "-";
         this.saldoAtual = "-";
+        this.limite = "-";
     }
 }
