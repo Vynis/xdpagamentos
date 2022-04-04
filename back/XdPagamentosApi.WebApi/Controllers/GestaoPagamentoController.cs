@@ -161,6 +161,7 @@ namespace XdPagamentosApi.WebApi.Controllers
                 dto.ValorSolicitadoCliente = "0,00";
                 dto.VlLiquido = HelperFuncoes.ValorMoedaBRString(dto.VlLiquido);
                 dto.Status = "AP";
+                dto.DtHrSolicitacoCliente = DateTime.Now;
 
                 var response = await _gestaoPagamentoService.Adicionar(_mapper.Map<GestaoPagamento>(dto));
 
@@ -294,12 +295,46 @@ namespace XdPagamentosApi.WebApi.Controllers
             }
         }
 
+        [HttpGet("saldo-atual-cliente/{id}")]
+        [SwaggerGroup("GestaoPagamento")]
+
+        public async Task<IActionResult> SaldoAtual(int id)
+        {
+            try
+            {
+                var buscar = await _gestaoPagamentoService.BuscarExpressao(x => x.CliId.Equals(id) && x.Grupo.Equals("EC") && x.Status.Equals("AP"));
+
+                var somaCredito = buscar.ToList().Where(x => x.Tipo.Equals("C")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido));
+                var somaDebito = buscar.ToList().Where(x => x.Tipo.Equals("D")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido));
+                var limiteCliente = HelperFuncoes.FormataValorDecimal(HelperFuncoes.ValorMoedaBRString((await _clienteService.ObterPorId(id)).LimiteCredito));
+
+                return Response(
+                    new
+                    {
+                        saldoCliente = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", somaCredito - somaDebito),
+                        limiteCliente = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", limiteCliente),
+                        total = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", (somaCredito - somaDebito) + limiteCliente)
+                    });
+
+            }
+            catch (Exception ex)
+            {
+                return Response(ex.Message, false);
+            }
+        }
+
         [HttpPost("solicitar-pagto-cliente")]
         [SwaggerGroup("GestaoPagamento")]
         public async Task<IActionResult> SolicitarPagtoCliente(DtoGestaoPagamento dto)
         {
             try
             {
+                if (dto.DtAgendamento == null)
+                    return Response("Data agendamento invalida. Informe a data posterior no dia de hoje. ", false);
+
+                if (dto.DtAgendamento?.Date <= DateTime.Now.Date)
+                    return Response("Data agendamento invalida. Informe a data posterior no dia de hoje. ", false);
+
 
                 dto.CliId = Convert.ToInt32(User.Identity.Name.ToString().Descriptar());
 
@@ -321,7 +356,6 @@ namespace XdPagamentosApi.WebApi.Controllers
                 dto.Tipo = "D";
                 dto.Status = "PE";
                 dto.CliId = Convert.ToInt32(User.Identity.Name.ToString().Descriptar());
-                dto.FopId = 0;
                 dto.RceId = 0;
                 dto.ValorSolicitadoCliente = HelperFuncoes.ValorMoedaBRString(dto.ValorSolicitadoCliente);
 

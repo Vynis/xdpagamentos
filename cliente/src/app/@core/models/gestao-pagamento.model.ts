@@ -17,6 +17,7 @@ export class GestaoPagamentoModel {
     dtHrCredito: Date;
     status: string;
     valorSolicitadoCliente: string;
+    dtAgendamento: Date;
 
     /**
      *

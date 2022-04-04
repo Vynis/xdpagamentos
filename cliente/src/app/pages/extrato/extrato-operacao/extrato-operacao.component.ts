@@ -8,6 +8,9 @@ import { Component, OnInit } from '@angular/core';
 import { ToastService } from '../../../@core/services/toast.service';
 import { ToastPadrao } from '../../../@core/enums/toast.enum';
 import { formatarNumero } from '../../../@core/utils/funcoes';
+import { FormaPagtoModel } from '../../../@core/models/forma-pagto.model';
+import { FormaPagtoService } from '../../../@core/services/forma-pagto.service';
+import { CustomValidators } from '../../../@core/utils/custom-validator';
 
 @Component({
   selector: 'ngx-extrato-operacao',
@@ -18,22 +21,35 @@ export class ExtratoOperacaoComponent implements OnInit {
   existeErro: boolean = false;
   formulario: FormGroup;
   cliente: ClienteModel;
+  listaFormaPagto: FormaPagtoModel[] = [];
+  min: Date;
+
 
   constructor(
     private fb: FormBuilder, 
     private toastService : ToastService, 
     private route: Router,
     private clienteService: ClienteService, 
-    private gestaoPagtoService: GestaoPagamentoService) { }
+    private gestaoPagtoService: GestaoPagamentoService,
+    private formaPagtoService: FormaPagtoService) {
+     this.min = new Date();
+    }
 
   ngOnInit(): void {
+    this.buscarFormaPagto();
     this.buscarDadosCliente();
     this.createForm();
   }
 
   createForm() {
+
+    const date = new Date();
+    date.setDate(date.getDate() + 1);
+
     this.formulario = this.fb.group({
       valorSolicitadoCliente: [null, Validators.required],
+      fopId: [0, Validators.required],
+      dtAgendamento: [date, [Validators.required]]
     });
   }
 
@@ -47,6 +63,18 @@ export class ExtratoOperacaoComponent implements OnInit {
         }
         
         this.cliente = res.data;
+      }
+    )
+  }
+
+  buscarFormaPagto() {
+    this.formaPagtoService.buscarAtivos().subscribe(
+      res =>  {
+        if (!res.success)
+         return;
+
+        this.listaFormaPagto = res.data;
+
       }
     )
   }
@@ -80,6 +108,8 @@ export class ExtratoOperacaoComponent implements OnInit {
     const _model = new GestaoPagamentoModel();
 
     _model.valorSolicitadoCliente = formatarNumero(this.formulario.controls.valorSolicitadoCliente.value);
+    _model.fopId = this.formulario.controls.fopId.value;
+    _model.dtAgendamento = this.formulario.controls.dtAgendamento.value;
 
     this.gestaoPagtoService.solicitarPagto(_model).subscribe(
       res => {

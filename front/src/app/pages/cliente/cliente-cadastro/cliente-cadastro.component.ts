@@ -1,3 +1,4 @@
+import { TiposChavePix } from './../../../@core/enums/tipos-chave-pix';
 import { TipoTransacaoService } from './../../../@core/services/tipo-transacao.service';
 import { TipoTransacaoModel } from './../../../@core/models/tipo-transacao.model';
 import { BancoModel } from './../../../@core/models/banco.model';
@@ -33,6 +34,7 @@ export class ClienteCadastroComponent implements OnInit {
   listaEstabelecimentos: EstabelecimentoModel[];
   listaBancos: BancoModel[];
   listaTaxas: TipoTransacaoModel[];
+  listaTiposChavePix: any[];
 
   get taxas(): FormArray{
     return <FormArray>this.formulario.get('taxas');
@@ -53,6 +55,7 @@ export class ClienteCadastroComponent implements OnInit {
 
   ngOnInit(): void {
     this.listaestadosBrasileiros = EstadosBrasileiros;
+    this.listaTiposChavePix = TiposChavePix;
     this.buscarListaEstabelecimentos();
     this.buscarListaBancos();
 
@@ -92,11 +95,14 @@ export class ClienteCadastroComponent implements OnInit {
       email: [_cliente.email, [Validators.email]],  
       status: [_cliente.status, Validators.required],
       possuiDadosBancario: [ _cliente.banId > 0 ? true : false , Validators.required],
+      possuiChavePix: [ _cliente.tipoChavePix !== null ? true : false , Validators.required],
       banId: [_cliente.banId],
       numAgencia: [_cliente.numAgencia],
       numConta: [_cliente.numConta],
       tipoConta: [_cliente.tipoConta],
       limiteCredito: [_cliente.limiteCredito, Validators.required],
+      tipoChavePix: [_cliente.tipoChavePix],
+      chavePix: [_cliente.chavePix],
       taxas: this.fb.array([this.criaGrupoTaxa()])
     });
   }
@@ -274,6 +280,11 @@ export class ClienteCadastroComponent implements OnInit {
 
     }
 
+    if (controls.possuiChavePix.value) {
+      _cliente.tipoChavePix = controls.tipoChavePix.value;
+      _cliente.chavePix= controls.chavePix.value;
+    }
+
     return _cliente;
   }
 
@@ -340,6 +351,29 @@ export class ClienteCadastroComponent implements OnInit {
     controls.numAgencia.updateValueAndValidity();
     controls.numConta.updateValueAndValidity();
     controls.tipoConta.updateValueAndValidity();
+
+  }
+
+
+
+  selecaoPossuiPix(dados){
+
+    const controls = this.formulario.controls;
+
+    controls.tipoChavePix.setValue('');
+    controls.chavePix.setValue('');
+
+    if (dados) {
+      controls.tipoChavePix.setValidators(Validators.required);
+      controls.chavePix.setValidators(Validators.required);
+    }
+    else {
+      controls.tipoChavePix.clearValidators();
+      controls.chavePix.clearValidators();
+    }
+
+    controls.tipoChavePix.updateValueAndValidity();
+    controls.chavePix.updateValueAndValidity();
 
   }
 

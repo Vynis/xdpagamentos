@@ -28,5 +28,7 @@ namespace XdPagamentosApi.Domain.Models
         public string Status { get; set; }
         public string ValorSolicitadoCliente { get; set; }
         public DateTime? DtHrSolicitacoCliente { get; set; }
+
+        public DateTime? DtAgendamento { get; set; }
     }
 }

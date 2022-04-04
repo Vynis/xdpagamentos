@@ -30,6 +30,8 @@ export class GestaoPagamentoCadastroComponent implements OnInit {
   listaContaCaixa: RelContaEstabelecimentoModel[] = [];
   gestaoPagtoOld: GestaoPagamentoModel;
   ehAprovacao: boolean = false;
+  saldoFinal;
+  carregaSaldoFinal: boolean = false;
 
   constructor(
     private clienteService: ClienteService,
@@ -76,7 +78,8 @@ export class GestaoPagamentoCadastroComponent implements OnInit {
       cliId: [_model.cliId, Validators.required],
       fopId: [_model.fopId, Validators.required],
       rceId : [_model.rceId, Validators.required],
-      status: [_model.status]
+      status: [_model.status],
+      dtAgendamento: [new Date(_model.dtAgendamento), Validators.required]
     })
 
   }
@@ -125,6 +128,7 @@ export class GestaoPagamentoCadastroComponent implements OnInit {
         this.ehAprovacao = true;
         res.data.valorSolicitadoCliente = formatarNumeroUS(res.data.valorSolicitadoCliente);
         this.createForm(res.data);
+        this.saldoCliente(res.data.cliId);
       }
     )
   }
@@ -188,6 +192,7 @@ export class GestaoPagamentoCadastroComponent implements OnInit {
     _model.fopId = controls.fopId.value;
     _model.rceId = controls.rceId.value;
     _model.vlBruto = '0,00';
+    _model.dtAgendamento = controls.dtAgendamento.value;
     
     if (this.ehAprovacao)
       _model.status = controls.status.value;
@@ -233,6 +238,21 @@ export class GestaoPagamentoCadastroComponent implements OnInit {
 
   ehNumeric(value) {
     return /^\d+(?:\,\d+)?$/.test(value);
+  }
+
+  saldoCliente(id: number) {
+    this.carregaSaldoFinal = false;
+    this.gestaoPagtoService.buscaSaldoCliente(id).subscribe(res => {
+      if (!res.success)
+        return;
+
+      this.saldoFinal = res.data.total;
+      this.carregaSaldoFinal = true;
+    });
+  }
+
+  selecinaCliente(id: number) {
+    this.saldoCliente(id);
   }
 
 }

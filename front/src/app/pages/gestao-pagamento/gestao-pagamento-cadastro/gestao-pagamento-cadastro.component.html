@@ -22,7 +22,7 @@
                     <div class="form-group">
                         <label for="cliente" class="label">*Cliente</label><br>
                         <nb-select 
-                        placeholder="" fullWidth [disabled]="ehAprovacao"  status="primary" formControlName="cliId" >
+                        placeholder="" (selectedChange)="selecinaCliente($event)"  fullWidth [disabled]="ehAprovacao"  status="primary" formControlName="cliId" >
                             <nb-option *ngFor="let cliente of listaClientes" [value]="cliente.id" >{{cliente.nome}}</nb-option>
                           </nb-select>
                     </div>
@@ -46,6 +46,7 @@
                         <input class="form-control"
                         [ngClass]="{'is-invalid': formulario.get('vlLiquido').errors  && formulario.get('vlLiquido').touched}"
                         type="text" nbInput fullWidth placeholder="" formControlName="vlLiquido" currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', align: 'left'  }">  
+                        <span *ngIf="carregaSaldoFinal" >Saldo Final: <b>R$ {{saldoFinal}} </b> </span>
                         <div *ngIf="formulario.get('vlLiquido').hasError('required')  && formulario.get('vlLiquido').touched" class="invalid-feedback">
                             Campo é obrigatório.
                           </div>      
@@ -56,7 +57,7 @@
 
             <div class="row ">
 
-                <div [ngClass]="ehAprovacao ? 'col-md-3' : 'col-md-4'" >
+                <div [ngClass]="ehAprovacao ? 'col-md-2' : 'col-md-2'" >
                     <div class="form-group">
                         <label for="tipoLancamento"  class="label">*Tipo de Lançamento</label><br>
                         <nb-select placeholder="" fullWidth [disabled]="ehAprovacao" status="primary" formControlName="tipo" >
@@ -66,7 +67,7 @@
                     </div>
                 </div>
 
-                <div [ngClass]="ehAprovacao ? 'col-md-3' : 'col-md-4'" >
+                <div [ngClass]="ehAprovacao ? 'col-md-2' : 'col-md-2'" >
                     <div class="form-group">
                         <label for="formaPagto" class="label">*Forma de Pagamento</label><br>
                         <nb-select placeholder="" fullWidth  status="primary" formControlName="fopId" >
@@ -75,7 +76,7 @@
                     </div>
                 </div>
 
-                <div [ngClass]="ehAprovacao ? 'col-md-3' : 'col-md-4'" >
+                <div [ngClass]="ehAprovacao ? 'col-md-4' : 'col-md-6'" >
                     <div class="form-group">
                         <label for="contaCaixa" class="label">*Conta Caixa</label><br>
                         <nb-select placeholder="" fullWidth  status="primary" formControlName="rceId" >
@@ -84,8 +85,21 @@
                     </div>
                 </div>
 
+                <div [ngClass]="ehAprovacao ? 'col-md-2' : 'col-md-2'" >
+                    <div class="form-group">
+                        <label for="dtAgendamento" class="label">*Data do agendamento</label><br>
+                        <input class="form-control"
+                        [ngClass]="{'is-invalid': formulario.get('dtAgendamento').errors  && formulario.get('dtAgendamento').touched}"
+                        nbInput placeholder="" fullWidth formControlName="dtAgendamento" [disabled]="ehAprovacao" [nbDatepicker]="dtage">
+                        <nb-datepicker #dtage format="dd/MM/yyyy"></nb-datepicker>
+                        <div *ngIf="formulario.get('dtAgendamento').hasError('required')  && formulario.get('dtAgendamento').touched" class="invalid-feedback">
+                            Campo é obrigatório.
+                          </div>  
+                    </div>
+                </div>
+
                 
-                <div *ngIf="ehAprovacao" class="col-md-3">
+                <div *ngIf="ehAprovacao" class="col-md-2">
                     <label for="status" class="label">Status</label><br>
                     <nb-select placeholder="" fullWidth  status="primary" formControlName="status" >
                         <nb-option value="AP">AP - APROVADO</nb-option>

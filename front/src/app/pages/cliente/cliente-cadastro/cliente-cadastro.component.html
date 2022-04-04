@@ -172,10 +172,10 @@
                     </div>
 
                 </nb-tab>
-                <nb-tab tabTitle="Dados Bancários">
+                <nb-tab tabTitle="Dados Bancários e Pix">
                     <div  class="row">
                         <div class="col-sm-12">
-                            <nb-toggle  (checkedChange)="selecaoPossuiContaBancaria($event)" formControlName="possuiDadosBancario" status="basic">Possui conta bancária</nb-toggle>
+                            <nb-toggle  (checkedChange)="selecaoPossuiContaBancaria($event)" formControlName="possuiDadosBancario" status="basic">Possui conta bancária?</nb-toggle>
                         </div>
                     </div> <br>
 
@@ -229,6 +229,35 @@
                             
                         </div>
 
+
+                    </div>
+
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <nb-toggle  (checkedChange)="selecaoPossuiPix($event)" formControlName="possuiChavePix" status="basic">Possui chave Pix?</nb-toggle>
+                      </div>
+                    </div>
+
+                    <div [hidden]="!formulario.controls.possuiChavePix.value" class="row">
+
+                      <div class="col-sm-3">
+                        <label for="tipoChavePix" class="label">*Tipo de chave</label><br>
+                        <nb-select id="tipoChavePix" placeholder="Selecione" formControlName="tipoChavePix" >
+                          <nb-option *ngFor="let chave of listaTiposChavePix" [value]="chave.id">{{chave.valor}}</nb-option>
+                        </nb-select>
+                      </div>
+
+                      <div class="col-sm-3">
+                        <div class="form-group">
+                          <label for="chavePix" class="label">*Chave pix</label>
+                          <input type="text" class="form-control" maxlength="100"
+                          [ngClass]="{'is-invalid': formulario.get('chavePix').errors  && formulario.get('chavePix').touched}"
+                            nbInput fullWidth placeholder="Número da Conta + dígito" formControlName="chavePix" />
+                            <div *ngIf="formulario.get('chavePix').hasError('required')  && formulario.get('chavePix').touched" class="invalid-feedback">
+                              Campo é obrigatório.
+                            </div>
+                        </div>
+                      </div>
 
                     </div>
                 </nb-tab>

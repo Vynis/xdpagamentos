@@ -3,14 +3,34 @@
     <nb-card-body>
         <nb-alert *ngIf="existeErro" status="danger" closable>Favor preencher todos os campos obrigatorios!</nb-alert>
         <form *ngIf="cliente"  [formGroup]="formulario">
-            <!-- <div class="row">
+            <div class="row">
                 <div class="col-sm-4"></div>
                 <div class="col-sm-4">
-                    <h5>Limite de solicitação:</h5> <br>
-                    <h6>R$ {{cliente.limiteCredito}}</h6>
+                    <div class="form-group">
+                        <label for="formaPagto" class="label">*Forma de Pagamento</label><br>
+                        <nb-select placeholder="" fullWidth  status="primary" formControlName="fopId" >
+                            <nb-option *ngFor="let forma of listaFormaPagto" [value]="forma.id" >{{forma.descricao}}</nb-option>
+                            </nb-select>
+                    </div>
                 </div>
-                <div class="col-sm-3"></div>
-            </div><br><br> -->
+                <div class="col-sm-4"></div>
+            </div><br>
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="status" class="label">*Data do agendamento</label><br>
+                        <input class="form-control"
+                        [ngClass]="{'is-invalid': formulario.get('dtAgendamento').errors  && formulario.get('dtAgendamento').touched}"
+                        nbInput placeholder="" fullWidth formControlName="dtAgendamento" [nbDatepicker]="dtInicial" >
+                        <nb-datepicker #dtInicial [min]="min"  format="dd/MM/yyyy"></nb-datepicker>
+                        <div *ngIf="formulario.get('dtAgendamento').hasError('required')  && formulario.get('dtAgendamento').touched" class="invalid-feedback">
+                            Campo é obrigatório.
+                          </div>  
+                    </div>
+                </div>
+                <div class="col-md-4"></div>
+            </div>
             <div class="row">
                 <div class="col-sm-4"></div>
                 <div class="col-sm-4">
@@ -25,6 +45,7 @@
                     </div>
                 </div>
             </div>
+
         </form>
     </nb-card-body>
     <nb-card-footer>

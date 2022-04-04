@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using XdPagamentosApi.Domain.Enums;
 
 namespace XdPagamentosApi.WebApi.Dtos
 {
@@ -29,6 +30,9 @@ namespace XdPagamentosApi.WebApi.Dtos
         public string TipoPessoa { get; set; }
         public string NomeAgrupamento { get; set; }
         public string LimiteCredito { get; set; }
+
+        public TiposChavePix? TipoChavePix { get; set; }
+        public string ChavePix { get; set; }
 
         public List<DtoTipoTransacao> ListaTipoTransacao { get; set; }
     }

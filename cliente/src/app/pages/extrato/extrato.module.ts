@@ -15,6 +15,7 @@ import { InterceptService } from '../../@core/utils/intercept.service';
 import { NbMomentDateModule } from '@nebular/moment';
 import { ClienteService } from '../../@core/services/cliente.service';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
+import { FormaPagtoService } from '../../@core/services/forma-pagto.service';
 
 
 @NgModule({
@@ -52,7 +53,8 @@ import { CurrencyMaskModule } from 'ng2-currency-mask';
       multi: true
     },
     GestaoPagamentoService,
-    ClienteService
+    ClienteService,
+    FormaPagtoService
   ]
 })
 export class ExtratoModule { }

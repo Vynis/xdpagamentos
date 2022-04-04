@@ -32,6 +32,8 @@ namespace XdPagamentosApi.WebApi.Dtos
         public string ValorSolicitadoCliente { get; set; }
         public DateTime? DtHrSolicitacoCliente { get; set; }
 
+        public DateTime? DtAgendamento { get; set; }
+
         public string DtHrLancamentoFormatada { 
             get {
                 return DtHrLancamento.ToString();

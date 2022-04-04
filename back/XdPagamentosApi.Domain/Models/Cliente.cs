@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using XdPagamentosApi.Domain.Enums;
 
 namespace XdPagamentosApi.Domain.Models
 {
@@ -26,6 +27,8 @@ namespace XdPagamentosApi.Domain.Models
         public string TipoPessoa { get; set; }
         public string NomeAgrupamento { get; set; }
         public string LimiteCredito { get; set; }
+        public TiposChavePix? TipoChavePix { get; set; }
+        public string ChavePix { get; set; }
 
 
         public int BanId { get; set; }

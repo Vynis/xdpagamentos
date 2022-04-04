@@ -17,6 +17,7 @@ export class GestaoPagamentoModel {
     dtHrCredito: Date;
     status: string;
     valorSolicitadoCliente: string;
+    dtAgendamento: Date;
 
     /**
      *
@@ -24,5 +25,6 @@ export class GestaoPagamentoModel {
     constructor() {
         this.id = 0;
         this.dtHrLancamento = new Date();
+        this.dtAgendamento = new Date();
     }
 }

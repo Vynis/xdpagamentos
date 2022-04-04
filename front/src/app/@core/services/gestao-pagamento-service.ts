@@ -34,7 +34,9 @@ export class GestaoPagamentoService {
         return this.http.get<ModeloBase>(`${this.caminhoApi}/buscar-por-id/${id}`);
     }
 
-
+    buscaSaldoCliente(id: number) {
+        return this.http.get<ModeloBase>(`${this.caminhoApi}/saldo-atual-cliente/${id}`);
+    }
     
 
 }
