@@ -14,7 +14,7 @@ import { ToastService } from '../../../@core/services/toast.service';
 import { isNumeric } from 'rxjs/internal-compatibility';
 import { ContentObserver } from '@angular/cdk/observers';
 import { ToastPadrao } from '../../../@core/enums/toast.enum';
-import { formatarNumero } from '../../../@core/utils/funcoes';
+import { formatarNumero, formatarNumeroUS } from '../../../@core/utils/funcoes';
 
 @Component({
   selector: 'ngx-gestao-pagamento-cadastro',
@@ -123,6 +123,7 @@ export class GestaoPagamentoCadastroComponent implements OnInit {
           return;
 
         this.ehAprovacao = true;
+        res.data.valorSolicitadoCliente = formatarNumeroUS(res.data.valorSolicitadoCliente);
         this.createForm(res.data);
       }
     )

@@ -59,10 +59,7 @@ namespace XdPagamentosApi.WebApi.Controllers
 
                 retornoGestaoPagamento.listaGestaoPagamentos = listaPagamentos;
 
-                if (listaPagamentos.Count() == 0)
-                    return Response(retornoGestaoPagamento);
-
-                var dadosCliente = listaPagamentos.FirstOrDefault().CliId;
+                var dadosCliente = Convert.ToInt32(filtro.Filtro.Where(x => x.Property.Equals("CliId")).FirstOrDefault().Value);
 
                 //Saldo Atual
                 var dadosGeral = await _gestaoPagamentoService.BuscarExpressao(x => x.CliId.Equals(dadosCliente) && x.Grupo.Equals("EC") && x.Status.Equals("AP"));
@@ -147,6 +144,14 @@ namespace XdPagamentosApi.WebApi.Controllers
                 if (usuarioLogado == null)
                     return Response("Erro ao cadastrar", false);
 
+                if (dto.Tipo.Equals("D"))
+                {
+                    decimal saldoFinal = await CalculaSaldoFinal(dto);
+
+                    if (HelperFuncoes.FormataValorDecimal(dto.VlLiquido) > saldoFinal)
+                        return Response("Valor está maior que o limite cadastrado pelo cliente.", false);
+                }
+
                 dto.UsuNome = usuarioLogado.Nome;
                 dto.UsuCpf = usuarioLogado.CPF;
                 dto.DtHrAcaoUsuario = DateTime.Now;
@@ -171,6 +176,21 @@ namespace XdPagamentosApi.WebApi.Controllers
             }
         }
 
+        private async Task<decimal> CalculaSaldoFinal(DtoGestaoPagamento dto)
+        {
+            //Limite de Crecito
+            var dadosCliente = await _clienteService.ObterPorId(dto.CliId);
+
+            var limiteCredito = HelperFuncoes.FormataValorDecimal(dadosCliente.LimiteCredito);
+
+            //Saldo Atual
+            var dadosGeral = await _gestaoPagamentoService.BuscarExpressao(x => x.CliId.Equals(dto.CliId) && x.Grupo.Equals("EC") && x.Status.Equals("AP"));
+
+            var saldoAtual = dadosGeral.Where(x => x.Tipo.Equals("C")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido)) - dadosGeral.Where(x => x.Tipo.Equals("D")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido));
+
+            return saldoAtual + limiteCredito;
+        }
+
         [HttpPut("alterar")]
         [SwaggerGroup("GestaoPagamento")]
         public async Task<IActionResult> Alterar(DtoGestaoPagamento dto)
@@ -180,12 +200,20 @@ namespace XdPagamentosApi.WebApi.Controllers
                 var dados = await _gestaoPagamentoService.ObterPorId(dto.Id);
 
                 if (dados == null)
-                    return Response("Erro ao cadastrar", false);
+                    return Response("Pagamento não encontrado", false);
 
                 var usuarioLogado = await _usuarioService.ObterPorId(Convert.ToInt32(User.Identity.Name.ToString().Descriptar()));
 
                 if (usuarioLogado == null)
-                    return Response("Erro ao cadastrar", false);
+                    return Response("Usuario não esta logado", false);
+
+                if (dto.Tipo.Equals("D"))
+                {
+                    decimal saldoFinal = await CalculaSaldoFinal(dto);
+
+                    if (HelperFuncoes.FormataValorDecimal(dto.VlLiquido) > saldoFinal)
+                        return Response("Valor está maior que o limite cadastrado pelo cliente.", false);
+                }
 
                 dados.UsuNome = usuarioLogado.Nome;
                 dados.UsuCpf = usuarioLogado.CPF;
@@ -273,17 +301,12 @@ namespace XdPagamentosApi.WebApi.Controllers
             try
             {
 
-                var buscar = await _gestaoPagamentoService.BuscarExpressao(x => x.CliId.Equals(Convert.ToInt32(User.Identity.Name.ToString().Descriptar())) && x.Grupo.Equals("EC") && x.Status.Equals("PE"));
+                dto.CliId = Convert.ToInt32(User.Identity.Name.ToString().Descriptar());
 
-                //var somaDebito = buscar.ToList().Where(x => x.Tipo.Equals("D")).Sum(x => decimal.Parse(x.ValorSolicitadoCliente, new NumberFormatInfo() { NumberDecimalSeparator = "," }));
+                decimal saldoFinal = await CalculaSaldoFinal(dto);
 
-                //var cliente = await  _clienteService.ObterPorId(Convert.ToInt32(User.Identity.Name.ToString().Descriptar()));
-
-                //var limiteCredito = string.IsNullOrEmpty(cliente.LimiteCredito) ? "0,00" : cliente.LimiteCredito;
-
-                //if ((decimal.Parse(dto.ValorSolicitadoCliente, new NumberFormatInfo() { NumberDecimalSeparator = "," }) + somaDebito) > decimal.Parse(limiteCredito, new NumberFormatInfo() { NumberDecimalSeparator = "," }))
-                //    return Response("Limite de crédito excedido", false);
-
+                if (HelperFuncoes.FormataValorDecimal(dto.ValorSolicitadoCliente) > saldoFinal)
+                    return Response("Valor solicitado está maior que limite disponível.", false);
 
                 dto.UsuNome = "-";
                 dto.UsuCpf = "-";
