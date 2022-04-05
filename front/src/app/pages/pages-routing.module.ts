@@ -55,6 +55,10 @@ const routes: Routes = [{
       loadChildren: () => import('./transferencia-transacao/transferencia-transacao.module').then(m => m.TransferenciaTransacaoModule) 
     },
     {
+      path: 'relatorio',
+      loadChildren: () => import('./relatorios/relatorios.module').then(m => m.RelatoriosModule)
+    },
+    {
       path: '',
       redirectTo: 'dashboard',
       pathMatch: 'full',

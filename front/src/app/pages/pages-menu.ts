@@ -39,37 +39,17 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'edit-2-outline',
     children: [
       {
-        title: 'Pre-Venda',
-        link: '/pages/forms/inputs',
+        title: 'Solicitações',
+        link: '/pages/relatorio/solicitacoes',
       },
       {
-        title: 'Pagamentos/Reembolso à Clientes',
+        title: 'Saldo de Clientes',
         link: '/pages/forms/layouts',
       },
       {
-        title: 'Pagamentos Analítico por Cliente e Período',
+        title: 'Saldo das Contas Correntes',
         link: '/pages/forms/buttons',
-      },
-      {
-        title: 'Vendas',
-        link: '/pages/forms/datepicker',
-      },
-      {
-        title: 'Terminais',
-        link: '/pages/forms/datepicker',
-      },
-      {
-        title: 'Transações com a Operadora',
-        link: '/pages/forms/datepicker',
-      },
-      {
-        title: 'Extrato de Contas Caixa',
-        link: '/pages/forms/datepicker',
-      },
-      {
-        title: 'Extrato de Contas Caixa Detalhado',
-        link: '/pages/forms/datepicker',
-      },
+      }
     ],
   },
   {

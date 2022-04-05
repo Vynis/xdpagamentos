@@ -1,0 +1,136 @@
+<nb-card [nbSpinner]="loading" nbSpinnerStatus="danger" >
+  <nb-card-header>
+      Relátorio de Solicitações
+  </nb-card-header>
+  <nb-card-body>
+      <nb-alert *ngIf="existeErro" status="danger" closable>Favor preencher todos os campos obrigatorios!</nb-alert>
+
+      <div  [formGroup]="formularioFiltro">
+          <div class="row">
+              <div class="col-md-3">
+                  <div class="form-group">
+                      <label for="tipo" class="label">*Tipo</label><br>
+                      <nb-select placeholder="" fullWidth  status="primary" formControlName="tipo" >
+                        <nb-option value="T">Todos</nb-option>
+                        <nb-option value="N">Nome do Cliente</nb-option>
+                        <nb-option value="C">CPF/CNPJ do Cliente</nb-option>
+                      </nb-select>
+                  </div>
+              </div>
+
+              <div class="col-md-5">
+                <div class="form-group">
+                    <label for="status" class="label">Valor do Tipo</label><br>    
+                    <input type="text" nbInput fullWidth placeholder="" formControlName="valorTipo">      
+                </div>
+              </div>
+
+              <div class="col-md-2">
+                  <div class="form-group">
+                      <label for="status" class="label">*Período ini. de lançamento</label><br>
+                      <input nbInput placeholder="" fullWidth formControlName="dtInicial" [nbDatepicker]="dtInicial">
+                      <nb-datepicker #dtInicial  format="dd/MM/yyyy"></nb-datepicker>
+                  </div>
+              </div>
+              <div class="col-md-2">
+                  <div class="form-group">
+                      <label for="status" class="label">*Período final da laçamento</label><br>
+                      <input nbInput placeholder="" fullWidth formControlName="dtFinal" [nbDatepicker]="dtFinal">
+                      <nb-datepicker #dtFinal  format="dd/MM/yyyy"></nb-datepicker>
+                  </div>
+              </div>
+          </div>
+          <div class="row">
+
+            <div class="col-md-3" >
+              <div class="form-group">
+                  <label for="formaPagto" class="label">*Forma de Pagamento</label><br>
+                  <nb-select placeholder="" fullWidth  status="primary" formControlName="fopId" >
+                      <nb-option value="T">Todos</nb-option>
+                      <nb-option *ngFor="let forma of listaFormaPagto" [value]="forma.id" >{{forma.descricao}}</nb-option>
+                    </nb-select>
+              </div>
+            </div>
+
+              <div class="col-md-3">
+                  <label for="status" class="label">Status</label><br>
+                  <nb-select placeholder="" fullWidth  status="primary" formControlName="status" >
+                      <nb-option value="T">Todos</nb-option>
+                      <nb-option value="Aprovado">AP - APROVADO</nb-option>
+                      <nb-option value="Pendente">PE - PENDENTE</nb-option>
+                      <nb-option value="Cancelado">CA - CANCELADO</nb-option>
+                    </nb-select>
+              </div>
+          </div>
+      </div>
+
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="row">
+      <div class="col-md-1">
+        <button (click)="pesquisar()" type="submit" nbButton status="primary">Gerar</button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>
+
+<ng-template  #dialog let-data let-ref="dialogRef">
+  <nb-card class="scrool" [nbSpinner]="loadingModal" nbSpinnerStatus="danger"  >
+    <nb-card-body>
+      <div id="content"   #content>
+        <div class="row">
+          <div class="col-md-12" style="text-align: center;">
+            <img class="img-fluid" width="100px" height="100px" src="assets/logos/logo_grande.png" >
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12" style="text-align: center;">
+            <h3>Relatório de Solicitações</h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <table #tabela id="tabela"  class="table" style="font-size: 9px;" >
+              <thead>
+                  <tr style="font-weight: bold; ">
+                      <td>ID</td>
+                      <td>DT AGENDAMENTO</td>
+                      <td>DT LANÇAMENTO</td>
+                      <td>DECRIÇÃO</td>
+                      <td>VALOR</td>
+                      <td>CLIENTE</td>
+                      <td>CPF/CNPJ</td>
+                      <td>FORMA DE PAGTO</td>
+                      <td>STATUS</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let transacoes of listaVwSolicitacoes">
+                      <td>{{transacoes.id}}</td>
+                      <td>{{ transacoes.dtAgendamento | date: 'dd/MM/yyyy HH:mm' }}</td>
+                      <td>{{ transacoes.dtHrLancamento | date: 'dd/MM/yyyy HH:mm' }}</td>
+                      <td>{{transacoes.gepDescricao}}</td>
+                      <td>{{transacoes.valorLiquido}}</td>
+                      <td>{{transacoes.cliNome}}</td>
+                      <td>{{transacoes.cnpjCpf}}</td>
+                      <td>{{transacoes.fopDescricao}}</td>
+                      <td>{{transacoes.statusFormatado}}</td>
+                  </tr>
+                </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </nb-card-body>
+    <nb-card-footer>
+
+          <button nbButton (click)="ref.close()">Fechar</button>
+          &nbsp;&nbsp;&nbsp;
+          <button (click)="gerarPdf()" type="submit" nbButton status="primary" >Download em PDF</button>
+          &nbsp;&nbsp;&nbsp;
+          <button (click)="gerarExcel()" type="submit" nbButton status="success" >Download em Excel</button>
+
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+

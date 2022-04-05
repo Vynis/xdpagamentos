@@ -30,6 +30,7 @@ namespace XdPagamentosApi.IOC.Repository
             service.AddScoped<IRelContaEstabelecimentoRepository, RelContaEstabelecimentoRepository>();
             service.AddScoped<IGestaoPagamentoRepository, GestaoPagamentoRepository>();
             service.AddScoped<IFormaPagtoRepository, FormaPagtoRepository>();
+            service.AddScoped<IRelatoriosRepository, RelatoriosRepository>();
         }
     }
 }
