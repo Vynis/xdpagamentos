@@ -90,13 +90,13 @@
         </div>
         <div class="row">
           <div class="col-md-12">
-            <table #tabela id="tabela"  class="table" style="font-size: 9px;" >
+            <table #tabela id="tabela"  class="table" style="font-size: 8.5px; font-family: 'Courier New', Courier, monospace;" >
               <thead>
                   <tr style="font-weight: bold; ">
                       <td>ID</td>
                       <td>DT AGENDAMENTO</td>
                       <td>DT LANÇAMENTO</td>
-                      <td>DECRIÇÃO</td>
+                      <td>DESCRIÇÃO</td>
                       <td>VALOR</td>
                       <td>CLIENTE</td>
                       <td>CPF/CNPJ</td>
@@ -107,7 +107,7 @@
                 <tbody>
                   <tr *ngFor="let transacoes of listaVwSolicitacoes">
                       <td>{{transacoes.id}}</td>
-                      <td>{{ transacoes.dtAgendamento | date: 'dd/MM/yyyy HH:mm' }}</td>
+                      <td>{{ transacoes.dtAgendamento | date: 'dd/MM/yyyy' }}</td>
                       <td>{{ transacoes.dtHrLancamento | date: 'dd/MM/yyyy HH:mm' }}</td>
                       <td>{{transacoes.gepDescricao}}</td>
                       <td>{{transacoes.valorLiquido}}</td>
@@ -126,7 +126,7 @@
 
           <button nbButton (click)="ref.close()">Fechar</button>
           &nbsp;&nbsp;&nbsp;
-          <button (click)="gerarPdf()" type="submit" nbButton status="primary" >Download em PDF</button>
+          <button (click)="gerarPdf()" type="submit" nbButton status="danger" >Download em PDF</button>
           &nbsp;&nbsp;&nbsp;
           <button (click)="gerarExcel()" type="submit" nbButton status="success" >Download em Excel</button>
 

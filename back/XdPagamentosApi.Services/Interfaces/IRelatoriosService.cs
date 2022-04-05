@@ -9,5 +9,7 @@ namespace XdPagamentosApi.Services.Interfaces
     public interface IRelatoriosService : IBaseService<object>
     {
         Task<VwRelatorioSolicitacao[]> BuscaRelatorioSolicitacao(PaginationFilter paginationFilter);
+
+        Task<VwRelatorioSaldoCliente[]> BuscaRelatorioSaldoCliente(PaginationFilter paginationFilter);
     }
 }

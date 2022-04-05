@@ -44,7 +44,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
       },
       {
         title: 'Saldo de Clientes',
-        link: '/pages/forms/layouts',
+        link: '/pages/relatorio/saldo-clientes',
       },
       {
         title: 'Saldo das Contas Correntes',

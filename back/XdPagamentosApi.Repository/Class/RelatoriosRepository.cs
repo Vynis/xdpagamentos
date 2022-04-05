@@ -23,6 +23,20 @@ namespace XdPagamentosApi.Repository.Class
             _filtroDinamico = filtroDinamico;
         }
 
+        public async Task<VwRelatorioSaldoCliente[]> BuscaRelatorioSaldoCliente(PaginationFilter paginationFilter)
+        {
+            Expression<Func<VwRelatorioSaldoCliente, bool>> expressionDynamic = p => p.Id != 0;
+
+            if (paginationFilter.Filtro.Count() > 0)
+                expressionDynamic = _filtroDinamico.FromFiltroItemList<VwRelatorioSaldoCliente>(paginationFilter.Filtro.ToList());
+            else
+                return await _mySqlContext.VwRelatorioSaldoClientes.ToArrayAsync();
+
+            IQueryable<VwRelatorioSaldoCliente> query = _mySqlContext.VwRelatorioSaldoClientes.Where(expressionDynamic);
+
+            return await query.AsNoTracking().ToArrayAsync();
+        }
+
         public async Task<VwRelatorioSolicitacao[]> BuscaRelatorioSolicitacao(PaginationFilter paginationFilter)
         {
             Expression<Func<VwRelatorioSolicitacao, bool>> expressionDynamic = p => p.Id != 0;

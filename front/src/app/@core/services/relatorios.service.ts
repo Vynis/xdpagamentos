@@ -18,4 +18,8 @@ export class RelatoriosService {
     return this.http.post<ModeloBase>(`${this.caminhoApi}/buscar-relatorio-solicitacao`, filtro);
   }
 
+  buscaRelatorioSaldoClientes(filtro: PaginationFilterModel) {
+    return this.http.post<ModeloBase>(`${this.caminhoApi}/buscar-relatorio-saldo-clientes`, filtro);
+  }
+
 }

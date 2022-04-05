@@ -16,6 +16,7 @@ import { RelatorioSaldoContaCorrentesComponent } from './relatorio-saldo-conta-c
 import { RelatoriosService } from '../../@core/services/relatorios.service';
 import { FormaPagtoService } from '../../@core/services/forma-pagto.service';
 import localePt from '@angular/common/locales/pt';
+import { ClienteService } from '../../@core/services/cliente.service';
 
 registerLocaleData(localePt);
 
@@ -62,7 +63,8 @@ registerLocaleData(localePt);
       multi: true
     },
     RelatoriosService,
-    FormaPagtoService
+    FormaPagtoService,
+    ClienteService
   ]
 })
 export class RelatoriosModule { }

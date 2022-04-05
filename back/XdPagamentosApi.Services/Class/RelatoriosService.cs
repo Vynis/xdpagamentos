@@ -17,6 +17,11 @@ namespace XdPagamentosApi.Services.Class
             _relatoriosRepository = relatoriosRepository;
         }
 
+        public async Task<VwRelatorioSaldoCliente[]> BuscaRelatorioSaldoCliente(PaginationFilter paginationFilter)
+        {
+            return await _relatoriosRepository.BuscaRelatorioSaldoCliente(paginationFilter);
+        }
+
         public async Task<VwRelatorioSolicitacao[]> BuscaRelatorioSolicitacao(PaginationFilter paginationFilter)
         {
             return await _relatoriosRepository.BuscaRelatorioSolicitacao(paginationFilter);

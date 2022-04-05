@@ -11,5 +11,7 @@ namespace XdPagamentosApi.Repository.Interfaces
 
         Task<VwRelatorioSolicitacao[]> BuscaRelatorioSolicitacao(PaginationFilter paginationFilter);
 
+        Task<VwRelatorioSaldoCliente[]> BuscaRelatorioSaldoCliente(PaginationFilter paginationFilter);
+
     }
 }

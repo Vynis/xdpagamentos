@@ -27,7 +27,6 @@ export class RelatoriosSolicitacoesComponent implements OnInit {
   source: LocalDataSource = new LocalDataSource();
   realizouFiltro: boolean = false;
   listaFormaPagto: FormaPagtoModel[] = [];
-  gerarRelatorioExcel:  boolean = false;
   listaVwSolicitacoes: VwRelatorioSolicitacaoModel[] = [];
   @ViewChild('content', {static: false}) el!: ElementRef;
   @ViewChild('dialog', {static: true}) dialog: TemplateRef<any>;
@@ -141,17 +140,20 @@ export class RelatoriosSolicitacoesComponent implements OnInit {
         this.toastService.showToast(ToastPadrao.WARNING,'Atenção','Nenhum registro encontrado.');
         return;
       }
+
+      res.data.forEach(element => {
+        element.valorLiquido = Number(element.valorLiquido.replace('.','').replace(',','.')).toFixed(2);
+      });
         
       this.listaVwSolicitacoes = res.data;
       this.dialogService.open(this.dialog, { dialogClass: 'model-full' });
     })
   }
 
-  gerarExcel(event) {
+  gerarExcel() {
     this.loadingModal = true;
 
     setTimeout(() => {
-      this.gerarRelatorioExcel = event;
 
       let element = document.getElementById('tabela');
       var workbook = XLSX.utils.table_to_book(element);
@@ -165,8 +167,6 @@ export class RelatoriosSolicitacoesComponent implements OnInit {
       XLSX.writeFile(workbook, `RELATORIO_SOLICITACAO_${dataAtual.toLocaleDateString()}_${dataAtual.getHours()}${dataAtual.getMinutes()}${dataAtual.getSeconds()}.xls`);
       this.loadingModal = false;
     }, 3000);
-
-    
   }
 
   ehData(valor) {
