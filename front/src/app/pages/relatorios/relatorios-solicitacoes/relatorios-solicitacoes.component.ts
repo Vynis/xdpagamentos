@@ -14,6 +14,8 @@ import { NbDialogService } from '@nebular/theme';
 import { ToastService } from '../../../@core/services/toast.service';
 import { ToastPadrao } from '../../../@core/enums/toast.enum';
 import * as XLSX from 'xlsx';
+import { AuthServiceService } from '../../../@core/services/auth-service.service';
+import { SessoesEnum } from '../../../@core/enums/sessoes.enum';
 
 @Component({
   selector: 'ngx-relatorios-solicitacoes',
@@ -36,11 +38,13 @@ export class RelatoriosSolicitacoesComponent implements OnInit {
   constructor(
     private formaPagtoService: FormaPagtoService, 
     private relatoriosService: RelatoriosService,
+    private authService: AuthServiceService,
     private fb: FormBuilder,
     private dialogService: NbDialogService,
     private toastService : ToastService) { }
 
   ngOnInit() {
+    this.authService.validaPermissaoTela(SessoesEnum.RELATORIO_SOLICITACOES);
     this.buscarFormaPagto();
     this.createFormFiltro();
   }

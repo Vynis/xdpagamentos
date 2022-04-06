@@ -59,6 +59,10 @@ const routes: Routes = [{
       loadChildren: () => import('./relatorios/relatorios.module').then(m => m.RelatoriosModule)
     },
     {
+      path: 'miscellaneous',
+      loadChildren: () => import('./miscellaneous/miscellaneous.module').then(m => m.MiscellaneousModule)
+    },
+    {
       path: '',
       redirectTo: 'dashboard',
       pathMatch: 'full',

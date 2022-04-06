@@ -22,4 +22,8 @@ export class RelatoriosService {
     return this.http.post<ModeloBase>(`${this.caminhoApi}/buscar-relatorio-saldo-clientes`, filtro);
   }
 
+  buscaRelatorioSaldoContaCorrente(filtro: PaginationFilterModel) {
+    return this.http.post<ModeloBase>(`${this.caminhoApi}/buscar-relatorio-saldo-conta-corrente`, filtro);
+  }
+
 }

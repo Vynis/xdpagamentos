@@ -14,6 +14,8 @@ import { RelatoriosService } from '../../../@core/services/relatorios.service';
 import { ToastService } from '../../../@core/services/toast.service';
 import * as XLSX from 'xlsx';
 import { jsPDF }  from 'jspdf';
+import { AuthServiceService } from '../../../@core/services/auth-service.service';
+import { SessoesEnum } from '../../../@core/enums/sessoes.enum';
 
 @Component({
   selector: 'ngx-relatorio-saldo-clientes',
@@ -40,12 +42,14 @@ export class RelatorioSaldoClientesComponent implements OnInit {
   constructor(
     private clienteService: ClienteService,
     private relatoriosService: RelatoriosService,
+    private authService: AuthServiceService,
     private fb: FormBuilder,
     private dialogService: NbDialogService,
     private toastService : ToastService
     ) { }
 
   ngOnInit() {
+    this.authService.validaPermissaoTela(SessoesEnum.REALTORIO_SALDO_CLIENTES);
     this.createFormFiltro();
     this.buscaClientes();
   }

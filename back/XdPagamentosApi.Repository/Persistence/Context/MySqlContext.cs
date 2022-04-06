@@ -44,6 +44,7 @@ namespace XdPagamentosApi.Repository.Persistence.Context
         public DbSet<GestaoPagamento> GestaoPagamentos { get; set; }
         public DbSet<VwRelatorioSolicitacao> VwRelatorioSolicitacoes  { get; set; }
         public DbSet<VwRelatorioSaldoCliente> VwRelatorioSaldoClientes { get; set; }
+        public DbSet<VwRelatorioSaldoContaCorrente> VwRelatorioSaldoContaCorrentes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -84,6 +85,7 @@ namespace XdPagamentosApi.Repository.Persistence.Context
             modelBuilder.ApplyConfiguration(new TipoOperacaoMap());
             modelBuilder.ApplyConfiguration(new VwRelatorioSolicitacaoMap());
             modelBuilder.ApplyConfiguration(new VwRelatorioSaldoClienteMap());
+            modelBuilder.ApplyConfiguration(new VwRelatorioSaldoContaCorrenteMap());
         }
     }
 }

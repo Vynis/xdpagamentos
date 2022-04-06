@@ -66,5 +66,29 @@ namespace XdPagamentosApi.WebApi.Controllers
                 return Response(ex.Message, false);
             }
         }
+
+        [HttpPost("buscar-relatorio-saldo-conta-corrente")]
+        [SwaggerGroup("Relatorios")]
+        public async Task<IActionResult> BuscaRelatorioSaldoContaCorrente(PaginationFilter filtro)
+        {
+            try
+            {
+                var response = await _relatoriosService.BuscaRelatorioSaldoContaCorrente(filtro);
+
+                var dto = new DtoResponseRelatorioContaCorrente();
+
+                dto.lista = response;
+                dto.SaidasTotal = response.ToList().Sum(x => x.Saidas);
+                dto.SaldoFinalTotal = response.ToList().Sum(x => x.SaldoFinal);
+                dto.EntradasTotal = response.ToList().Sum(x => x.Entradas);
+
+                return Response(dto);
+            }
+            catch (Exception ex)
+            {
+
+                return Response(ex.Message, false);
+            }
+        }
     }
 }

@@ -7,11 +7,11 @@ using XdPagamentosApi.Domain.Models;
 
 namespace XdPagamentosApi.Repository.Persistence.Mapping
 {
-    public class VwRelatorioSolicitacaoMap : IEntityTypeConfiguration<VwRelatorioSolicitacao>
+    public class VwRelatorioSaldoContaCorrenteMap : IEntityTypeConfiguration<VwRelatorioSaldoContaCorrente>
     {
-        public void Configure(EntityTypeBuilder<VwRelatorioSolicitacao> builder)
+        public void Configure(EntityTypeBuilder<VwRelatorioSaldoContaCorrente> builder)
         {
-            builder.ToTable("VW_RELATORIO_SOLICITACOES");
+            builder.ToTable("VW_RELATORIO_SALDO_CONTA_CORRENTE");
         }
     }
 }

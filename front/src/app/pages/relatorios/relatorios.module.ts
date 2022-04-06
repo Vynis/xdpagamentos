@@ -17,6 +17,7 @@ import { RelatoriosService } from '../../@core/services/relatorios.service';
 import { FormaPagtoService } from '../../@core/services/forma-pagto.service';
 import localePt from '@angular/common/locales/pt';
 import { ClienteService } from '../../@core/services/cliente.service';
+import { ContaCaixaService } from '../../@core/services/conta-caixa.service';
 
 registerLocaleData(localePt);
 
@@ -64,7 +65,8 @@ registerLocaleData(localePt);
     },
     RelatoriosService,
     FormaPagtoService,
-    ClienteService
+    ClienteService,
+    ContaCaixaService
   ]
 })
 export class RelatoriosModule { }
