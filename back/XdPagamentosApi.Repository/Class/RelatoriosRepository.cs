@@ -23,6 +23,35 @@ namespace XdPagamentosApi.Repository.Class
             _filtroDinamico = filtroDinamico;
         }
 
+        public async Task<GraficoVendas> BuscaGraficoVendas(int idCli)
+        {
+            var graficoVendas = new GraficoVendas();
+
+            var dataUltima = DateTime.Now.AddDays(-6).Date;
+
+            var gestaoPagamento = await _mySqlContext.GestaoPagamentos.Where(c => c.CliId.Equals(idCli) && c.DtHrLancamento > dataUltima && c.Status.Equals("AP")).ToArrayAsync();
+
+            var listaDatas = new List<string>();
+
+            while(dataUltima <= DateTime.Now.Date)
+            {
+                listaDatas.Add(dataUltima.Date.ToString().Replace("00:00:00",""));
+                dataUltima = dataUltima.AddDays(1).Date;
+            }
+
+            graficoVendas.ListaDatas = listaDatas;
+
+            var listaValores = new List<int>();
+
+
+            foreach (var data in listaDatas)
+              listaValores.Add(gestaoPagamento.Where(c => c.DtHrLancamento.Date == Convert.ToDateTime(data)).Count());
+
+            graficoVendas.ListaValores = listaValores;
+
+            return graficoVendas;
+        }
+
         public async Task<VwRelatorioSaldoCliente[]> BuscaRelatorioSaldoCliente(PaginationFilter paginationFilter)
         {
             Expression<Func<VwRelatorioSaldoCliente, bool>> expressionDynamic = p => p.Id != 0;

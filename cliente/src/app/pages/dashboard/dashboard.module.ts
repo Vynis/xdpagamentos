@@ -9,6 +9,7 @@ import {
   NbSelectModule,
   NbListModule,
   NbIconModule,
+  NbSpinnerModule,
 } from '@nebular/theme';
 import { NgxEchartsModule } from 'ngx-echarts';
 
@@ -30,6 +31,11 @@ import { PlayerComponent } from './rooms/player/player.component';
 import { TrafficComponent } from './traffic/traffic.component';
 import { TrafficChartComponent } from './traffic/traffic-chart.component';
 import { FormsModule } from '@angular/forms';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { ChartModule } from 'angular2-chartjs';
+import { RelatoriosService } from '../../@core/services/relatorios.service';
+import { InterceptService } from '../../@core/utils/intercept.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @NgModule({
   imports: [
@@ -46,6 +52,9 @@ import { FormsModule } from '@angular/forms';
     NbIconModule,
     NbButtonModule,
     NgxEchartsModule,
+    NgxChartsModule,
+    ChartModule,
+    NbSpinnerModule
   ],
   declarations: [
     DashboardComponent,
@@ -63,7 +72,16 @@ import { FormsModule } from '@angular/forms';
     PlayerComponent,
     SolarComponent,
     TrafficComponent,
-    TrafficChartComponent,
+    TrafficChartComponent
   ],
+  providers: [
+    RelatoriosService,
+    InterceptService,
+    {
+      provide: HTTP_INTERCEPTORS,
+        useClass: InterceptService,
+      multi: true
+    },
+  ]
 })
 export class DashboardModule { }

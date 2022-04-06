@@ -9,6 +9,7 @@ using XdPagamentosApi.Services.Interfaces;
 using XdPagamentosApi.WebApi.Configuracao.Swagger;
 using XdPagamentosApi.WebApi.Dtos;
 using XdPagamentosApi.WebApi.Shared;
+using XdPagamentosApi.WebApi.Shared.Extensions;
 
 namespace XdPagamentosApi.WebApi.Controllers
 {
@@ -83,6 +84,24 @@ namespace XdPagamentosApi.WebApi.Controllers
                 dto.EntradasTotal = response.ToList().Sum(x => x.Entradas);
 
                 return Response(dto);
+            }
+            catch (Exception ex)
+            {
+
+                return Response(ex.Message, false);
+            }
+        }
+
+
+        [HttpGet("buscar-grafico-vendas")]
+        [SwaggerGroup("Relatorios")]
+        public async Task<IActionResult> BuscaGraficoVendas()
+        {
+            try
+            {
+                var response = await _relatoriosService.BuscaGraficoVendas(Convert.ToInt32(User.Identity.Name.ToString().Descriptar()));
+
+                return Response(response);
             }
             catch (Exception ex)
             {

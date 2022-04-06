@@ -40,7 +40,6 @@ namespace XdPagamentosApi.Repository.Class
             if (paginationFilter.Filtro.Count() > 0)
                 return await query.AsNoTracking().ToArrayAsync();
 
-
             return await query.AsNoTracking().OrderBy(c => c.Nome).ToArrayAsync();
         }
 

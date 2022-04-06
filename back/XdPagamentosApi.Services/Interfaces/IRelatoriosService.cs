@@ -13,5 +13,7 @@ namespace XdPagamentosApi.Services.Interfaces
         Task<VwRelatorioSaldoCliente[]> BuscaRelatorioSaldoCliente(PaginationFilter paginationFilter);
 
         Task<VwRelatorioSaldoContaCorrente[]> BuscaRelatorioSaldoContaCorrente(PaginationFilter paginationFilter);
+
+        Task<GraficoVendas> BuscaGraficoVendas(int idCli);
     }
 }
