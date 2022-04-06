@@ -1,3 +1,4 @@
+import { ClienteSenhaModel } from './../models/cliente-senha.model';
 import { PaginationFilterModel } from './../models/configuracao/paginationfilter.model';
 import { ClienteModel } from './../models/cliente.model';
 import { HttpClient } from '@angular/common/http';
@@ -52,6 +53,10 @@ export class ClienteService {
 
   buscaDadosCliente() {
     return this.http.get<ModeloBase>(`${this.caminhoApi}/buscar-dados-cliente-logado`);
+  }
+
+  alterarSenha(cliente: ClienteSenhaModel) {
+    return this.http.put<ModeloBase>(`${this.caminhoApi}/alterar-senha`, cliente);
   }
 
 }

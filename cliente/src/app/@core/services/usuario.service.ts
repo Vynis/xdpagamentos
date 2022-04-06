@@ -1,4 +1,3 @@
-import { UsuarioSenhaModel } from './../models/usuario-senha.model';
 import { UsuarioModel } from './../models/usuario.model';
 import { ModeloBase } from './../models/modelo-balse';
 import { HttpClient } from '@angular/common/http';
@@ -30,7 +29,5 @@ export class UsuarioService {
     return this.http.put<ModeloBase>(`${this.caminhoApi}/alterar`, model);
   }
 
-  alterarSenha(usuarioSenha: UsuarioSenhaModel) {
-    return this.http.put<ModeloBase>(`${this.caminhoApi}/alterar-senha`, usuarioSenha);
-  }
+
 }

@@ -1,3 +1,4 @@
+import { ClienteService } from './../../@core/services/cliente.service';
 import { UsuarioService } from './../../@core/services/usuario.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -47,6 +48,7 @@ import { AlterarSenhaComponent } from './alterar-senha/alterar-senha.component';
     UsuarioService,
     SessaoService,
     EstabelecimentoService,
+    ClienteService
   ]
 })
 export class UsuarioModule { }

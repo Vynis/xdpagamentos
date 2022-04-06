@@ -1,3 +1,4 @@
+import { ClienteService } from './../../../@core/services/cliente.service';
 import { NbAuthJWTToken, NbAuthService } from '@nebular/auth';
 import { UsuarioService } from './../../../@core/services/usuario.service';
 import { Component, OnInit } from '@angular/core';
@@ -21,9 +22,9 @@ export class AlterarSenhaComponent implements OnInit {
   constructor(
     protected ref: NbDialogRef<AlterarSenhaComponent>,
     private fb: FormBuilder,
-    private usuarioService: UsuarioService,
     private toastService : ToastService,
-    private authService : NbAuthService
+    private authService : NbAuthService,
+    private clienteService: ClienteService
     ) {
     
       this.authService.onTokenChange().subscribe(
@@ -79,7 +80,7 @@ export class AlterarSenhaComponent implements OnInit {
 
     const control = this.formulario.controls;
 
-    this.usuarioService.alterarSenha({ idUsuario: this.idUsuario, senhaAtual: control.senhaAtual.value, senhaNova: control.senhaNovo.value }).subscribe(
+    this.clienteService.alterarSenha({ idCliente: this.idUsuario, senhaAtual: control.senhaAtual.value, senhaNova: control.senhaNovo.value }).subscribe(
       res => {
 
         if (!res.success) {

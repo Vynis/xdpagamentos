@@ -29,7 +29,9 @@ namespace XdPagamentosApi.Repository.Class
 
             var dataUltima = DateTime.Now.AddDays(-6).Date;
 
-            var gestaoPagamento = await _mySqlContext.GestaoPagamentos.Where(c => c.CliId.Equals(idCli) && c.DtHrLancamento > dataUltima && c.Status.Equals("AP")).ToArrayAsync();
+            //var gestaoPagamento = await _mySqlContext.GestaoPagamentos.Where(c => c.CliId.Equals(idCli) && c.DtHrLancamento > dataUltima && c.Status.Equals("AP")).ToArrayAsync();
+
+            var transacoes = await _mySqlContext.Transacoes.Where(c => c.CliId.Equals(idCli) && c.DtCredito > dataUltima).ToArrayAsync();
 
             var listaDatas = new List<string>();
 
@@ -45,7 +47,7 @@ namespace XdPagamentosApi.Repository.Class
 
 
             foreach (var data in listaDatas)
-              listaValores.Add(gestaoPagamento.Where(c => c.DtHrLancamento.Date == Convert.ToDateTime(data)).Count());
+              listaValores.Add(transacoes.Where(c => c.DtCredito.Date == Convert.ToDateTime(data)).Count());
 
             graficoVendas.ListaValores = listaValores;
 

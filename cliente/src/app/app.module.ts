@@ -1,3 +1,4 @@
+import { ClienteService } from './@core/services/cliente.service';
 /**
  * @license
  * Copyright Akveo. All Rights Reserved.
@@ -24,7 +25,6 @@ import { AuthGuard } from './@core/utils/auth.guard';
 import { NbAuthJWTInterceptor } from '@nebular/auth';
 import { InterceptService } from './@core/utils/intercept.service';
 import { ReactiveFormsModule } from '@angular/forms';
-import { UsuarioService } from './@core/services/usuario.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -53,7 +53,7 @@ import { UsuarioService } from './@core/services/usuario.service';
       useClass: InterceptService,
       multi: true,
     },
-    UsuarioService
+    ClienteService
   ],
   bootstrap: [AppComponent],
 })
