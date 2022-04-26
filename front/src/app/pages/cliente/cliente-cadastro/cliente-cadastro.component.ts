@@ -78,6 +78,7 @@ export class ClienteCadastroComponent implements OnInit {
 
   createForm(_cliente: ClienteModel) {
     this.clienteOld = Object.assign({},_cliente);
+   
 
     this.formulario = this.fb.group({
       id: [_cliente.id],
@@ -95,7 +96,7 @@ export class ClienteCadastroComponent implements OnInit {
       email: [_cliente.email, [Validators.email]],  
       status: [_cliente.status, Validators.required],
       possuiDadosBancario: [ _cliente.banId > 0 ? true : false , Validators.required],
-      possuiChavePix: [ _cliente.tipoChavePix !== null ? true : false , Validators.required],
+      possuiChavePix: [ _cliente.tipoChavePix === null || _cliente.tipoChavePix === '' || _cliente.tipoChavePix === undefined ? false : true , Validators.required],
       banId: [_cliente.banId],
       numAgencia: [_cliente.numAgencia],
       numConta: [_cliente.numConta],
@@ -105,6 +106,9 @@ export class ClienteCadastroComponent implements OnInit {
       chavePix: [_cliente.chavePix],
       taxas: this.fb.array([this.criaGrupoTaxa()])
     });
+
+    console.log(_cliente.tipoChavePix);
+    console.log(this.formulario.controls.possuiChavePix.value);
   }
 
   criaGrupoTaxa(taxas: TipoTransacaoModel = new TipoTransacaoModel()) : FormGroup {

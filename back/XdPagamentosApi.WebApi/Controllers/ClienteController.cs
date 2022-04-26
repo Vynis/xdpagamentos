@@ -139,10 +139,14 @@ namespace XdPagamentosApi.WebApi.Controllers
         {
             try
             {
-                var validaCpfCnpjExistente = await _clienteService.BuscarExpressao(x => x.CnpjCpf.Equals(dtoCliente.CnpjCpf));
 
-                if (validaCpfCnpjExistente.Any())
-                    return Response("Cpf/Cnpj já cadastrado", false);
+                if (!string.IsNullOrEmpty(dtoCliente.CnpjCpf))
+                {
+                    var validaCpfCnpjExistente = await _clienteService.BuscarExpressao(x => x.CnpjCpf.Equals(dtoCliente.CnpjCpf));
+
+                    if (validaCpfCnpjExistente.Any())
+                        return Response("Cpf/Cnpj já cadastrado", false);
+                }
 
                 dtoCliente.Senha = SenhaHashService.CalculateMD5Hash("cli102030");
                 dtoCliente.LimiteCredito = HelperFuncoes.ValorMoedaBRString(dtoCliente.LimiteCredito);
@@ -169,14 +173,15 @@ namespace XdPagamentosApi.WebApi.Controllers
             {
                 var dados = await _clienteService.ObterPorId(dtoCliente.Id);
 
-                if (!dados.CnpjCpf.Equals(dtoCliente.CnpjCpf))
-                {
-                    var validaCpfCnpjExistente = await _clienteService.BuscarExpressao(x => x.CnpjCpf.Equals(dtoCliente.CnpjCpf));
+                if (!string.IsNullOrEmpty(dtoCliente.CnpjCpf))
+                    if (dados.CnpjCpf != dtoCliente.CnpjCpf)
+                    {
+                        var validaCpfCnpjExistente = await _clienteService.BuscarExpressao(x => x.CnpjCpf.Equals(dtoCliente.CnpjCpf));
 
-                    if (validaCpfCnpjExistente.Any())
-                        return Response("Cpf/Cnpj já cadastrado", false);
+                        if (validaCpfCnpjExistente.Any())
+                            return Response("Cpf/Cnpj já cadastrado", false);
 
-                }
+                    }
 
 
                 dtoCliente.Senha = dados.Senha;
