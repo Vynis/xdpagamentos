@@ -26,14 +26,18 @@
                         
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label for="cnpjCpf" class="label">{{ formulario.controls.tipoPessoa.value == 'PF' ? 'CPF ' : 'CNPJ' }}</label>
+                                <label for="cnpjCpf" class="label">*{{ formulario.controls.tipoPessoa.value == 'PF' ? 'CPF ' : 'CNPJ' }}</label>
                                 <input type="text" class="form-control" maxlength="14"
+                                [ngClass]="{'is-invalid': formulario.get('cnpjCpf').errors  && formulario.get('cnpjCpf').touched}"
                                   nbInput fullWidth [placeholder]="formulario.controls.tipoPessoa.value == 'PF' ? 'CPF ' : 'CNPJ'" formControlName="cnpjCpf"  />
-                                  <div *ngIf="formulario.get('cnpjCpf').getError('cpfNotValid')" class="invalid-feedback">
-                                    CPF invalido.
+                                  <div *ngIf="formulario.get('cnpjCpf').hasError('required')  && formulario.get('cnpjCpf').touched" class="invalid-feedback">
+                                    Campo é obrigatório.
                                   </div>
-                                  <div *ngIf="formulario.get('cnpjCpf').getError('cnpjNotValid')" class="invalid-feedback">
-                                    CNPJ invalido.
+                                  <div *ngIf="formulario.get('cnpjCpf').hasError('minlength')  && formulario.get('cnpjCpf').touched" class="invalid-feedback">
+                                    Minimo 11 digitos
+                                  </div>
+                                  <div *ngIf="formulario.get('cnpjCpf').hasError('notANumber')  && formulario.get('cnpjCpf').touched" class="invalid-feedback">
+                                    Número invalido
                                   </div>
                             </div>
                         </div>

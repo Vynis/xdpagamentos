@@ -85,7 +85,7 @@ export class ClienteCadastroComponent implements OnInit {
       tipoPessoa: [_cliente.tipoPessoa, Validators.required],
       estId: [_cliente.estId, Validators.required],
       nome: [_cliente.nome, Validators.required],
-      cnpjCpf: [_cliente.cnpjCpf,[GenericValidator.isValidCpfCnpj()] ],
+      cnpjCpf: [_cliente.cnpjCpf, [Validators.required, Validators.minLength(11), Validators.maxLength(14), GenericValidator.notANumber()] ],
       endereco: [_cliente.endereco, Validators.required],
       cep: [_cliente.cep, Validators.required],
       bairro: [_cliente.bairro, Validators.required],
