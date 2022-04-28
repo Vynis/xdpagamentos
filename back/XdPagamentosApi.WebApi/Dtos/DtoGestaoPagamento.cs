@@ -34,6 +34,14 @@ namespace XdPagamentosApi.WebApi.Dtos
 
         public DateTime? DtAgendamento { get; set; }
 
+
+        public string VlBrutoTransacao { get; set; }
+        public string QtdParcelaTransacao { get; set; }
+        public string CodAutorizacaoTransacao { get; set; }
+        public string NumCartaoTransacao { get; set; }
+        public string MeioCapturaTransacao { get; set; }
+        public string TipoOperacaoTransacao { get; set; }
+
         public string DtHrLancamentoFormatada { 
             get {
                 return DtHrLancamento.ToString();

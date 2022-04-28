@@ -46,6 +46,30 @@ export class ExtratoListaComponent implements OnInit {
       title: 'Valor',
       type: 'string',
     },
+    vlBrutoTransacao: {
+      title: 'Valor Bruto',
+      type: 'string',
+    },
+    qtdParcelaTransacao: {
+      title: 'Qtd. Parcela',
+      type: 'string',
+    },
+    codAutorizacaoTransacao: {
+      title: 'Cod. Autorização',
+      type: 'string',
+    },
+    numCartaoTransacao: {
+      title: 'Num. Cartão',
+      type: 'string',
+    },
+    meioCapturaTransacao: {
+      title: 'Meio Captura',
+      type: 'string',
+    },
+    tipoOperacaoTransacao: {
+      title: 'Tipo Operação',
+      type: 'string',
+    },
     statusFormatado: {
       title: 'Status',
       type: 'string'

@@ -34,11 +34,32 @@ namespace XdPagamentosApi.Repository.Class
 
             IQueryable<GestaoPagamento> query = _mySqlContext.GestaoPagamentos.Where(expressionDynamic).Include(c => c.Cliente).Include(c => c.RelContaEstabelecimento).Include("RelContaEstabelecimento.Estabelecimento");
 
-            if (paginationFilter.Filtro.Count() > 0)
-                return await query.AsNoTracking().ToArrayAsync();
+            var retorno = await query.AsNoTracking().ToArrayAsync();
 
+            foreach(var ret in retorno)
+            {
+                if (ret.CodRef.Contains("ORPID"))
+                {
+                    var codRef = ret.CodRef.Replace("ORPID", "");
 
-            return await query.AsNoTracking().ToArrayAsync();
+                    var pagamentos = await _mySqlContext.Pagamentos.Where(x => x.OrpId == Convert.ToInt32(codRef)).FirstOrDefaultAsync();
+
+                    var transacao = await _mySqlContext.Transacoes.Where(x => x.PagId == pagamentos.Id).FirstOrDefaultAsync();
+
+                    if (transacao != null)
+                    {
+                        ret.VlBrutoTransacao = transacao.VlBruto;
+                        ret.QtdParcelaTransacao = transacao.QtdParcelas;
+                        ret.CodAutorizacaoTransacao = transacao.CodAutorizacao;
+                        ret.NumCartaoTransacao = transacao.NumCartao;
+                        ret.MeioCapturaTransacao = transacao.MeioCaptura;
+                        ret.TipoOperacaoTransacao = transacao.Descricao;
+                    }
+                }   
+            }
+
+            return retorno;
+
         }
 
         public async override Task<IEnumerable<GestaoPagamento>> BuscarExpressao(Expression<Func<GestaoPagamento, bool>> predicado)

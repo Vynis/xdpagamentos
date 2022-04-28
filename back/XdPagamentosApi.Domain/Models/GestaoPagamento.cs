@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace XdPagamentosApi.Domain.Models
@@ -30,5 +31,21 @@ namespace XdPagamentosApi.Domain.Models
         public DateTime? DtHrSolicitacoCliente { get; set; }
 
         public DateTime? DtAgendamento { get; set; }
+
+        [NotMapped]
+        public string VlBrutoTransacao { get; set; }
+
+        [NotMapped]
+        public string QtdParcelaTransacao { get; set; }
+
+        [NotMapped]
+        public string CodAutorizacaoTransacao { get; set; }
+
+        [NotMapped]
+        public string NumCartaoTransacao { get; set; }
+        [NotMapped]
+        public string MeioCapturaTransacao { get; set; }
+        [NotMapped]
+        public string TipoOperacaoTransacao { get; set; }
     }
 }
