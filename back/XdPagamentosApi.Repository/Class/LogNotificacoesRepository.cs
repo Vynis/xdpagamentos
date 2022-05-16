@@ -89,7 +89,7 @@ namespace XdPagamentosApi.Repository.Class
             transacao.EstId = Convert.ToInt32(estabelecimento);
             transacao.NumTerminal = dtoTransactionPagSeguro.DeviceInfo?.SerialNumber;
             transacao.NumCartao = $"** ** ** {dtoTransactionPagSeguro.DeviceInfo?.Holder}";
-            transacao.QtdParcelas = dtoTransactionPagSeguro.PaymentMethod.Type.Equals("8") ? "00" : dtoTransactionPagSeguro.InstallmentCount.ToString().PadLeft(2, '0');
+            transacao.QtdParcelas = dtoTransactionPagSeguro.PaymentMethod.Type.ToString().Equals("8") || dtoTransactionPagSeguro.PaymentMethod.Type.ToString().Equals("11") ? "00" : dtoTransactionPagSeguro.InstallmentCount.ToString().PadLeft(2, '0');
             transacao.Chave = $"{dtoTransactionPagSeguro.PrimaryReceiver.PublicKey}/{dtoTransactionPagSeguro.Code}";
             transacao.CodAutorizacao = dtoTransactionPagSeguro.DeviceInfo.Reference;
             transacao.TipoTransacao = "01";

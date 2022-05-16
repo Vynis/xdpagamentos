@@ -9,5 +9,7 @@ namespace XdPagamentosApi.Services.Interfaces
     public interface IGestaoPagamentoService : IBaseService<GestaoPagamento>
     {
         Task<GestaoPagamento[]> BuscarComFiltro(PaginationFilter paginationFilter);
+
+        Task<GestaoPagamento[]> BuscarComFiltroCliente(PaginationFilter paginationFilter);
     }
 }

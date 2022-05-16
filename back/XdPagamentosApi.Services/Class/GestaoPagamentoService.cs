@@ -21,5 +21,10 @@ namespace XdPagamentosApi.Services.Class
         {
             return await _repository.BuscarComFiltro(paginationFilter);
         }
+
+        public async Task<GestaoPagamento[]> BuscarComFiltroCliente(PaginationFilter paginationFilter)
+        {
+            return await _repository.BuscarComFiltroCliente(paginationFilter);
+        }
     }
 }

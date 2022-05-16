@@ -102,7 +102,7 @@ namespace XdPagamentosApi.WebApi.Controllers
 
                 filtro.Filtro = listaFiltroPadrao;
 
-                var listaPagamentos = _mapper.Map<DtoGestaoPagamento[]>(await _gestaoPagamentoService.BuscarComFiltro(filtro));
+                var listaPagamentos = _mapper.Map<DtoGestaoPagamento[]>(await _gestaoPagamentoService.BuscarComFiltroCliente(filtro));
 
                 var totalCredito = listaPagamentos.Where(x => x.Tipo.Equals("C")).Sum(x => HelperFuncoes.FormataValorDecimal(x.ValorFormatado));
                 var totalDebito = listaPagamentos.Where(x => x.Tipo.Equals("D")).Sum(x => HelperFuncoes.FormataValorDecimal(x.ValorFormatado));
@@ -270,12 +270,21 @@ namespace XdPagamentosApi.WebApi.Controllers
 
         [HttpGet("saldo-atual")]
         [SwaggerGroup("GestaoPagamento")]
-
         public async Task<IActionResult> SaldoAtual()
         {
             try
             {
-                var buscar = await _gestaoPagamentoService.BuscarExpressao(x => x.CliId.Equals(Convert.ToInt32(User.Identity.Name.ToString().Descriptar())) && x.Grupo.Equals("EC") && x.Status.Equals("AP"));
+                var listaFiltroPadrao = new List<FiltroItem>();
+                listaFiltroPadrao.Add(new FiltroItem { FilterType = "equals", Property = "Grupo", Value = "EC" });
+                listaFiltroPadrao.Add(new FiltroItem { FilterType = "equals", Property = "Status", Value = "AP" });
+                listaFiltroPadrao.Add(new FiltroItem { FilterType = "equals", Property = "CliId", Value = User.Identity.Name.ToString().Descriptar() });
+
+                var filtro = new PaginationFilter();
+                filtro.Filtro = listaFiltroPadrao;
+
+
+                //var buscar = await _gestaoPagamentoService.BuscarExpressao(x => x.CliId.Equals(Convert.ToInt32(User.Identity.Name.ToString().Descriptar())) && x.Grupo.Equals("EC") && x.Status.Equals("AP"));
+                var buscar = await _gestaoPagamentoService.BuscarComFiltroCliente(filtro);
 
                 var somaCredito = buscar.ToList().Where(x => x.Tipo.Equals("C")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido));
                 var somaDebito = buscar.ToList().Where(x => x.Tipo.Equals("D")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido));
