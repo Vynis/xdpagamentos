@@ -133,5 +133,12 @@
       (custom)="onCustom($event)"
       >
       </ng2-smart-table>
+      <br>
+      <div class="row"> 
+        <div *ngIf="realizouFiltro" class="col-sm-12" style="font-weight: bold;" >
+            TOTAIS GERAIS: VL VENDA: R$ {{totalVlVenda}} | VL LIQ OP: R$ {{totalVlLiqOp}} | VL LIQ: R$ {{totalVlLiq}}
+        </div>
+      </div>
+
     </nb-card-body>
   </nb-card>

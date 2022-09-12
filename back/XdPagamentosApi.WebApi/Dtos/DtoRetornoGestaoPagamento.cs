@@ -8,13 +8,13 @@ namespace XdPagamentosApi.WebApi.Dtos
 {
     public class DtoRetornoGestaoPagamento
     {
-        public DtoGestaoPagamento[] listaGestaoPagamentos { get; set; }
+        public DtoVwGestaoPagamentoTransacoes[] listaGestaoPagamentos { get; set; }
 
         public string SaldoAnterior { get; set; }
         public string Entradas { 
             get
             {
-                return $"{string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", listaGestaoPagamentos.Where(x => x.Tipo.Equals("C")).Sum(x => decimal.Parse(x.VlLiquido.Replace(".",""), new NumberFormatInfo() { NumberDecimalSeparator = "," })))} (C)";
+                return $"{string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", listaGestaoPagamentos.Where(x => x.Tipo.Equals("C")).Sum(x => decimal.Parse(x.VlLiquidoCliente.Replace(".",""), new NumberFormatInfo() { NumberDecimalSeparator = "," })))} (C)";
             }
         }
         public string Saidas { 

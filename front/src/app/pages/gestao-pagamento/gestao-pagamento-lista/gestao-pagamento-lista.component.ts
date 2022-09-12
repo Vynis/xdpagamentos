@@ -33,6 +33,9 @@ export class GestaoPagamentoListaComponent implements OnInit {
   source: LocalDataSource = new LocalDataSource();
   realizouFiltro: boolean = false;
   resumoLancamentos: ResumoLancamentosModel = new ResumoLancamentosModel();
+  totalVlVenda: string = '0,00';
+  totalVlLiqOp: string = '0,00';
+  totalVlLiq: string = '0,00';
   @ViewChild('table') smartTable: Ng2SmartTableComponent;
 
   columns = {
@@ -48,7 +51,23 @@ export class GestaoPagamentoListaComponent implements OnInit {
       title: 'Descrição',
       type: 'string',
     },
-    vlLiquido: {
+    vlBrutoTransacao: {
+      title: 'Vl. Venda',
+      type: 'string',
+    }, 
+    taxaPagSeguro: {
+      title: 'Tx. PagSeguro',
+      type: 'string',
+    },   
+    valorLiquidoOperadora: {
+      title: 'Vl. Liquido OP',
+      type: 'string',
+    },     
+    taxaPagCliente: {
+      title: 'Tx. Cliente',
+      type: 'string',
+    },                
+    vlLiquidoCliente: {
       title: 'Vl. Liquido',
       type: 'string',
     },
@@ -233,6 +252,21 @@ export class GestaoPagamentoListaComponent implements OnInit {
           this.resumoLancamentos.saldoAtual = res.data.saldoAtual;
           this.resumoLancamentos.limite = cliente.limiteCredito;
           this.resumoLancamentos.saldoFinal = formatarNumero(Number(res.data.saldoAtual.replace('.','').replace(',','.')) + Number(cliente.limiteCredito.replace('.','').replace(',','.')));
+
+          var vlVendaTotal = 0;
+          var vlLiquidoOpeTotal = 0;
+          var vlLiquidoTotal= 0;
+
+          res.data.listaGestaoPagamentos.forEach(element => {
+            vlVendaTotal+= Number(element.vlBrutoTransacao.replace('.','').replace(',','.'));
+            vlLiquidoOpeTotal+= Number(element.valorLiquidoOperadora.replace('.','').replace(',','.'));
+            vlLiquidoTotal+= Number(element.vlLiquidoCliente.replace('.','').replace(',','.'));
+          });
+
+          this.totalVlVenda = formatarNumero(vlVendaTotal);
+          this.totalVlLiqOp = formatarNumero(vlLiquidoOpeTotal);
+          this.totalVlLiq = formatarNumero(vlLiquidoTotal);
+
         }
       }
     )

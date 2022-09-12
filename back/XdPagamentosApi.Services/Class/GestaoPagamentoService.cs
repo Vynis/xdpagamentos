@@ -17,7 +17,7 @@ namespace XdPagamentosApi.Services.Class
             _repository = repository;
         }
 
-        public async Task<GestaoPagamento[]> BuscarComFiltro(PaginationFilter paginationFilter)
+        public async Task<RetGestaoPagamentoTransacoes> BuscarComFiltro(PaginationFilter paginationFilter)
         {
             return await _repository.BuscarComFiltro(paginationFilter);
         }
@@ -25,6 +25,16 @@ namespace XdPagamentosApi.Services.Class
         public async Task<GestaoPagamento[]> BuscarComFiltroCliente(PaginationFilter paginationFilter)
         {
             return await _repository.BuscarComFiltroCliente(paginationFilter);
+        }
+
+        public async Task<GestaoPagamento[]> BuscarComFiltroExtrato(PaginationFilter paginationFilter)
+        {
+            return await _repository.BuscarComFiltroExtrato(paginationFilter);
+        }
+
+        public async Task<VwRelatorioSaldoCliente> BuscaSaldoCliente(int cliId)
+        {
+            return await _repository.BuscaSaldoCliente(cliId);
         }
     }
 }

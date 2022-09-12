@@ -47,31 +47,38 @@ namespace XdPagamentosApi.WebApi.Controllers
                 if (!ValidaFiltro(filtro,"DtHrLancamento") || !ValidaFiltro(filtro, "CliId"))
                     return Response("Selecione os filtros obrigatorios", false);
 
-                var retornoGestaoPagamento = new DtoRetornoGestaoPagamento();
-
                 var listaFiltroPadrao = new List<FiltroItem>();
                 listaFiltroPadrao.AddRange(filtro.Filtro);
                 listaFiltroPadrao.Add(new FiltroItem { FilterType = "equals", Property = "Grupo", Value = "EC" });
 
                 filtro.Filtro = listaFiltroPadrao;
 
-                var listaPagamentos = _mapper.Map<DtoGestaoPagamento[]>( await _gestaoPagamentoService.BuscarComFiltro(filtro));
+                var retornoGestaoPagamento = _mapper.Map<DtoRetornoGestaoPagamento>( await _gestaoPagamentoService.BuscarComFiltro(filtro));
+ 
+                //retornoGestaoPagamento.listaGestaoPagamentos = listaPagamentos;
 
-                retornoGestaoPagamento.listaGestaoPagamentos = listaPagamentos;
+                //var dadosCliente = Convert.ToInt32(filtro.Filtro.Where(x => x.Property.Equals("CliId")).FirstOrDefault().Value);
 
-                var dadosCliente = Convert.ToInt32(filtro.Filtro.Where(x => x.Property.Equals("CliId")).FirstOrDefault().Value);
+                //var listaFiltroPadraoSaldo = new List<FiltroItem>();
+                //listaFiltroPadraoSaldo.Add(new FiltroItem { FilterType = "equals", Property = "Grupo", Value = "EC" });
+                //listaFiltroPadraoSaldo.Add(new FiltroItem { FilterType = "equals", Property = "Status", Value = "AP" });
+                //listaFiltroPadraoSaldo.Add(new FiltroItem { FilterType = "equals", Property = "CliId", Value = dadosCliente });
 
-                //Saldo Atual
-                var dadosGeral = await _gestaoPagamentoService.BuscarExpressao(x => x.CliId.Equals(dadosCliente) && x.Grupo.Equals("EC") && x.Status.Equals("AP"));
+                //var filtroNovo = new PaginationFilter();
+                //filtroNovo.Filtro = listaFiltroPadraoSaldo;
 
-                retornoGestaoPagamento.SaldoAtual = HelperFuncoes.ValorMoedaBRDecimal(dadosGeral.Where(x => x.Tipo.Equals("C")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido)) - dadosGeral.Where(x => x.Tipo.Equals("D")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido)));
+                ////Saldo Atual
+                //var dadosGeral = await _gestaoPagamentoService.BuscarComFiltro(filtroNovo);
 
-                //Saldo Anterior
-                var dataHrLancamento = filtro.Filtro.Where(x => x.Property.Equals("DtHrLancamento") && x.FilterType.Equals("greaterThanEquals")).FirstOrDefault().Value.ToString();
+                //retornoGestaoPagamento.SaldoAtual = HelperFuncoes.ValorMoedaBRDecimal(dadosGeral.Where(x => x.Tipo.Equals("C")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido)) - dadosGeral.Where(x => x.Tipo.Equals("D")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido)));
 
-                var dadosSaldoAnterior = await _gestaoPagamentoService.BuscarExpressao(x => x.DtHrLancamento < DateTime.Parse(dataHrLancamento) && x.CliId.Equals(dadosCliente) && x.Status.Equals("AP"));
+                ////Saldo Anterior
+                //listaFiltroPadraoSaldo.Add(new FiltroItem { FilterType = "greaterThanEquals", Property = "DtHrLancamento", Value = filtro.Filtro.Where(x => x.Property.Equals("DtHrLancamento") && x.FilterType.Equals("greaterThanEquals")).FirstOrDefault().Value.ToString() });
+                //filtroNovo.Filtro = listaFiltroPadraoSaldo;
 
-                retornoGestaoPagamento.SaldoAnterior = HelperFuncoes.ValorMoedaBRDecimal(dadosSaldoAnterior.Where(x => x.Tipo.Equals("C")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido)) - dadosSaldoAnterior.Where(x => x.Tipo.Equals("D")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido)));
+                //var dadosSaldoAnterior = await _gestaoPagamentoService.BuscarComFiltro(filtroNovo);
+
+                //retornoGestaoPagamento.SaldoAnterior = HelperFuncoes.ValorMoedaBRDecimal(dadosSaldoAnterior.Where(x => x.Tipo.Equals("C")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido)) - dadosSaldoAnterior.Where(x => x.Tipo.Equals("D")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido)));
 
                 return Response(retornoGestaoPagamento);
             }
@@ -274,27 +281,14 @@ namespace XdPagamentosApi.WebApi.Controllers
         {
             try
             {
-                var listaFiltroPadrao = new List<FiltroItem>();
-                listaFiltroPadrao.Add(new FiltroItem { FilterType = "equals", Property = "Grupo", Value = "EC" });
-                listaFiltroPadrao.Add(new FiltroItem { FilterType = "equals", Property = "Status", Value = "AP" });
-                listaFiltroPadrao.Add(new FiltroItem { FilterType = "equals", Property = "CliId", Value = User.Identity.Name.ToString().Descriptar() });
 
-                var filtro = new PaginationFilter();
-                filtro.Filtro = listaFiltroPadrao;
-
-
-                //var buscar = await _gestaoPagamentoService.BuscarExpressao(x => x.CliId.Equals(Convert.ToInt32(User.Identity.Name.ToString().Descriptar())) && x.Grupo.Equals("EC") && x.Status.Equals("AP"));
-                var buscar = await _gestaoPagamentoService.BuscarComFiltroCliente(filtro);
-
-                var somaCredito = buscar.ToList().Where(x => x.Tipo.Equals("C")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido));
-                var somaDebito = buscar.ToList().Where(x => x.Tipo.Equals("D")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido));
-                var limiteCliente =HelperFuncoes.FormataValorDecimal(HelperFuncoes.ValorMoedaBRString((await _clienteService.ObterPorId(Convert.ToInt32(User.Identity.Name.ToString().Descriptar()))).LimiteCredito));
+                var buscarSaldoCliente = await _gestaoPagamentoService.BuscaSaldoCliente(Convert.ToInt32(User.Identity.Name.ToString().Descriptar()));
 
                 return Response(
                     new { 
-                        saldoCliente = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", somaCredito - somaDebito),
-                        limiteCliente = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", limiteCliente), 
-                        total = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", (somaCredito - somaDebito) + limiteCliente)  
+                        saldoCliente = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", buscarSaldoCliente.SaldoAtual),
+                        limiteCliente = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", buscarSaldoCliente.Limite), 
+                        total = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", buscarSaldoCliente.SaldoFinal)  
                     });
 
             }

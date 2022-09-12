@@ -12,5 +12,6 @@ namespace XdPagamentosApi.Domain.Models
 
         public List<OrdemPagto> ListaOrdemPagos { get; set; }
         public List<GestaoPagamento> ListaGestaoPagamento { get; set; }
+        public List<VwGestaoPagamentoTransacoes> ListaViewGestaoPagamentoTransacoes { get; set; }
     }
 }

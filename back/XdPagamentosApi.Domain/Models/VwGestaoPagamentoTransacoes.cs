@@ -5,7 +5,7 @@ using System.Text;
 
 namespace XdPagamentosApi.Domain.Models
 {
-    public class GestaoPagamento
+    public class VwGestaoPagamentoTransacoes
     {
         public int Id { get; set; }
         public DateTime DtHrLancamento { get; set; }
@@ -29,30 +29,16 @@ namespace XdPagamentosApi.Domain.Models
         public string Status { get; set; }
         public string ValorSolicitadoCliente { get; set; }
         public DateTime? DtHrSolicitacoCliente { get; set; }
-
         public DateTime? DtAgendamento { get; set; }
-
-        [NotMapped]
         public string VlBrutoTransacao { get; set; }
-
-        [NotMapped]
         public string QtdParcelaTransacao { get; set; }
-
-        [NotMapped]
         public string CodAutorizacaoTransacao { get; set; }
-
-        [NotMapped]
         public string NumCartaoTransacao { get; set; }
-        [NotMapped]
         public string MeioCapturaTransacao { get; set; }
-        [NotMapped]
         public string TipoOperacaoTransacao { get; set; }
-        [NotMapped]
         public string ValorLiquidoOperadora { get; set; }
-        [NotMapped]
         public string TaxaPagSeguro { get; set; }
-        [NotMapped]
         public string TaxaPagCliente { get; set; }
-
+        public string VlLiquidoCliente { get; set; }
     }
 }

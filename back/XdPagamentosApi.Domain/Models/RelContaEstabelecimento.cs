@@ -13,5 +13,6 @@ namespace XdPagamentosApi.Domain.Models
         public Estabelecimento Estabelecimento { get; set; }
         public string CreditoAutomatico { get; set; }
         public List<GestaoPagamento> ListaGestaoPagamento { get; set; }
+        public List<VwGestaoPagamentoTransacoes> ListaViewGestaoPagamentoTransacoes { get; set; }
     }
 }

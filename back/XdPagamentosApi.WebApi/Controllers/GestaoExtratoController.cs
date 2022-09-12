@@ -51,7 +51,7 @@ namespace XdPagamentosApi.WebApi.Controllers
 
                 filtro.Filtro = listaFiltroPadrao;
 
-                var listaPagamentos = _mapper.Map<DtoGestaoPagamento[]>(await _gestaoPagamentoService.BuscarComFiltro(filtro));
+                var listaPagamentos = _mapper.Map<DtoGestaoPagamento[]>(await _gestaoPagamentoService.BuscarComFiltroExtrato(filtro));
 
                 var listaPagamentoFormatado = listaPagamentos.ToList().Where(x => x.Grupo.Equals("EG") || !x.VlBruto.Equals("0,00")).ToArray();
 

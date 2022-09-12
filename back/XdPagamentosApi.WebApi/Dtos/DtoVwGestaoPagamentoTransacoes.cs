@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace XdPagamentosApi.WebApi.Dtos
 {
-    public class DtoGestaoPagamento
+    public class DtoVwGestaoPagamentoTransacoes
     {
         public int Id { get; set; }
         public DateTime DtHrLancamento { get; set; }
@@ -26,15 +23,11 @@ namespace XdPagamentosApi.WebApi.Dtos
         public string UsuNome { get; set; }
         public string UsuCpf { get; set; }
         public DateTime DtHrAcaoUsuario { get; set; }
-        public DateTime? DtHrCredito { get; set; }
-
+        public DateTime DtHrCredito { get; set; }
         public string Status { get; set; }
         public string ValorSolicitadoCliente { get; set; }
         public DateTime? DtHrSolicitacoCliente { get; set; }
-
         public DateTime? DtAgendamento { get; set; }
-
-
         public string VlBrutoTransacao { get; set; }
         public string QtdParcelaTransacao { get; set; }
         public string CodAutorizacaoTransacao { get; set; }
@@ -44,25 +37,32 @@ namespace XdPagamentosApi.WebApi.Dtos
         public string ValorLiquidoOperadora { get; set; }
         public string TaxaPagSeguro { get; set; }
         public string TaxaPagCliente { get; set; }
+        public string VlLiquidoCliente { get; set; }
 
-        public string DtHrLancamentoFormatada { 
-            get {
+        public string DtHrLancamentoFormatada
+        {
+            get
+            {
                 return DtHrLancamento.ToString();
-            } 
+            }
         }
 
-        public string DtHrCreditoFormatada { 
-          get {
+        public string DtHrCreditoFormatada
+        {
+            get
+            {
                 return DtHrCredito.ToString().Equals("01/01/0001 00:00:00") ? "" : DtHrCredito.ToString();
-          } 
+            }
         }
 
-        public string UsuarioFormatada { 
-            get {
+        public string UsuarioFormatada
+        {
+            get
+            {
                 if (string.IsNullOrEmpty(UsuNome) || string.IsNullOrEmpty(UsuCpf) || UsuNome.Equals("-") || UsuCpf.Equals("-"))
                     return "";
 
-                var cpf = $"{UsuCpf.Substring(0,3)}.***.***-{UsuCpf.Substring(9, 2)}";
+                var cpf = $"{UsuCpf.Substring(0, 3)}.***.***-{UsuCpf.Substring(9, 2)}";
                 var usuario = UsuNome.Length > 13 ? $"{UsuNome.Substring(0, 10)}..." : UsuNome;
 
 
@@ -83,7 +83,8 @@ namespace XdPagamentosApi.WebApi.Dtos
 
         public string TipoFormatado
         {
-            get {
+            get
+            {
                 return string.IsNullOrEmpty(Tipo) ? "" : Tipo.Equals("C") ? "C - Crédito" : "D - Débito";
             }
         }
@@ -92,7 +93,7 @@ namespace XdPagamentosApi.WebApi.Dtos
         {
             get
             {
-                return string.IsNullOrEmpty(VlLiquido) || VlLiquido.Equals("0,00") ? string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", ValorSolicitadoCliente)   : string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", VlLiquido)  ;
+                return string.IsNullOrEmpty(VlLiquido) || VlLiquido.Equals("0,00") ? string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", ValorSolicitadoCliente) : string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", VlLiquido);
             }
         }
 
@@ -124,5 +125,6 @@ namespace XdPagamentosApi.WebApi.Dtos
                 }
             }
         }
+
     }
 }

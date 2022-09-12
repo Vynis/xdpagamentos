@@ -2,7 +2,7 @@ export const formatarNumero = (valor) => {
     if (isNaN(valor) || valor == '')
         return valor;
     else
-        return roundTo(valor, 2).toLocaleString('pt-BR');
+        return roundTo(valor, 2).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }).replace('R$', '');
 }
 
 export const roundTo = (n, digits) => {

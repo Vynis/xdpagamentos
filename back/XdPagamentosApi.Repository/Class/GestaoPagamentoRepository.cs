@@ -1,4 +1,5 @@
 ﻿using FiltrDinamico.Core;
+using FiltrDinamico.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,48 @@ namespace XdPagamentosApi.Repository.Class
             _filtroDinamico = filtroDinamico;
         }
 
-        public async Task<GestaoPagamento[]> BuscarComFiltro(PaginationFilter paginationFilter)
+        public async Task<RetGestaoPagamentoTransacoes> BuscarComFiltro(PaginationFilter paginationFilter)
+        {
+
+            var retornoGestaopagamentoTransacoes = new RetGestaoPagamentoTransacoes();
+
+            Expression<Func<VwGestaoPagamentoTransacoes, bool>> expressionDynamic = _filtroDinamico.FromFiltroItemList<VwGestaoPagamentoTransacoes>(paginationFilter.Filtro.ToList());
+
+            //Lista de Gestao de Pagamentos
+            IQueryable<VwGestaoPagamentoTransacoes> query = _mySqlContext.VwGestaoPagamentoTransacao.Where(expressionDynamic).Include(c => c.Cliente).Include(c => c.RelContaEstabelecimento).Include("RelContaEstabelecimento.Estabelecimento");
+
+            retornoGestaopagamentoTransacoes.listaGestaoPagamentos = await query.AsNoTracking().ToArrayAsync();
+
+            //Saldo Atual
+            var cliId = Convert.ToInt32(paginationFilter.Filtro.Where(x => x.Property.Equals("CliId")).FirstOrDefault().Value);
+
+            IQueryable<VwRelatorioSaldoCliente> querySaldoCliente = _mySqlContext.VwRelatorioSaldoClientes.Where(x => x.Id == cliId);
+
+            var retornoViewSaldoCliente = await querySaldoCliente.AsNoTracking().FirstOrDefaultAsync();
+
+            retornoGestaopagamentoTransacoes.SaldoAtual = retornoViewSaldoCliente.SaldoAtual;
+
+            //Saldo Anterior
+            var listaFiltroPadrao = new List<FiltroItem>();
+            listaFiltroPadrao.Add(new FiltroItem { FilterType = "equals", Property = "Grupo", Value = "EC" });
+            listaFiltroPadrao.Add(new FiltroItem { FilterType = "equals", Property = "Status", Value = "AP" });
+            listaFiltroPadrao.Add(new FiltroItem { FilterType = "equals", Property = "CliId", Value = cliId });
+            listaFiltroPadrao.Add(new FiltroItem { FilterType = "lessThanEquals", Property = "DtHrLancamento", Value = paginationFilter.Filtro.Where(x => x.Property.Equals("DtHrLancamento") && x.FilterType.Equals("greaterThanEquals")).FirstOrDefault().Value.ToString() });
+
+            paginationFilter.Filtro = listaFiltroPadrao;
+
+            expressionDynamic = _filtroDinamico.FromFiltroItemList<VwGestaoPagamentoTransacoes>(paginationFilter.Filtro.ToList());
+
+            IQueryable<VwGestaoPagamentoTransacoes> querySaldoAnterior = _mySqlContext.VwGestaoPagamentoTransacao.Where(expressionDynamic);
+
+            var retornoSadoAnterio = await querySaldoAnterior.AsNoTracking().ToArrayAsync();
+
+            retornoGestaopagamentoTransacoes.SaldoAnterior = HelperFuncoes.ValorMoedaBRDecimal(retornoSadoAnterio.Where(x => x.Tipo.Equals("C")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquidoCliente)) - retornoSadoAnterio.Where(x => x.Tipo.Equals("D")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido)));
+
+            return retornoGestaopagamentoTransacoes;
+        }
+
+        public async Task<GestaoPagamento[]> BuscarComFiltroExtrato(PaginationFilter paginationFilter)
         {
             Expression<Func<GestaoPagamento, bool>> expressionDynamic = p => p.Id != 0;
 
@@ -35,8 +77,9 @@ namespace XdPagamentosApi.Repository.Class
 
             IQueryable<GestaoPagamento> query = _mySqlContext.GestaoPagamentos.Where(expressionDynamic).Include(c => c.Cliente).Include(c => c.RelContaEstabelecimento).Include("RelContaEstabelecimento.Estabelecimento");
 
-            return await query.AsNoTracking().ToArrayAsync();
+            var retorno = await query.AsNoTracking().ToArrayAsync();
 
+            return retorno;
         }
 
         public async Task<GestaoPagamento[]> BuscarComFiltroCliente(PaginationFilter paginationFilter)
@@ -76,6 +119,13 @@ namespace XdPagamentosApi.Repository.Class
             }
 
             return retorno;
+        }
+
+        public async Task<VwRelatorioSaldoCliente> BuscaSaldoCliente(int cliId)
+        {
+            IQueryable<VwRelatorioSaldoCliente> query = _mySqlContext.VwRelatorioSaldoClientes.Where(x => x.Id == cliId);
+
+            return await query.AsNoTracking().FirstOrDefaultAsync();
         }
 
         public async override Task<IEnumerable<GestaoPagamento>> BuscarExpressao(Expression<Func<GestaoPagamento, bool>> predicado)

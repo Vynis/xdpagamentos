@@ -43,6 +43,8 @@ namespace XdPagamentosApi.WebApi
             CreateMap<DtoTerminalLista, Terminal>().ReverseMap();
             CreateMap<DtoOperadora, Operadora>().ReverseMap();
             CreateMap<DtoEstabelecimentoLista, Estabelecimento>().ReverseMap();
+            CreateMap<DtoVwGestaoPagamentoTransacoes, VwGestaoPagamentoTransacoes>().ReverseMap();
+            CreateMap<DtoRetornoGestaoPagamento, RetGestaoPagamentoTransacoes>().ReverseMap();
 
 
             CreateMap<Cliente, DtoUsuarioLogado>().ForMember(x => x.Cpf, c => c.MapFrom(s => s.CnpjCpf)).ReverseMap();
