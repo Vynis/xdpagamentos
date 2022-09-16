@@ -131,5 +131,19 @@ namespace XdPagamentosApi.WebApi.Controllers
                 return Response(ex.Message, false);
             }
         }
+
+        [HttpGet("buca-terminais-cliente/{id}")]
+        [SwaggerGroup("Terminal")]
+        public async Task<IActionResult> BuscaTerminaisCliente(int id)
+        {
+            try
+            {
+                return Response(await _terminalService.BuscaTerminalCliente(id));
+            }
+            catch (Exception ex)
+            {
+                return Response(ex.Message, false);
+            }
+        }
     }
 }

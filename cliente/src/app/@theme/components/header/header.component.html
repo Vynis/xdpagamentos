@@ -10,10 +10,16 @@
 </div>
 
 <div class="header-container">
-  <nb-card style="padding-top: 27px;">
+  <nb-card class="estiloCardSaldo">
     <nb-card-body>
+    <span class="ocultarSaldo">
       Saldo + Limite = Saldo Total <br>
       <span style="font-size: 15pt;"><b>R$ {{saldo}}</b> + <b>R$ {{limite}}</b> = <b>R$ {{total}}</b>  </span> 
+    </span>
+    <span class="ocultarSaldoMobile">
+      Saldo Total: <br>  <b>R$ 5.235,00</b> 
+      <!-- <span style="font-size: 9pt;"><b>R$ {{total}}</b>  </span>  -->
+    </span>
     </nb-card-body>
   </nb-card>
   <nb-actions size="small">

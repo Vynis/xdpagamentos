@@ -91,5 +91,22 @@ namespace XdPagamentosApi.Repository.Class
 
             return listaErros.ToArray();
         }
+
+        public async Task<Terminal[]> BuscaTerminalCliente(int cliId = 0)
+        {
+            if (cliId == 0)
+                return await _mySqlContext.Terminais.AsNoTracking().Include(c => c.Estabelecimento).Include(c => c.ListaRelClienteTerminal).Include("ListaRelClienteTerminal.Cliente").ToArrayAsync();
+
+            var retorno = await _mySqlContext.RelClienteTerminais.Where(x => x.CliId == cliId).Include(c => c.Terminal).Include(c => c.Cliente).ToArrayAsync();
+
+            if (retorno.Count() == 0)
+                return new List<Terminal>().ToArray();
+
+            var listaTerminal = new List<Terminal>();
+
+            retorno.ToList().ForEach(x => listaTerminal.Add(x.Terminal));
+
+            return listaTerminal.ToArray();
+        }
     }
 }

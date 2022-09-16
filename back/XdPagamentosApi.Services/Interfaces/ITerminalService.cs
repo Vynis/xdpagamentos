@@ -10,6 +10,8 @@ namespace XdPagamentosApi.Services.Interfaces
     {
         Task<Terminal[]> BuscarComFiltro(PaginationFilter paginationFilter);
 
+        Task<Terminal[]> BuscaTerminalCliente(int cliId = 0);
+
         Task<String[]> ExcluirComValidacao(int id);
     }
 }

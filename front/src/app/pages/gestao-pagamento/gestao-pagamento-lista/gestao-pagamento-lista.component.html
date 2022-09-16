@@ -10,22 +10,31 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="cliente" class="label">*Cliente</label><br>
-                        <nb-select placeholder="" fullWidth  status="primary" formControlName="cliente" >
+                        <nb-select placeholder="" fullWidth (selectedChange)="buscarTerminais($event)"  status="primary" formControlName="cliente" >
+                            <nb-option value="0">Selecione</nb-option>
                             <nb-option *ngFor="let cliente of listaClientes" [value]="cliente.id" >{{cliente.nome}}</nb-option>
                           </nb-select>
                     </div>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-4">
+                    <label for="estabelecimento" class="label">Num. Terminal</label><br>
+                    <nb-select placeholder="" fullWidth  status="primary" formControlName="numTerminal" >
+                        <nb-option value="0">Todos</nb-option>
+                        <nb-option *ngFor="let terminal of listaTerminais" [value]="terminal.numTerminal">{{terminal.numTerminal}} - {{terminal.listaRelClienteTerminal[0].cliente.nome}}</nb-option>
+                      </nb-select>
+                </div>
+
+                <div class="col-md-2">
                     <div class="form-group">
-                        <label for="status" class="label">*Período inicial de lançamento</label><br>
+                        <label for="status" class="label">*Lanc. Inicial</label><br>
                         <input nbInput placeholder="" fullWidth formControlName="dtInicial" [nbDatepicker]="dtInicial">
                         <nb-datepicker #dtInicial [min]="min" [max]="max" format="dd/MM/yyyy"></nb-datepicker>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="form-group">
-                        <label for="status" class="label">*Período final da laçamento</label><br>
+                        <label for="status" class="label">*Lanc. Final</label><br>
                         <input nbInput placeholder="" fullWidth formControlName="dtFinal" [nbDatepicker]="dtFinal">
                         <nb-datepicker #dtFinal [min]="min" [max]="max" format="dd/MM/yyyy"></nb-datepicker>
                     </div>

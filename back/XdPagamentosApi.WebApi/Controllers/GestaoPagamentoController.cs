@@ -186,17 +186,20 @@ namespace XdPagamentosApi.WebApi.Controllers
 
         private async Task<decimal> CalculaSaldoFinal(DtoGestaoPagamento dto)
         {
+
+            var buscarSaldoCliente = await _gestaoPagamentoService.BuscaSaldoCliente(dto.CliId);
+            /*
             //Limite de Crecito
             var dadosCliente = await _clienteService.ObterPorId(dto.CliId);
 
-            var limiteCredito = HelperFuncoes.FormataValorDecimal(dadosCliente.LimiteCredito);
+            var limiteCredito = HelperFuncoes.FormataValorDecimal(buscarSaldoCliente.Limite);
 
             //Saldo Atual
             var dadosGeral = await _gestaoPagamentoService.BuscarExpressao(x => x.CliId.Equals(dto.CliId) && x.Grupo.Equals("EC") && x.Status.Equals("AP"));
 
             var saldoAtual = dadosGeral.Where(x => x.Tipo.Equals("C")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido)) - dadosGeral.Where(x => x.Tipo.Equals("D")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido));
-
-            return saldoAtual + limiteCredito;
+            */
+            return HelperFuncoes.FormataValorDecimal(buscarSaldoCliente.SaldoFinal);
         }
 
         [HttpPut("alterar")]
@@ -305,18 +308,16 @@ namespace XdPagamentosApi.WebApi.Controllers
         {
             try
             {
-                var buscar = await _gestaoPagamentoService.BuscarExpressao(x => x.CliId.Equals(id) && x.Grupo.Equals("EC") && x.Status.Equals("AP"));
 
-                var somaCredito = buscar.ToList().Where(x => x.Tipo.Equals("C")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido));
-                var somaDebito = buscar.ToList().Where(x => x.Tipo.Equals("D")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido));
-                var limiteCliente = HelperFuncoes.FormataValorDecimal(HelperFuncoes.ValorMoedaBRString((await _clienteService.ObterPorId(id)).LimiteCredito));
+                var buscarSaldoCliente = await _gestaoPagamentoService.BuscaSaldoCliente(id);
+
 
                 return Response(
                     new
                     {
-                        saldoCliente = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", somaCredito - somaDebito),
-                        limiteCliente = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", limiteCliente),
-                        total = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", (somaCredito - somaDebito) + limiteCliente)
+                        saldoCliente = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", buscarSaldoCliente.SaldoAtual),
+                        limiteCliente = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", buscarSaldoCliente.Limite),
+                        total = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", buscarSaldoCliente.SaldoFinal)
                     });
 
             }

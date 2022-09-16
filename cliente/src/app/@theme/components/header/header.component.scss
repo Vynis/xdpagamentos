@@ -73,3 +73,19 @@ nb-select{
   max-width: 100% !important;
   width: 100%; 
 }
+
+.estiloCardSaldo {padding-top: 27px;}
+
+.ocultarSaldo{ color: black; }
+
+@media screen and (max-width:600px) {
+    .ocultarSaldo{ display: none; }
+}
+
+.ocultarSaldoMobile{ color: black; display: none; font-size: 8pt;}
+
+@media screen and (min-width:100px) and (max-width:600px) {
+  .ocultarSaldoMobile{ display: block; }
+  .estiloCardSaldo{ padding: 0;}
+  nb-card-body{ padding: 0;  }
+}

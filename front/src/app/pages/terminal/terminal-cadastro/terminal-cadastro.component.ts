@@ -171,7 +171,7 @@ export class TerminalCadastroComponent implements OnInit {
     _terminal.numTerminal = controls.numTerminal.value;
     _terminal.estId = controls.estId.value;
     _terminal.status = controls.status.value;
-    _terminal.listaRelClienteTerminal.push({ id:0, cliId: controls.cliId.value, terId: 0 });
+    _terminal.listaRelClienteTerminal.push({ id:0, cliId: controls.cliId.value, terId: 0, cliente: null });
 
     return _terminal;
   }

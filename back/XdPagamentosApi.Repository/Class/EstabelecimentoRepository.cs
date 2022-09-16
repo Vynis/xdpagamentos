@@ -58,6 +58,7 @@ namespace XdPagamentosApi.Repository.Class
         {
             var buscaRelacionamentoConta = (await _mySqlContext.RelContaEstabelecimentos.Where(c => (c.EstId.Equals(obj.Id) && c.CreditoAutomatico.Equals("S")) || (c.EstId.Equals(obj.Id) && c.CocId.Equals(obj.ListaRelContaEstabelecimento[0].CocId))).ToArrayAsync()).FirstOrDefault();
             buscaRelacionamentoConta.CocId = obj.ListaRelContaEstabelecimento[0].CocId;
+            buscaRelacionamentoConta.CreditoAutomatico = obj.ListaRelContaEstabelecimento[0].CreditoAutomatico;
 
             var listaNova = new List<RelContaEstabelecimento>();
             listaNova.Add(buscaRelacionamentoConta);

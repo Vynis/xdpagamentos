@@ -128,6 +128,31 @@ namespace XdPagamentosApi.WebApi.Controllers
             }
         }
 
+        [HttpDelete("excluir/{id}")]
+        [SwaggerGroup("GestaoExtrato")]
+        public async Task<IActionResult> Excluir(int id)
+        {
+            try
+            {
+                var buscar = await _gestaoPagamentoService.ObterPorId(id);
+
+                if (buscar == null)
+                    return Response("Erro ao excluir", false);
+
+                var response = await _gestaoPagamentoService.Excluir(buscar);
+
+                if (!response)
+                    return Response("Erro ao excluir", false);
+
+                return Response("Excluído com sucesso!");
+
+            }
+            catch (Exception ex)
+            {
+                return Response(ex.Message, false);
+            }
+        }
+
         private static bool ValidaFiltro(PaginationFilter filtro, string valor)
         {
             return filtro.Filtro.ToList().Exists(x => x.Property.Equals(valor));

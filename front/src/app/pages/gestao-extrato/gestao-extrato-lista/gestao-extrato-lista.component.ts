@@ -13,6 +13,8 @@ import { PaginationFilterModel } from '../../../@core/models/configuracao/pagina
 import { AcoesPadrao } from '../../../@core/enums/acoes.enum';
 import { AuthServiceService } from '../../../@core/services/auth-service.service';
 import { SessoesEnum } from '../../../@core/enums/sessoes.enum';
+import { SweetalertService } from '../../../@core/services/sweetalert.service';
+import { SweetAlertIcons } from '../../../@core/enums/sweet-alert-icons-enum';
 
 @Component({
   selector: 'ngx-gestao-extrato-lista',
@@ -72,6 +74,7 @@ export class GestaoExtratoListaComponent implements OnInit {
     private gestaoExtratoService: GestaoExtratoService,
     private fb: FormBuilder,
     private authService: AuthServiceService,
+    private sweetAlertService: SweetalertService
     ) { this.validaPermissao() }
 
   ngOnInit() {
@@ -240,6 +243,32 @@ export class GestaoExtratoListaComponent implements OnInit {
   }
 
 
-  onCustom(event) {}
+  onCustom(event) {
+    switch (event.action) {
+      case AcoesPadrao.REMOVER:
+        this.sweetAlertService.msgPadrao().then(
+          res => {
+            if (res.isConfirmed){
+              this.excluir(event.data.id);
+            } 
+          }
+        )
+        break;   
+      default:
+        break;
+    }
+  }
+
+  excluir(id) {
+    this.gestaoExtratoService.remover(id).subscribe(
+      res => {
+        if (!res.success)
+          return;
+        
+        this.sweetAlertService.msgAvulsa('Deletado', SweetAlertIcons.SUCESS ,''); 
+        this.pesquisar();
+      }
+    )
+  }
 
 }

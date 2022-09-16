@@ -17,6 +17,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ContaCaixaService } from '../../@core/services/conta-caixa.service';
 import { NbMomentDateModule } from '@nebular/moment';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
+import { TerminalService } from '../../@core/services/terminal.service';
 
 
 @NgModule({
@@ -60,7 +61,8 @@ import { CurrencyMaskModule } from 'ng2-currency-mask';
     ClienteService,
     GestaoPagamentoService,
     FormaPagtoService,
-    ContaCaixaService
+    ContaCaixaService,
+    TerminalService
   ]
 })
 export class GestaoPagamentoModule { }

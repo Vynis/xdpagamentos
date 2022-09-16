@@ -34,4 +34,8 @@ export class TerminalService {
     return this.http.delete<ModeloBase>(`${this.caminhoApi}/deletar/${id}`);
   }
 
+  bucarTerminaisCliente(id: number) {
+    return this.http.get<ModeloBase>(`${this.caminhoApi}/buca-terminais-cliente/${id}`);
+  }
+
 }

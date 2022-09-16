@@ -40,5 +40,6 @@ namespace XdPagamentosApi.Domain.Models
         public string TaxaPagSeguro { get; set; }
         public string TaxaPagCliente { get; set; }
         public string VlLiquidoCliente { get; set; }
+        public string NumTerminal { get; set; }
     }
 }

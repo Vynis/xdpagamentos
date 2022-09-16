@@ -38,6 +38,7 @@ namespace XdPagamentosApi.WebApi.Dtos
         public string TaxaPagSeguro { get; set; }
         public string TaxaPagCliente { get; set; }
         public string VlLiquidoCliente { get; set; }
+        public string NumTerminal { get; set; }
 
         public string DtHrLancamentoFormatada
         {

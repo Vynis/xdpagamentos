@@ -18,6 +18,8 @@ import { SweetAlertIcons } from '../../../@core/enums/sweet-alert-icons-enum';
 import { formatarNumero } from '../../../@core/utils/funcoes';
 import { AuthServiceService } from '../../../@core/services/auth-service.service';
 import { SessoesEnum } from '../../../@core/enums/sessoes.enum';
+import { TerminalService } from '../../../@core/services/terminal.service';
+import { TerminalModel } from '../../../@core/models/terminal.model';
 
 @Component({
   templateUrl: './gestao-pagamento-lista.component.html',
@@ -37,6 +39,7 @@ export class GestaoPagamentoListaComponent implements OnInit {
   totalVlLiqOp: string = '0,00';
   totalVlLiq: string = '0,00';
   @ViewChild('table') smartTable: Ng2SmartTableComponent;
+  listaTerminais: TerminalModel[];
 
   columns = {
     id: {
@@ -45,6 +48,10 @@ export class GestaoPagamentoListaComponent implements OnInit {
     },
     dtHrLancamentoFormatada: {
       title: 'Dt. Lançamento ',
+      type: 'string',
+    },
+    numTerminal: {
+      title: 'Num. Terminal',
       type: 'string',
     },
     descricao: {
@@ -101,11 +108,13 @@ export class GestaoPagamentoListaComponent implements OnInit {
     private route: Router,
     private fb: FormBuilder,
     private authService: AuthServiceService,
+    private terminalService: TerminalService
     ) { this.validaPermissao() }
 
   ngOnInit(): void {
     this.buscaClientes();
     this.createFormFiltro();
+    this.buscarTerminais();
 
     this.settings.columns = this.columns;
     this.settings.actions.custom = [];
@@ -146,13 +155,14 @@ export class GestaoPagamentoListaComponent implements OnInit {
 
   createFormFiltro() {
     this.formularioFiltro = this.fb.group({
-      cliente: [0, Validators.required],
+      cliente: ['0', Validators.required],
       descricao: [''],
       dtInicial: [new Date()],
       dtFinal: [new Date()],
       valorliquido: [null],
       tipo: ['T'],
-      status: ['T']
+      status: ['T'],
+      numTerminal: ['0']
     })
   }
 
@@ -165,7 +175,7 @@ export class GestaoPagamentoListaComponent implements OnInit {
     this.realizouFiltro = false;
 
     //Validacoes
-    if (controls.cliente.value == 0) {
+    if (controls.cliente.value == 0 && controls.numTerminal.value == 0) {
       this.existeErro = true;
       return;
     }
@@ -178,7 +188,7 @@ export class GestaoPagamentoListaComponent implements OnInit {
     var item  = new FiltroItemModel();
     item.property = 'CliId';
     item.filterType = FilterTypeConstants.EQUALS;
-    item.value = controls.cliente.value;
+    item.value = controls.cliente.value == 0 ? this.listaTerminais.filter(x => x.numTerminal == controls.numTerminal.value )[0].listaRelClienteTerminal[0].cliId : controls.cliente.value ;
     listaItem.push(item);
 
     var item  = new FiltroItemModel();
@@ -227,6 +237,14 @@ export class GestaoPagamentoListaComponent implements OnInit {
       listaItem.push(item);
      }
 
+     if (controls.numTerminal.value !== '0'){
+      var item  = new FiltroItemModel();
+      item.property = 'NumTerminal';
+      item.filterType = FilterTypeConstants.EQUALS;
+      item.value = controls.numTerminal.value;
+      listaItem.push(item);
+     }
+
 
     filtro.filtro = listaItem;
     this.buscarDados(filtro);
@@ -239,11 +257,11 @@ export class GestaoPagamentoListaComponent implements OnInit {
         if (res.success) {
           this.realizouFiltro = true;
           this.source.load(res.data.listaGestaoPagamentos);
-          console.log(this.smartTable);
+
 
           this.settings.actions.custom = [];
           const controls = this.formularioFiltro.controls;
-          const cliente = this.listaClientes.filter(x => x.id == controls.cliente.value)[0];
+          const cliente = controls.cliente.value == 0 ? this.listaTerminais.filter(x => x.numTerminal == controls.numTerminal.value )[0].listaRelClienteTerminal[0].cliente: this.listaClientes.filter(x => x.id == controls.cliente.value)[0];
           this.resumoLancamentos.cliente = cliente.nome;
           this.resumoLancamentos.periodo = `De ${ new Date(controls.dtInicial.value).toLocaleDateString() } até ${ new Date(controls.dtFinal.value).toLocaleDateString() }`;
           this.resumoLancamentos.saldoAnterior = res.data.saldoAnterior;
@@ -258,8 +276,11 @@ export class GestaoPagamentoListaComponent implements OnInit {
           var vlLiquidoTotal= 0;
 
           res.data.listaGestaoPagamentos.forEach(element => {
-            vlVendaTotal+= Number(element.vlBrutoTransacao.replace('.','').replace(',','.'));
-            vlLiquidoOpeTotal+= Number(element.valorLiquidoOperadora.replace('.','').replace(',','.'));
+            if (element.vlBrutoTransacao !== '' && element.vlBrutoTransacao !== null)
+              vlVendaTotal+= Number(element.vlBrutoTransacao.replace('.','').replace(',','.'));
+            if (element.valorLiquidoOperadora !== '' && element.valorLiquidoOperadora !== null )
+              vlLiquidoOpeTotal+= Number(element.valorLiquidoOperadora.replace('.','').replace(',','.'));
+            if (element.vlLiquidoCliente !== '' && element.vlLiquidoCliente !== null)
             vlLiquidoTotal+= Number(element.vlLiquidoCliente.replace('.','').replace(',','.'));
           });
 
@@ -314,6 +335,19 @@ export class GestaoPagamentoListaComponent implements OnInit {
         
         this.sweetAlertService.msgAvulsa('Deletado', SweetAlertIcons.SUCESS ,''); 
         this.pesquisar();
+      }
+    )
+  }
+
+  buscarTerminais(cliId: number = 0) {
+    this.listaTerminais = [];
+    this.formularioFiltro.controls.numTerminal.setValue('0');
+    this.terminalService.bucarTerminaisCliente(cliId).subscribe(
+      res => {
+        if (!res.success)
+          return;
+
+          this.listaTerminais = res.data;
       }
     )
   }
