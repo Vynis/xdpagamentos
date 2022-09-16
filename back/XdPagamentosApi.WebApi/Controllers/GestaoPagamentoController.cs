@@ -109,13 +109,15 @@ namespace XdPagamentosApi.WebApi.Controllers
 
                 filtro.Filtro = listaFiltroPadrao;
 
-                var listaPagamentos = _mapper.Map<DtoGestaoPagamento[]>(await _gestaoPagamentoService.BuscarComFiltroCliente(filtro));
+                var retornoGestaoPagamento = _mapper.Map<DtoRetornoGestaoPagamento>(await _gestaoPagamentoService.BuscarComFiltro(filtro));
 
-                var totalCredito = listaPagamentos.Where(x => x.Tipo.Equals("C")).Sum(x => HelperFuncoes.FormataValorDecimal(x.ValorFormatado));
-                var totalDebito = listaPagamentos.Where(x => x.Tipo.Equals("D")).Sum(x => HelperFuncoes.FormataValorDecimal(x.ValorFormatado));
-                var total = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", totalCredito - totalDebito) ;
+                //var listaPagamentos = _mapper.Map<DtoGestaoPagamento[]>(await _gestaoPagamentoService.BuscarComFiltroCliente(filtro));
 
-                return Response( new { listaPagamentos, total });
+                //var totalCredito = listaPagamentos.Where(x => x.Tipo.Equals("C")).Sum(x => HelperFuncoes.FormataValorDecimal(x.ValorFormatado));
+                //var totalDebito = listaPagamentos.Where(x => x.Tipo.Equals("D")).Sum(x => HelperFuncoes.FormataValorDecimal(x.ValorFormatado));
+                //var total = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", totalCredito - totalDebito) ;
+
+                return Response( new { listaPagamentos = retornoGestaoPagamento.listaGestaoPagamentos, total = retornoGestaoPagamento.SaldoAtual });
             }
             catch (Exception ex)
             {

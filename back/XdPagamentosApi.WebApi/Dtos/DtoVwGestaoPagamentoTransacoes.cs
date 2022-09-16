@@ -94,7 +94,7 @@ namespace XdPagamentosApi.WebApi.Dtos
         {
             get
             {
-                return string.IsNullOrEmpty(VlLiquido) || VlLiquido.Equals("0,00") ? string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", ValorSolicitadoCliente) : string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", VlLiquido);
+                return string.IsNullOrEmpty(VlLiquidoCliente) || VlLiquidoCliente.Equals("0,00") ? string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", ValorSolicitadoCliente) : string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", VlLiquidoCliente);
             }
         }
 

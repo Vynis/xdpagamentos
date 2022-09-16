@@ -7,6 +7,8 @@ import { SettingsTableModel } from '../../../@core/models/configuracao/table/set
 import { PaginationFilterModel } from '../../../@core/models/configuracao/paginationfilter.model';
 import { FiltroItemModel } from '../../../@core/models/configuracao/filtroitem.model';
 import { FilterTypeConstants } from '../../../@core/enums/filter-type.enum';
+import { TerminalService } from '../../../@core/services/terminal.service';
+import { TerminalModel } from '../../../@core/models/terminal.model';
 
 @Component({
   selector: 'ngx-extrato-lista',
@@ -24,6 +26,7 @@ export class ExtratoListaComponent implements OnInit {
   realizouFiltro: boolean = false;
   @ViewChild('table') smartTable: Ng2SmartTableComponent;
   total: string = '0,00';
+  listaTerminais: TerminalModel[];
 
   columns = {
     id: {
@@ -76,11 +79,11 @@ export class ExtratoListaComponent implements OnInit {
     }
   }
 
-  constructor(private fb: FormBuilder, private gestaoPagtoService: GestaoPagamentoService) { }
+  constructor(private fb: FormBuilder, private gestaoPagtoService: GestaoPagamentoService, private terminalService: TerminalService) { }
 
   ngOnInit(): void {
     this.createFormFiltro();
-
+    this.buscarTerminais();
     
     this.settings.columns = this.columns;
     this.settings.actions.custom = [];
@@ -92,7 +95,8 @@ export class ExtratoListaComponent implements OnInit {
     this.formularioFiltro = this.fb.group({
       dtInicial: [new Date()],
       dtFinal: [new Date()],
-      tipo: ['T']
+      tipo: ['T'],
+      numTerminal: ['0']
     })
   }
 
@@ -142,6 +146,14 @@ export class ExtratoListaComponent implements OnInit {
       listaItem.push(item);
      }
 
+     if (controls.numTerminal.value !== '0'){
+      var item  = new FiltroItemModel();
+      item.property = 'NumTerminal';
+      item.filterType = FilterTypeConstants.EQUALS;
+      item.value = controls.numTerminal.value;
+      listaItem.push(item);
+     }
+
 
     filtro.filtro = listaItem;
     this.buscarDados(filtro);
@@ -153,5 +165,18 @@ export class ExtratoListaComponent implements OnInit {
   }
 
   onCustom(event) {}
+
+  buscarTerminais() {
+    this.listaTerminais = [];
+    this.terminalService.bucarTerminaisCliente().subscribe(
+      res => {
+        if (!res.success)
+          return;
+
+          this.listaTerminais = res.data;
+      }
+    )
+  }
+
 
 }

@@ -9,6 +9,7 @@ using XdPagamentosApi.Services.Interfaces;
 using XdPagamentosApi.WebApi.Configuracao.Swagger;
 using XdPagamentosApi.WebApi.Dtos;
 using XdPagamentosApi.WebApi.Shared;
+using XdPagamentosApi.WebApi.Shared.Extensions;
 
 namespace XdPagamentosApi.WebApi.Controllers
 {
@@ -139,6 +140,20 @@ namespace XdPagamentosApi.WebApi.Controllers
             try
             {
                 return Response(await _terminalService.BuscaTerminalCliente(id));
+            }
+            catch (Exception ex)
+            {
+                return Response(ex.Message, false);
+            }
+        }
+
+        [HttpGet("buca-terminais-cliente")]
+        [SwaggerGroup("Terminal")]
+        public async Task<IActionResult> BuscaTerminaisCliente()
+        {
+            try
+            {
+                return Response(await _terminalService.BuscaTerminalCliente(Convert.ToInt32(User.Identity.Name.ToString().Descriptar())));
             }
             catch (Exception ex)
             {

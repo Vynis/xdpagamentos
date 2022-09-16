@@ -7,6 +7,13 @@
 
         <div  [formGroup]="formularioFiltro">
             <div class="row">
+                <div class="col-md-3">
+                    <label for="estabelecimento" class="label">Num. Terminal</label><br>
+                    <nb-select placeholder="" fullWidth  status="primary" formControlName="numTerminal" >
+                        <nb-option value="0">Todos</nb-option>
+                        <nb-option *ngFor="let terminal of listaTerminais" [value]="terminal.numTerminal">{{terminal.numTerminal}} - {{terminal.listaRelClienteTerminal[0].cliente.nome}}</nb-option>
+                      </nb-select>
+                </div>
 
                 <div class="col-md-3">
                     <div class="form-group">
