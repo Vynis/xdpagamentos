@@ -16,12 +16,12 @@
       Saldo + Limite = Saldo Total <br>
       <span style="font-size: 15pt;"><b>R$ {{saldo}}</b> + <b>R$ {{limite}}</b> = <b>R$ {{total}}</b>  </span> 
     </span>
-    <span class="ocultarSaldoMobile">
-      Saldo Total: <br>  <b>R$ 5.235,00</b> 
-      <!-- <span style="font-size: 9pt;"><b>R$ {{total}}</b>  </span>  -->
-    </span>
     </nb-card-body>
   </nb-card>
+  <div class="ocultarSaldoMobile" style="padding-top: 5px;">
+      <button nbButton status="success" (click)="open(dialog)" size="tiny">Saldo</button>
+  </div>
+  &nbsp;&nbsp;
   <nb-actions size="small">
 
     <!-- <nb-action class="control-item">
@@ -38,3 +38,13 @@
     </nb-action>
   </nb-actions>
 </div>
+
+<ng-template #dialog let-data let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header>Saldo + Limite = Saldo Total</nb-card-header>
+    <nb-card-body style="padding-left: 10px;"><span style="font-size: 9pt;"><b>R$ {{saldo}}</b> + <b>R$ {{limite}}</b> = <b>R$ {{total}}</b>  </span> </nb-card-body>
+    <nb-card-footer>
+      <button nbButton size="tiny" (click)="ref.close()">Fechar</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

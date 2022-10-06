@@ -37,6 +37,10 @@ export class ExtratoListaComponent implements OnInit {
       title: 'Dt. Lançamento ',
       type: 'string',
     },
+    numTerminal: {
+      title: 'Num. Terminal',
+      type: 'string',
+    },
     descricao: {
       title: 'Descrição',
       type: 'string',

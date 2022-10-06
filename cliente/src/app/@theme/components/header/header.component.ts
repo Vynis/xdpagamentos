@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService } from '@nebular/theme';
+import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
+import { NbDialogService, NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService } from '@nebular/theme';
 
 import { UserData } from '../../../@core/data/users';
 import { LayoutService } from '../../../@core/utils';
@@ -50,7 +50,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
               private userService: UserData,
               private layoutService: LayoutService,
               private breakpointService: NbMediaBreakpointsService,
-              private gestaoPagamentoService: GestaoPagamentoData) {
+              private gestaoPagamentoService: GestaoPagamentoData,
+              private dialogService: NbDialogService) {
   }
 
   ngOnInit() {
@@ -111,5 +112,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
         console.log(res.data);
       }
     )
+  }
+
+  open(dialog: TemplateRef<any>) {
+    this.dialogService.open(dialog, { });
   }
 }
