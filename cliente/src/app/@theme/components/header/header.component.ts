@@ -115,6 +115,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   open(dialog: TemplateRef<any>) {
-    this.dialogService.open(dialog, { });
+    this.dialogService.open(dialog);
   }
 }
