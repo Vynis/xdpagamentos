@@ -37,6 +37,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ];
 
   currentTheme = 'default';
+  hideMenuOnClick: boolean = false;  
 
   userMenu = [ { title: 'Alterar Senha' }, { title: 'Sair' } ];
 
@@ -55,13 +56,23 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((users: any) => this.user = users);
 
-    const { xl } = this.breakpointService.getBreakpointsMap();
+    const {xl} = this.breakpointService.getBreakpointsMap();
+    const {is} = this.breakpointService.getBreakpointsMap();
     this.themeService.onMediaQueryChange()
       .pipe(
-        map(([, currentBreakpoint]) => currentBreakpoint.width < xl),
+        map(([, currentBreakpoint]) => currentBreakpoint),
         takeUntil(this.destroy$),
       )
-      .subscribe((isLessThanXl: boolean) => this.userPictureOnly = isLessThanXl);
+      .subscribe(currentBreakpoint => {
+        this.userPictureOnly = currentBreakpoint.width < xl;
+        this.hideMenuOnClick = currentBreakpoint.width <= is;
+      });
+
+      this.menuService.onItemClick().subscribe(() => {
+        if (this.hideMenuOnClick) {
+          this.sidebarService.collapse('menu-sidebar');
+        }
+      });
 
     this.themeService.onThemeChange()
       .pipe(

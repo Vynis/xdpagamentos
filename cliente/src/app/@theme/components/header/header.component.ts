@@ -6,6 +6,7 @@ import { LayoutService } from '../../../@core/utils';
 import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { GestaoPagamentoData } from '../../../@core/data/gestao-pagto';
+import { truncate } from 'fs';
 
 @Component({
   selector: 'ngx-header',
@@ -42,6 +43,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   currentTheme = 'default';
 
+hideMenuOnClick: boolean = false;
+
   userMenu = [ { title: 'Alterar Senha' }, { title: 'Sair' } ];
 
   constructor(private sidebarService: NbSidebarService,
@@ -63,13 +66,23 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((users: any) => this.user = users);
 
-    const { xl } = this.breakpointService.getBreakpointsMap();
-    this.themeService.onMediaQueryChange()
-      .pipe(
-        map(([, currentBreakpoint]) => currentBreakpoint.width < xl),
-        takeUntil(this.destroy$),
-      )
-      .subscribe((isLessThanXl: boolean) => this.userPictureOnly = isLessThanXl);
+      const {xl} = this.breakpointService.getBreakpointsMap();
+      const {is} = this.breakpointService.getBreakpointsMap();
+      this.themeService.onMediaQueryChange()
+        .pipe(
+          map(([, currentBreakpoint]) => currentBreakpoint),
+          takeUntil(this.destroy$),
+        )
+        .subscribe(currentBreakpoint => {
+          this.userPictureOnly = currentBreakpoint.width < xl;
+          this.hideMenuOnClick = currentBreakpoint.width <= is;
+        });
+
+        this.menuService.onItemClick().subscribe(() => {
+          if (this.hideMenuOnClick) {
+            this.sidebarService.collapse('menu-sidebar');
+          }
+        });
 
     this.themeService.onThemeChange()
       .pipe(
