@@ -1,0 +1,90 @@
+<nb-card *ngIf="clienteOld"style="padding: 15px;"> 
+  <form  [formGroup]="formulario">
+    <nb-card> 
+      <nb-card-header>Dados Bancários</nb-card-header>
+      <nb-card-body>
+        <div  class="row">
+          <div class="col-sm-3">
+            <label for="banId" class="label">*Banco</label><br>
+            <nb-select id="banId" placeholder="Selecione" formControlName="banId" >
+              <nb-option [value]="0">Selecione</nb-option>
+              <nb-option *ngFor="let banco of listaBancos" [value]="banco.id">{{banco.nome}}</nb-option>
+            </nb-select>
+          </div>
+
+          <div class="col-sm-3">
+              <div class="form-group">
+                  <label for="numAgencia" class="label">*Número da Agencia</label>
+                  <input type="text" class="form-control" maxlength="10"
+                  [ngClass]="{'is-invalid': formulario.get('numAgencia').errors  && formulario.get('numAgencia').touched}"
+                    nbInput fullWidth placeholder="Número da Agencia" formControlName="numAgencia" />
+                    <div *ngIf="formulario.get('numAgencia').hasError('required')  && formulario.get('numAgencia').touched" class="invalid-feedback">
+                      Campo é obrigatório.
+                    </div>
+              </div>
+          </div>
+
+          <div class="col-sm-3">
+              <div class="form-group">
+                  <label for="numConta" class="label">*Número da Conta + dígito</label>
+                  <input type="text" class="form-control" maxlength="45"
+                  [ngClass]="{'is-invalid': formulario.get('numConta').errors  && formulario.get('numConta').touched}"
+                    nbInput fullWidth placeholder="Número da Conta + dígito" formControlName="numConta" />
+                    <div *ngIf="formulario.get('numConta').hasError('required')  && formulario.get('numConta').touched" class="invalid-feedback">
+                      Campo é obrigatório.
+                    </div>
+              </div>
+          </div>
+
+
+          <div class="col-sm-3">
+              
+                  <label for="tipoConta" class="label">*Tipo da Conta</label>
+                  <nb-select id="status"
+                  [ngClass]="{'is-invalid': formulario.get('tipoConta').errors  && formulario.get('tipoConta').touched}"
+                  formControlName="tipoConta"   >
+                    <nb-option value="">Selecione</nb-option>
+                    <nb-option value="C">CORRENTE</nb-option>
+                    <nb-option value="P">POUPANÇA</nb-option>
+                  </nb-select>
+                <div *ngIf="formulario.get('tipoConta').hasError('required')  && formulario.get('tipoConta').touched" class="invalid-feedback">
+                  Campo é obrigatório.
+                </div>
+              
+          </div>
+
+        </div>
+      </nb-card-body>
+    </nb-card>
+  
+    <nb-card> 
+      <nb-card-header>Pix</nb-card-header>
+      <nb-card-body>
+        <div class="row">
+          <div class="col-sm-3">
+            <label for="tipoChavePix" class="label">*Tipo de chave</label><br>
+            <nb-select id="tipoChavePix" placeholder="Selecione" formControlName="tipoChavePix" >
+              <nb-option [value]="99">Selecione</nb-option>
+              <nb-option *ngFor="let chave of listaTiposChavePix" [value]="chave.id">{{chave.valor}}</nb-option>
+            </nb-select>
+          </div>
+
+          <div class="col-sm-3">
+            <div class="form-group">
+              <label for="chavePix" class="label">*Chave pix</label>
+              <input type="text" class="form-control" maxlength="100"
+              [ngClass]="{'is-invalid': formulario.get('chavePix').errors  && formulario.get('chavePix').touched}"
+                nbInput fullWidth placeholder="Número da Conta + dígito" formControlName="chavePix" />
+                <div *ngIf="formulario.get('chavePix').hasError('required')  && formulario.get('chavePix').touched" class="invalid-feedback">
+                  Campo é obrigatório.
+                </div>
+            </div>
+          </div>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </form>
+  <nb-card-footer>
+    <button nbButton (click)="submit()"  status="success" >Salvar</button>
+  </nb-card-footer>
+</nb-card>

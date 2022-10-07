@@ -15,6 +15,10 @@ export const MENU_ITEMS: NbMenuItem[] = [
         title: 'Extrato',
         link: '/pages/extrato',
       },
+      {
+        title: 'Dados Bancários e Pix',
+        link: '/pages/pagamento'
+      }
     ],
   }
 ];

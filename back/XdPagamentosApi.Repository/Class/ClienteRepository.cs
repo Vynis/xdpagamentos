@@ -76,7 +76,7 @@ namespace XdPagamentosApi.Repository.Class
 
         public async override Task<Cliente> ObterPorId(int Id)
         {
-            IQueryable<Cliente> query = _mySqlContext.Clientes.Where(c => c.Id.Equals(Id)).Include(c => c.ListaTipoTransacao);
+            IQueryable<Cliente> query = _mySqlContext.Clientes.Where(c => c.Id.Equals(Id)).Include(c => c.ListaTipoTransacao).Include(c => c.Banco);
 
             return await query.AsNoTracking().FirstOrDefaultAsync();
         }
@@ -138,5 +138,7 @@ namespace XdPagamentosApi.Repository.Class
             return listaErros.ToArray();
 
         }
+
+
     }
 }

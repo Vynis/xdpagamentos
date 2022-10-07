@@ -59,4 +59,8 @@ export class ClienteService {
     return this.http.put<ModeloBase>(`${this.caminhoApi}/alterar-senha`, cliente);
   }
 
+  atualizarDadosBancariosCliente(model : ClienteModel) {
+    return this.http.put<ModeloBase>(`${this.caminhoApi}/atualizar-dados-bancarios-cliente-logado`, model);
+  }
+
 }

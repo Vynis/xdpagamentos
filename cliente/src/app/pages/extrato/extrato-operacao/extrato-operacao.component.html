@@ -4,8 +4,8 @@
         <nb-alert *ngIf="existeErro" status="danger" closable>Favor preencher todos os campos obrigatorios!</nb-alert>
         <form *ngIf="cliente"  [formGroup]="formulario">
             <div class="row">
-                <div class="col-sm-4"></div>
-                <div class="col-sm-4">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-6">
                     <div class="form-group">
                         <label for="formaPagto" class="label">*Forma de Pagamento</label><br>
                         <nb-select placeholder="" fullWidth  status="primary" formControlName="fopId" >
@@ -13,32 +13,32 @@
                             </nb-select>
                     </div>
                 </div>
-                <div class="col-sm-4"></div>
+                <div class="col-sm-3"></div>
             </div><br>
             <div class="row">
-                <div class="col-md-4"></div>
-                <div class="col-md-4">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="status" class="label">*Data do agendamento</label><br>
                         <input class="form-control"
-                        [ngClass]="{'is-invalid': formulario.get('dtAgendamento').errors  && formulario.get('dtAgendamento').touched}"
-                        nbInput placeholder="" fullWidth formControlName="dtAgendamento" [nbDatepicker]="dtInicial" >
+                        [ngClass]="{'is-invalid': formulario.get('dtAgendamento').errors  && formulario.get('dtAgendamento').touched}"  
+                        nbInput placeholder=""  formControlName="dtAgendamento" [nbDatepicker]="dtInicial" >
                         <nb-datepicker #dtInicial [min]="min"  format="dd/MM/yyyy"></nb-datepicker>
                         <div *ngIf="formulario.get('dtAgendamento').hasError('required')  && formulario.get('dtAgendamento').touched" class="invalid-feedback">
                             Campo é obrigatório.
                           </div>  
                     </div>
                 </div>
-                <div class="col-md-4"></div>
+                <div class="col-md-3"></div>
             </div>
             <div class="row">
-                <div class="col-sm-4"></div>
-                <div class="col-sm-4">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-6">
                     <div class="form-group">
                       <label for="valorSolicitadoCliente" class="label">*Valor</label>
                       <input type="text" class="form-control" maxlength="45"
                       [ngClass]="{'is-invalid': formulario.get('valorSolicitadoCliente').errors  && formulario.get('valorSolicitadoCliente').touched}"
-                        nbInput fullWidth placeholder="0,00" formControlName="valorSolicitadoCliente" currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', align: 'left'  }"/>
+                        nbInput  placeholder="0,00" formControlName="valorSolicitadoCliente" currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', align: 'left'  }"/>
                         <div *ngIf="    formulario.get('valorSolicitadoCliente').hasError('required')  && formulario.get('valorSolicitadoCliente').touched" class="invalid-feedback">
                           Campo é obrigatório.
                         </div>

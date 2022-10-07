@@ -32,6 +32,8 @@ namespace XdPagamentosApi.Domain.Models
 
         public DateTime? DtAgendamento { get; set; }
 
+        public string MeioPagamento { get; set; }
+
         [NotMapped]
         public string VlBrutoTransacao { get; set; }
 

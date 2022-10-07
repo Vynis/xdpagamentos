@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EnumsNET;
 using FiltrDinamico.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -7,6 +8,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using XdPagamentoApi.Shared.Helpers;
+using XdPagamentosApi.Domain.Enums;
 using XdPagamentosApi.Domain.Models;
 using XdPagamentosApi.Services.Interfaces;
 using XdPagamentosApi.WebApi.Configuracao.Swagger;
@@ -24,13 +26,15 @@ namespace XdPagamentosApi.WebApi.Controllers
         private readonly IMapper _mapper;
         private readonly IUsuarioService _usuarioService;
         private readonly IClienteService _clienteService;
+        private readonly IFormaPagtoService _formaPagtoService;
 
-        public GestaoPagamentoController(IGestaoPagamentoService gestaoPagamentoService, IMapper mapper, IUsuarioService usuarioService, IClienteService clienteService)
+        public GestaoPagamentoController(IGestaoPagamentoService gestaoPagamentoService, IMapper mapper, IUsuarioService usuarioService, IClienteService clienteService, IFormaPagtoService formaPagtoService)
         {
             _gestaoPagamentoService = gestaoPagamentoService;
             _mapper = mapper;
             _usuarioService = usuarioService;
             _clienteService = clienteService;
+            _formaPagtoService = formaPagtoService;
         }
 
 
@@ -364,6 +368,24 @@ namespace XdPagamentosApi.WebApi.Controllers
                 dto.CliId = Convert.ToInt32(User.Identity.Name.ToString().Descriptar());
                 dto.RceId = 0;
                 dto.ValorSolicitadoCliente = HelperFuncoes.ValorMoedaBRString(dto.ValorSolicitadoCliente);
+
+
+                var formaPagamentoSelecionado = await _formaPagtoService.ObterPorId(dto.FopId);
+                var clienteLgado = await _clienteService.ObterPorId(Convert.ToInt32(User.Identity.Name.ToString().Descriptar()));
+                var tipoContaTxt = clienteLgado.TipoConta == "P" ? "Poupança" : "Conta Corrente";
+
+                switch (dto.FopId)
+                {
+                    case 2:
+                        dto.MeioPagamento = clienteLgado.BanId == 0 ? formaPagamentoSelecionado.Descricao : $"{formaPagamentoSelecionado.Descricao} ({tipoContaTxt}): Banco: {clienteLgado.Banco.Numero} - {clienteLgado.Banco.Nome} | Ag: {clienteLgado.NumAgencia} | Conta: {clienteLgado.NumConta}";
+                        break;
+                    case 5:
+                        dto.MeioPagamento = clienteLgado.TipoChavePix == null ? formaPagamentoSelecionado.Descricao : $"{formaPagamentoSelecionado.Descricao} ({((TiposChavePix)clienteLgado.TipoChavePix).AsString(EnumFormat.Description)}): {clienteLgado.ChavePix} ";
+                        break;
+                    default:
+                        dto.MeioPagamento = formaPagamentoSelecionado.Descricao;
+                        break;
+                }
 
                 var response = await _gestaoPagamentoService.Adicionar(_mapper.Map<GestaoPagamento>(dto));
 

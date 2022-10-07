@@ -18,6 +18,7 @@ export class GestaoPagamentoModel {
     status: string;
     valorSolicitadoCliente: string;
     dtAgendamento: Date;
+    meioPagamento: string;
 
     /**
      *

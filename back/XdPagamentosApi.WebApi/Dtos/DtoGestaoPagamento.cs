@@ -33,6 +33,7 @@ namespace XdPagamentosApi.WebApi.Dtos
         public DateTime? DtHrSolicitacoCliente { get; set; }
 
         public DateTime? DtAgendamento { get; set; }
+        public string MeioPagamento { get; set; }
 
 
         public string VlBrutoTransacao { get; set; }

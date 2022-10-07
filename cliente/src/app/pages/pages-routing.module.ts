@@ -26,6 +26,10 @@ const routes: Routes = [{
       loadChildren: () => import('./extrato/extrato.module').then(m => m.ExtratoModule) 
     },
     {
+      path: 'pagamento',
+      loadChildren: () => import('./pagamento/pagamento.module').then(m => m.PagamentoModule)
+    },
+    {
       path: '',
       redirectTo: 'dashboard',
       pathMatch: 'full',

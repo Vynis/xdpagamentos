@@ -133,6 +133,37 @@ namespace XdPagamentosApi.WebApi.Controllers
             }
         }
 
+        [HttpPut("atualizar-dados-bancarios-cliente-logado")]
+        [SwaggerGroup("Cliente")]
+        public async Task<IActionResult> AtualizarDadosBancariosClienteLogado(DtoCliente dtoCliente)
+        {
+            try
+            {
+
+                var clienteLgado = await _clienteService.ObterPorId(Convert.ToInt32(User.Identity.Name.ToString().Descriptar()));
+
+                clienteLgado.BanId = dtoCliente.BanId;
+                clienteLgado.NumAgencia = dtoCliente.NumAgencia;
+                clienteLgado.NumConta = dtoCliente.NumConta;
+                clienteLgado.TipoConta = dtoCliente.TipoConta;
+                clienteLgado.TipoChavePix = dtoCliente.TipoChavePix;
+                clienteLgado.ChavePix = dtoCliente.ChavePix;
+
+                var response = await _clienteService.Atualizar(clienteLgado);
+
+                if (!response)
+                    return Response("Erro ao alterar", false);
+
+                return Response("Alteração com sucesso!");
+            }
+            catch (Exception ex)
+            {
+
+                return Response(ex.Message, false);
+            }
+        }
+
+
         [HttpPost("inserir")]
         [SwaggerGroup("Cliente")]
         public async Task<IActionResult> Inserir(DtoCliente dtoCliente)

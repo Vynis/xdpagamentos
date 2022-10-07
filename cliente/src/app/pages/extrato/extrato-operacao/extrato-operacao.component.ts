@@ -68,7 +68,7 @@ export class ExtratoOperacaoComponent implements OnInit {
   }
 
   buscarFormaPagto() {
-    this.formaPagtoService.buscarAtivos().subscribe(
+    this.formaPagtoService.buscarAtivosCliente().subscribe(
       res =>  {
         if (!res.success)
          return;
@@ -134,5 +134,6 @@ export class ExtratoOperacaoComponent implements OnInit {
   ehNumeric(value) {
     return /^\d+(?:\,\d+)?$/.test(value);
   }
+
 
 }

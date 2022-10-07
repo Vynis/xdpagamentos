@@ -66,23 +66,23 @@ hideMenuOnClick: boolean = false;
       .pipe(takeUntil(this.destroy$))
       .subscribe((users: any) => this.user = users);
 
-      const {xl} = this.breakpointService.getBreakpointsMap();
-      const {is} = this.breakpointService.getBreakpointsMap();
-      this.themeService.onMediaQueryChange()
-        .pipe(
-          map(([, currentBreakpoint]) => currentBreakpoint),
-          takeUntil(this.destroy$),
-        )
-        .subscribe(currentBreakpoint => {
-          this.userPictureOnly = currentBreakpoint.width < xl;
-          this.hideMenuOnClick = currentBreakpoint.width <= is;
-        });
+    const {xl} = this.breakpointService.getBreakpointsMap();
+    const {is} = this.breakpointService.getBreakpointsMap();
+    this.themeService.onMediaQueryChange()
+      .pipe(
+        map(([, currentBreakpoint]) => currentBreakpoint),
+        takeUntil(this.destroy$),
+      )
+      .subscribe(currentBreakpoint => {
+        this.userPictureOnly = currentBreakpoint.width < xl;
+        this.hideMenuOnClick = currentBreakpoint.width <= is;
+      });
 
-        this.menuService.onItemClick().subscribe(() => {
-          if (this.hideMenuOnClick) {
-            this.sidebarService.collapse('menu-sidebar');
-          }
-        });
+      this.menuService.onItemClick().subscribe(() => {
+        if (this.hideMenuOnClick) {
+          this.sidebarService.collapse('menu-sidebar');
+        }
+      });
 
     this.themeService.onThemeChange()
       .pipe(
