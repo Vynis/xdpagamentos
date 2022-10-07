@@ -8,7 +8,7 @@
             <label for="banId" class="label">*Banco</label><br>
             <nb-select id="banId" placeholder="Selecione" formControlName="banId" >
               <nb-option [value]="0">Selecione</nb-option>
-              <nb-option *ngFor="let banco of listaBancos" [value]="banco.id">{{banco.nome}}</nb-option>
+              <nb-option *ngFor="let banco of listaBancos" [value]="banco.id">{{banco.numero}} - {{banco.nome}}</nb-option>
             </nb-select>
           </div>
 

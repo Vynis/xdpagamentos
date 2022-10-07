@@ -124,7 +124,9 @@ namespace XdPagamentosApi.WebApi.Controllers
         {
             try
             {
-                return Response(await _clienteService.ObterPorId(Convert.ToInt32(User.Identity.Name.ToString().Descriptar())));
+                var response = await _clienteService.ObterPorId(Convert.ToInt32(User.Identity.Name.ToString().Descriptar()));
+
+                return Response(response);
             }
             catch (Exception ex)
             {
