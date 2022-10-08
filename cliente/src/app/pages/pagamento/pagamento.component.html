@@ -74,7 +74,7 @@
               <label for="chavePix" class="label">*Chave pix</label>
               <input type="text" class="form-control" maxlength="100"
               [ngClass]="{'is-invalid': formulario.get('chavePix').errors  && formulario.get('chavePix').touched}"
-                nbInput fullWidth placeholder="Número da Conta + dígito" formControlName="chavePix" />
+                nbInput fullWidth  formControlName="chavePix" />
                 <div *ngIf="formulario.get('chavePix').hasError('required')  && formulario.get('chavePix').touched" class="invalid-feedback">
                   Campo é obrigatório.
                 </div>

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using XdPagamentosApi.Domain.Enums;
+using XdPagamentosApi.Domain.Models;
 using XdPagamentosApi.Services.Interfaces;
 using XdPagamentosApi.WebApi.Configuracao.Swagger;
 using XdPagamentosApi.WebApi.Shared;
@@ -25,13 +26,16 @@ namespace XdPagamentosApi.WebApi.Controllers
             _clienteService = clienteService;
         }
 
-        [HttpGet("buscar-por-ativos")]
+        [HttpGet("buscar-por-ativos/{cliId}")]
         [SwaggerGroup("FormaPagto")]
-        public async Task<IActionResult> BuscarPorAtivos()
+        public async Task<IActionResult> BuscarPorAtivos(int cliId)
         {
             try
             {
-                var response = await _formaPagtoService.BuscarExpressao(x => x.Status.Equals("A"));
+
+                var clienteLgado = await _clienteService.ObterPorId(cliId);
+
+                IEnumerable<FormaPagto> response = await FormatarFormaPagamento(clienteLgado);
 
                 return Response(response.ToList().OrderBy(c => c.Descricao));
             }
@@ -49,26 +53,10 @@ namespace XdPagamentosApi.WebApi.Controllers
         {
             try
             {
-                var response = await _formaPagtoService.BuscarExpressao(x => x.Status.Equals("A"));
 
                 var clienteLgado = await _clienteService.ObterPorId(Convert.ToInt32(User.Identity.Name.ToString().Descriptar()));
 
-                response.ToList().OrderBy(c => c.Descricao).ToList().ForEach(x =>
-                {
-                    var tipoContaTxt = clienteLgado.TipoConta == "P" ? "Poupança" : "Conta Corrente";
-
-                    switch (x.Id)
-                    {
-                        case 2:
-                            x.Descricao = clienteLgado.BanId == 0 ? x.Descricao : $"{x.Descricao} ({tipoContaTxt}): Banco: {clienteLgado.Banco.Numero} - {clienteLgado.Banco.Nome} | Ag: {clienteLgado.NumAgencia} | Conta: {clienteLgado.NumConta}";
-                            break;
-                        case 5:
-                            x.Descricao = clienteLgado.TipoChavePix == null ? x.Descricao : $"{x.Descricao} ({((TiposChavePix)clienteLgado.TipoChavePix).AsString(EnumFormat.Description)}): {clienteLgado.ChavePix} ";
-                            break;
-                        default:
-                            break;
-                    }
-                });
+                IEnumerable<FormaPagto> response = await FormatarFormaPagamento(clienteLgado);
 
                 return Response(response);
             }
@@ -77,6 +65,32 @@ namespace XdPagamentosApi.WebApi.Controllers
 
                 return Response(ex.Message, false);
             }
+        }
+
+        private async Task<IEnumerable<FormaPagto>> FormatarFormaPagamento(Cliente clienteLgado)
+        {
+            var response = await _formaPagtoService.BuscarExpressao(x => x.Status.Equals("A"));
+
+            if (clienteLgado == null)
+                return response;
+
+            response.ToList().OrderBy(c => c.Descricao).ToList().ForEach(x =>
+            {
+                var tipoContaTxt = clienteLgado.TipoConta == "P" ? "Poupança" : "Conta Corrente";
+
+                switch (x.Id)
+                {
+                    case 2:
+                        x.Descricao = clienteLgado.BanId == 0 ? x.Descricao : $"{x.Descricao} ({tipoContaTxt}): Banco: {clienteLgado.Banco.Numero} - {clienteLgado.Banco.Nome} | Ag: {clienteLgado.NumAgencia} | Conta: {clienteLgado.NumConta}";
+                        break;
+                    case 5:
+                        x.Descricao = clienteLgado.TipoChavePix == null ? x.Descricao : $"{x.Descricao} ({((TiposChavePix)clienteLgado.TipoChavePix).AsString(EnumFormat.Description)}): {clienteLgado.ChavePix} ";
+                        break;
+                    default:
+                        break;
+                }
+            });
+            return response;
         }
     }
 }

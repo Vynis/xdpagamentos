@@ -46,7 +46,6 @@ export class GestaoPagamentoCadastroComponent implements OnInit {
 
   ngOnInit(): void {
     this.buscaClientes();
-    this.buscarFormaPagto();
     this.buscarContaCaixa();
 
 
@@ -59,6 +58,7 @@ export class GestaoPagamentoCadastroComponent implements OnInit {
         this.buscaPorId(id);
       }
       else {
+        this.buscarFormaPagto();
         //this.authService.validaPermissaoTela(SessoesEnum.CADASTRO_USUARIOS);
         const model = new GestaoPagamentoModel();
         this.createForm(model);
@@ -96,8 +96,8 @@ export class GestaoPagamentoCadastroComponent implements OnInit {
     )   
   }
 
-  buscarFormaPagto() {
-    this.formaPagtoService.buscarAtivos().subscribe(
+  buscarFormaPagto(cliId: number = 0) {
+    this.formaPagtoService.buscarAtivos(cliId).subscribe(
       res =>  {
         if (!res.success)
          return;
@@ -129,6 +129,7 @@ export class GestaoPagamentoCadastroComponent implements OnInit {
         res.data.valorSolicitadoCliente = formatarNumeroUS(res.data.valorSolicitadoCliente);
         this.createForm(res.data);
         this.saldoCliente(res.data.cliId);
+        this.buscarFormaPagto(res.data.cliId);
       }
     )
   }
@@ -253,6 +254,7 @@ export class GestaoPagamentoCadastroComponent implements OnInit {
 
   selecinaCliente(id: number) {
     this.saldoCliente(id);
+    this.buscarFormaPagto(id);
   }
 
 }
