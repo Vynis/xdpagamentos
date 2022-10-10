@@ -71,80 +71,68 @@
           <h3>Relátorio Geral de Vendas</h3>
         </div>
       </div>
-      <table #tabela id="tabela" >
-        <tr>
-          <td>
-          <table  *ngFor="let relatorio of listaRelatorioGeralVendas">
-            <tr>
-              <td>CLIENTE:&nbsp;&nbsp;{{relatorio.nomeCliente}}</td>
-            </tr>
-            <tr>
-
-              <table  *ngIf="relatorio.listaGestaoPagamento.length == 0"  class="table" style="font-size: 8.5px; font-family: 'Courier New', Courier, monospace;" >
-                <thead>
-                  <tr style="font-weight: bold; ">
-                    Nenhum registro encontrado.
-                  </tr>
-                </thead>
-              </table>
-
-            </tr>
-            <tr>
-              <table *ngIf="relatorio.listaGestaoPagamento.length > 0"  class="table" style="font-size: 8.5px; font-family: 'Courier New', Courier, monospace;" >
-
-                    <tr style="font-weight: bold; ">
-                        <td>ID</td>
-                        <td>DT VENDA</td>
-                        <td>NUM TERMINAL</td>
-                        <td>NUM CARTAO</td>
-                        <td>QTD PARC</td>
-                        <td>COD AUT</td>
-                        <td>VL BRT</td>
-                        <td>VL TX PAGSEGURO</td>
-                        <td>VL TX CLIENTE</td>
-                        <td>VL LIQ OPE</td>
-                        <td>VL PAGTO</td>
-                        <td>VL LUCRO</td>
-                        <td>ESTABELECIMENTO</td>
-                    </tr>
-
-                    <tr *ngFor="let transacoes of relatorio.listaGestaoPagamento">
-                        <td>{{transacoes.id}}</td>
-                        <td>{{transacoes.dtHrLancamento | date: 'dd/MM/yyyy' }}</td>
-                        <td>{{transacoes.numTerminal}}</td>
-                        <td>{{transacoes.numCartaoTransacao}}</td>
-                        <td>{{transacoes.qtdParcelaTransacao}}</td>
-                        <td>{{transacoes.codAutorizacaoTransacao}}</td>
-                        <td>{{transacoes.vlBrutoTransacao}}</td>
-                        <td>{{transacoes.taxaPagSeguro}}</td>
-                        <td>{{transacoes.taxaPagCliente}}</td>
-                        <td>{{transacoes.valorLiquidoOperadora}}</td>
-                        <td>{{transacoes.vlLiquidoCliente}}</td>
-                        <td>{{transacoes.valorLucroFormatado}}</td>
-                        <td>{{transacoes.estabelecimento}}</td>
-                    </tr>
-
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td><b>Total:</b></td>
-                      <td><b>{{relatorio.vlBrutoTotal}}</b></td>
-                      <td><b>{{relatorio.vlTxPagSeguroTotal}}</b></td>
-                      <td><b>{{relatorio.vlTxClienteTotal}}</b></td>
-                      <td><b>{{relatorio.vlLiqOpeTotal}}</b></td>
-                      <td><b>{{relatorio.vlPagtoTotal}}</b></td>
-                      <td><b>{{relatorio.vlLucroTotal}}</b></td>
-                      <td></td>
-                    </tr>
-                 
-              </table>
-            </tr>
-          </table>
-          </td>
+      <table #tabela id="tabela" class="table" style="font-size: 8.5px; font-family: 'Courier New', Courier, monospace;" >
+        <div *ngFor="let relatorio of listaRelatorioGeralVendas">
+          <tr >
+            <td colspan="15">
+              CLIENTE:&nbsp;&nbsp;{{relatorio.nomeCliente}}
+            </td>
+          </tr>
+            
+          <tr style="font-weight: bold; ">
+            <td>ID</td>
+            <td>DT VENDA</td>
+            <td>NUM TERMINAL</td>
+            <td>NUM CARTAO</td>
+            <td>QTD PARC</td>
+            <td>COD AUT</td>
+            <td>VL BRT</td>
+            <td>VL TX PAGSEGURO</td>
+            <td>VL PERC PAGSEGURO</td>
+            <td>VL TX CLIENTE</td>
+            <td>VL PERC CLIENTE</td>
+            <td>VL LIQ OPE</td>
+            <td>VL PAGTO</td>
+            <td>VL LUCRO</td>
+            <td>ESTABELECIMENTO</td>
         </tr>
+  
+        <tr *ngFor="let transacoes of relatorio.listaGestaoPagamento">
+            <td>{{transacoes.id}}</td>
+            <td>{{transacoes.dtHrLancamento | date: 'dd/MM/yyyy' }}</td>
+            <td>{{transacoes.numTerminal}}</td>
+            <td>{{transacoes.numCartaoTransacao}}</td>
+            <td>{{transacoes.qtdParcelaTransacao}}</td>
+            <td>{{transacoes.codAutorizacaoTransacao}}</td>
+            <td>{{transacoes.vlBrutoTransacao}}</td>
+            <td>{{transacoes.valorTaxaPagSeguro}}</td>  
+            <td>{{transacoes.valorPercentualTaxaPagSeguro}}</td>          
+            <td>{{transacoes.valorTaxaPagCliente}}</td>
+            <td>{{transacoes.valorPercentualTaxaPagCliente}}</td>
+            <td>{{transacoes.valorLiquidoOperadora}}</td>
+            <td>{{transacoes.vlLiquidoCliente}}</td>
+            <td>{{transacoes.valorLucroFormatado}}</td>
+            <td>{{transacoes.estabelecimento}}</td>
+        </tr>
+  
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><b>Total:</b></td>
+          <td><b>{{relatorio.vlBrutoTotal}}</b></td>
+          <td><b>{{relatorio.vlTxPagSeguroTotal}}</b></td>
+          <td></td>
+          <td><b>{{relatorio.vlTxClienteTotal}}</b></td>
+          <td></td>
+          <td><b>{{relatorio.vlLiqOpeTotal}}</b></td>
+          <td><b>{{relatorio.vlPagtoTotal}}</b></td>
+          <td><b>{{relatorio.vlLucroTotal}}</b></td>
+          <td></td>
+        </tr>
+      </div>
       </table>
     </div>
   </nb-card-body>

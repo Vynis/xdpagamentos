@@ -45,5 +45,7 @@ namespace XdPagamentosApi.Domain.Models
         public string NumTerminal { get; set; }
         public int EstId { get; set; }
         public string Estabelecimento { get; set; }
+        public string ValorPercentualTaxaPagSeguro { get; set; }
+        public string ValorPercentualTaxaPagCliente { get; set; }
     }
 }

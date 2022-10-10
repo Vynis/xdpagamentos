@@ -155,10 +155,19 @@ export class RelatorioGeralVendasComponent implements OnInit {
       }
 
       res.data.forEach(el => {
+        el.vlBrutoTotal = Number(el.vlBrutoTotal.replace('.','').replace(',','.')).toFixed(2);
+        el.vlTxPagSeguroTotal = Number(el.vlTxPagSeguroTotal.replace('.','').replace(',','.')).toFixed(2);
+        el.vlTxClienteTotal = Number(el.vlTxClienteTotal.replace('.','').replace(',','.')).toFixed(2);
+        el.vlLiqOpeTotal = Number(el.vlLiqOpeTotal.replace('.','').replace(',','.')).toFixed(2);
+        el.vlPagtoTotal = Number(el.vlPagtoTotal.replace('.','').replace(',','.')).toFixed(2);
+        el.vlLucroTotal = Number(el.vlLucroTotal.replace('.','').replace(',','.')).toFixed(2);
+
         el.listaGestaoPagamento.forEach(element => {          
           element.vlBrutoTransacao = Number(element.vlBrutoTransacao.replace('.','').replace(',','.')).toFixed(2);
-          element.taxaPagSeguro = element.taxaPagSeguro.replace('.','').replace(',','.');
-          element.taxaPagCliente = element.taxaPagCliente.replace('.','').replace(',','.');
+          element.valorTaxaPagSeguro = Number(element.valorTaxaPagSeguro.replace('.','').replace(',','.')).toFixed(2);
+          element.valorPercentualTaxaPagSeguro = Number(element.valorPercentualTaxaPagSeguro.replace('.','').replace(',','.')).toFixed(2);
+          element.valorTaxaPagCliente = Number(element.valorTaxaPagCliente.replace('.','').replace(',','.')).toFixed(2);
+          element.valorPercentualTaxaPagCliente = Number(element.valorPercentualTaxaPagCliente.replace('.','').replace(',','.')).toFixed(2);
           element.valorLiquidoOperadora = Number(element.valorLiquidoOperadora.replace('.','').replace(',','.')).toFixed(2);
           element.vlLiquidoCliente = Number(element.vlLiquidoCliente.replace('.','').replace(',','.')).toFixed(2);
           element.valorLucroFormatado = Number(element.valorLucroFormatado.replace('.','').replace(',','.')).toFixed(2);
