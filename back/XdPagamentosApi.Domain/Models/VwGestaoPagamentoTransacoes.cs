@@ -37,9 +37,13 @@ namespace XdPagamentosApi.Domain.Models
         public string MeioCapturaTransacao { get; set; }
         public string TipoOperacaoTransacao { get; set; }
         public string ValorLiquidoOperadora { get; set; }
+        public string ValorTaxaPagSeguro { get; set; }
         public string TaxaPagSeguro { get; set; }
+        public string ValorTaxaPagCliente { get; set; }
         public string TaxaPagCliente { get; set; }
         public string VlLiquidoCliente { get; set; }
         public string NumTerminal { get; set; }
+        public int EstId { get; set; }
+        public string Estabelecimento { get; set; }
     }
 }

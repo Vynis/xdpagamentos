@@ -1,0 +1,161 @@
+<nb-card [nbSpinner]="loading" nbSpinnerStatus="danger" >
+  <nb-card-header>
+      Relátorio Geral de Vendas
+  </nb-card-header>
+  <nb-card-body>
+      <nb-alert *ngIf="existeErro" status="danger" closable>Favor preencher todos os campos obrigatorios!</nb-alert>
+
+      <div  [formGroup]="formularioFiltro">
+          <div class="row">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="estId" class="label">*Estabelecimento</label><br>
+                  <nb-select id="estId" placeholder="Selecione" formControlName="estId">
+                    <nb-option value="T">Todos</nb-option>
+                    <nb-option *ngFor="let estabelecimento of listaEstabelecimentos" [value]="estabelecimento.id">{{estabelecimento.numEstabelecimento}} - {{estabelecimento.nome}} ({{estabelecimento.id}} )</nb-option>
+                  </nb-select>
+              </div>
+              </div>
+
+              <div class="col-md-5">
+                <div class="form-group">
+                  <label for="cliente" class="label">*Cliente</label><br>
+                  <nb-select 
+                  placeholder="Selecione" fullWidth  status="primary" formControlName="cliId" >
+                      <nb-option value="T">Todos</nb-option>
+                      <nb-option *ngFor="let cliente of listaClientes" [value]="cliente.id" >{{cliente.nome}}</nb-option>
+                    </nb-select>
+              </div>
+              </div>
+
+              <div class="col-md-2">
+                  <div class="form-group">
+                      <label for="status" class="label">*Período ini. de venda</label><br>
+                      <input nbInput placeholder="" fullWidth formControlName="dtInicial" [nbDatepicker]="dtInicial">
+                      <nb-datepicker #dtInicial  format="dd/MM/yyyy"></nb-datepicker>
+                  </div>
+              </div>
+              <div class="col-md-2">
+                  <div class="form-group">
+                      <label for="status" class="label">*Período final da venda</label><br>
+                      <input nbInput placeholder="" fullWidth formControlName="dtFinal" [nbDatepicker]="dtFinal">
+                      <nb-datepicker #dtFinal  format="dd/MM/yyyy"></nb-datepicker>
+                  </div>
+              </div>
+
+          </div>
+
+      </div>
+
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="row">
+      <div class="col-md-1">
+        <button (click)="pesquisar()" type="submit" nbButton status="primary">Gerar</button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>
+
+<ng-template #dialog let-data let-ref="dialogRef">
+<nb-card class="scrool" [nbSpinner]="loadingModal" nbSpinnerStatus="danger"  >
+  <nb-card-body>
+    <div id="content"   #content>
+      <div class="row">
+        <div class="col-md-12" style="text-align: center;">
+          <img class="img-fluid" width="100px" height="100px" src="assets/logos/logo_grande.png" >
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12" style="text-align: center;">
+          <h3>Relátorio Geral de Vendas</h3>
+        </div>
+      </div>
+      <table #tabela id="tabela" >
+        <tr>
+          <td>
+          <table  *ngFor="let relatorio of listaRelatorioGeralVendas">
+            <tr>
+              <td>CLIENTE:&nbsp;&nbsp;{{relatorio.nomeCliente}}</td>
+            </tr>
+            <tr>
+
+              <table  *ngIf="relatorio.listaGestaoPagamento.length == 0"  class="table" style="font-size: 8.5px; font-family: 'Courier New', Courier, monospace;" >
+                <thead>
+                  <tr style="font-weight: bold; ">
+                    Nenhum registro encontrado.
+                  </tr>
+                </thead>
+              </table>
+
+            </tr>
+            <tr>
+              <table *ngIf="relatorio.listaGestaoPagamento.length > 0"  class="table" style="font-size: 8.5px; font-family: 'Courier New', Courier, monospace;" >
+
+                    <tr style="font-weight: bold; ">
+                        <td>ID</td>
+                        <td>DT VENDA</td>
+                        <td>NUM TERMINAL</td>
+                        <td>NUM CARTAO</td>
+                        <td>QTD PARC</td>
+                        <td>COD AUT</td>
+                        <td>VL BRT</td>
+                        <td>VL TX PAGSEGURO</td>
+                        <td>VL TX CLIENTE</td>
+                        <td>VL LIQ OPE</td>
+                        <td>VL PAGTO</td>
+                        <td>VL LUCRO</td>
+                        <td>ESTABELECIMENTO</td>
+                    </tr>
+
+                    <tr *ngFor="let transacoes of relatorio.listaGestaoPagamento">
+                        <td>{{transacoes.id}}</td>
+                        <td>{{transacoes.dtHrLancamento | date: 'dd/MM/yyyy' }}</td>
+                        <td>{{transacoes.numTerminal}}</td>
+                        <td>{{transacoes.numCartaoTransacao}}</td>
+                        <td>{{transacoes.qtdParcelaTransacao}}</td>
+                        <td>{{transacoes.codAutorizacaoTransacao}}</td>
+                        <td>{{transacoes.vlBrutoTransacao}}</td>
+                        <td>{{transacoes.taxaPagSeguro}}</td>
+                        <td>{{transacoes.taxaPagCliente}}</td>
+                        <td>{{transacoes.valorLiquidoOperadora}}</td>
+                        <td>{{transacoes.vlLiquidoCliente}}</td>
+                        <td>{{transacoes.valorLucroFormatado}}</td>
+                        <td>{{transacoes.estabelecimento}}</td>
+                    </tr>
+
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td><b>Total:</b></td>
+                      <td><b>{{relatorio.vlBrutoTotal}}</b></td>
+                      <td><b>{{relatorio.vlTxPagSeguroTotal}}</b></td>
+                      <td><b>{{relatorio.vlTxClienteTotal}}</b></td>
+                      <td><b>{{relatorio.vlLiqOpeTotal}}</b></td>
+                      <td><b>{{relatorio.vlPagtoTotal}}</b></td>
+                      <td><b>{{relatorio.vlLucroTotal}}</b></td>
+                      <td></td>
+                    </tr>
+                 
+              </table>
+            </tr>
+          </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </nb-card-body>
+  <nb-card-footer>
+
+        <button nbButton (click)="ref.close()" >Fechar</button>
+        &nbsp;&nbsp;&nbsp;
+        <button (click)="gerarPdf()" type="submit" nbButton status="danger" >Download em PDF</button>
+        &nbsp;&nbsp;&nbsp;
+        <button (click)="gerarExcel()" type="submit" nbButton status="success" >Download em Excel</button>
+
+  </nb-card-footer>
+</nb-card>
+</ng-template>

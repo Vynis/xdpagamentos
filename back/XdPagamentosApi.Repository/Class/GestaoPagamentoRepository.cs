@@ -136,5 +136,54 @@ namespace XdPagamentosApi.Repository.Class
             return await query.AsNoTracking().ToListAsync();
 
         }
+
+        public async Task<IEnumerable<GestaoPagamentoPorCliente>> BuscarRelatorioGestaoPagamento(PaginationFilter paginationFilter)
+        {
+            Expression<Func<VwGestaoPagamentoTransacoes, bool>> expressionDynamic = p => p.Id != 0;
+
+            IQueryable<VwGestaoPagamentoTransacoes> query;
+            var clientes = new List<Cliente>();
+
+            if (paginationFilter.Filtro.Count() > 0)
+            {
+                var cliId = paginationFilter.Filtro.ToList().Where(c => c.Property.Equals("CliId")).FirstOrDefault().Value;
+                clientes = cliId == null ? await _mySqlContext.Clientes.Where(c => c.Status.Equals("A")).ToListAsync() : await _mySqlContext.Clientes.Where(c => c.Status.Equals("A") && c.Id == Convert.ToInt32(cliId)).ToListAsync();
+                expressionDynamic = _filtroDinamico.FromFiltroItemList<VwGestaoPagamentoTransacoes>(paginationFilter.Filtro.ToList());
+                query = _mySqlContext.VwGestaoPagamentoTransacao.Where(expressionDynamic).Include(c => c.RelContaEstabelecimento).Include(c => c.RelContaEstabelecimento.Estabelecimento);
+            }
+            else
+            {
+                clientes = await _mySqlContext.Clientes.Where(c => c.Status.Equals("A")).ToListAsync();
+                query = _mySqlContext.VwGestaoPagamentoTransacao.Include(c => c.RelContaEstabelecimento).Include(c => c.RelContaEstabelecimento.Estabelecimento);
+            }
+
+            var retorno = await query.AsNoTracking().ToArrayAsync();
+            var listGestaopagamentoPorCliente = new List<GestaoPagamentoPorCliente>();
+
+            retorno = retorno.Where(x => x.CodRef.Contains("ORPID")).ToArray();
+
+            clientes.ForEach(x => {
+
+                var lista = retorno.ToList().Where(c => c.CliId == x.Id && c.Status.Equals("AP")).ToList();
+
+                var gestaoPagamentoPorCliente = new GestaoPagamentoPorCliente
+                {
+                    NomeCliente = $"{x.Id} - {x.Nome}",
+                    ListaGestaoPagamento = lista,
+                    VlBrutoTotal = HelperFuncoes.ValorMoedaBRDecimal(lista.Sum(c => HelperFuncoes.FormataValorDecimal(c.VlBrutoTransacao))),
+                    VlTxPagSeguroTotal = HelperFuncoes.ValorMoedaBRDecimal(lista.Sum(c => HelperFuncoes.FormataValorDecimal(c.ValorTaxaPagSeguro))),
+                    VlTxClienteTotal = HelperFuncoes.ValorMoedaBRDecimal(lista.Sum(c => HelperFuncoes.FormataValorDecimal(c.ValorTaxaPagCliente))),
+                    VlLiqOpeTotal = HelperFuncoes.ValorMoedaBRDecimal(lista.Sum(c => HelperFuncoes.FormataValorDecimal(c.ValorLiquidoOperadora))),
+                    VlPagtoTotal = HelperFuncoes.ValorMoedaBRDecimal(lista.Sum(c => HelperFuncoes.FormataValorDecimal(c.VlLiquidoCliente))),
+                    VlLucroTotal = HelperFuncoes.ValorMoedaBRDecimal(lista.Sum(c => HelperFuncoes.FormataValorDecimal(c.ValorLiquidoOperadora)) - lista.Sum(c => HelperFuncoes.FormataValorDecimal(c.VlLiquidoCliente))) 
+                };
+
+                listGestaopagamentoPorCliente.Add(gestaoPagamentoPorCliente);
+       
+            });
+
+            return listGestaopagamentoPorCliente;
+
+        }
     }
 }

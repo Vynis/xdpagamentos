@@ -49,6 +49,10 @@ export const MENU_ITEMS: NbMenuItem[] = [
       {
         title: 'Saldo das Contas Correntes',
         link: '/pages/relatorio/saldo-conta-correntes',
+      },
+      {
+        title: 'Geral de Vendas',
+        link: '/pages/relatorio/geral-vendas'
       }
     ],
   },

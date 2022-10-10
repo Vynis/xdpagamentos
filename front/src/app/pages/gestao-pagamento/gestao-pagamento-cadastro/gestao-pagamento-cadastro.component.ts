@@ -48,8 +48,6 @@ export class GestaoPagamentoCadastroComponent implements OnInit {
     this.buscaClientes();
     this.buscarContaCaixa();
 
-
-
     this.activatedRoute.params.subscribe(params => {
       const id = params.id;
       if (id && id > 0) {

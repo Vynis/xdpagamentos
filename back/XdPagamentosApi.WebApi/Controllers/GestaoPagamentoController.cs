@@ -58,31 +58,6 @@ namespace XdPagamentosApi.WebApi.Controllers
                 filtro.Filtro = listaFiltroPadrao;
 
                 var retornoGestaoPagamento = _mapper.Map<DtoRetornoGestaoPagamento>( await _gestaoPagamentoService.BuscarComFiltro(filtro));
- 
-                //retornoGestaoPagamento.listaGestaoPagamentos = listaPagamentos;
-
-                //var dadosCliente = Convert.ToInt32(filtro.Filtro.Where(x => x.Property.Equals("CliId")).FirstOrDefault().Value);
-
-                //var listaFiltroPadraoSaldo = new List<FiltroItem>();
-                //listaFiltroPadraoSaldo.Add(new FiltroItem { FilterType = "equals", Property = "Grupo", Value = "EC" });
-                //listaFiltroPadraoSaldo.Add(new FiltroItem { FilterType = "equals", Property = "Status", Value = "AP" });
-                //listaFiltroPadraoSaldo.Add(new FiltroItem { FilterType = "equals", Property = "CliId", Value = dadosCliente });
-
-                //var filtroNovo = new PaginationFilter();
-                //filtroNovo.Filtro = listaFiltroPadraoSaldo;
-
-                ////Saldo Atual
-                //var dadosGeral = await _gestaoPagamentoService.BuscarComFiltro(filtroNovo);
-
-                //retornoGestaoPagamento.SaldoAtual = HelperFuncoes.ValorMoedaBRDecimal(dadosGeral.Where(x => x.Tipo.Equals("C")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido)) - dadosGeral.Where(x => x.Tipo.Equals("D")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido)));
-
-                ////Saldo Anterior
-                //listaFiltroPadraoSaldo.Add(new FiltroItem { FilterType = "greaterThanEquals", Property = "DtHrLancamento", Value = filtro.Filtro.Where(x => x.Property.Equals("DtHrLancamento") && x.FilterType.Equals("greaterThanEquals")).FirstOrDefault().Value.ToString() });
-                //filtroNovo.Filtro = listaFiltroPadraoSaldo;
-
-                //var dadosSaldoAnterior = await _gestaoPagamentoService.BuscarComFiltro(filtroNovo);
-
-                //retornoGestaoPagamento.SaldoAnterior = HelperFuncoes.ValorMoedaBRDecimal(dadosSaldoAnterior.Where(x => x.Tipo.Equals("C")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido)) - dadosSaldoAnterior.Where(x => x.Tipo.Equals("D")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido)));
 
                 return Response(retornoGestaoPagamento);
             }
@@ -115,12 +90,6 @@ namespace XdPagamentosApi.WebApi.Controllers
 
                 var retornoGestaoPagamento = _mapper.Map<DtoRetornoGestaoPagamento>(await _gestaoPagamentoService.BuscarComFiltro(filtro));
 
-                //var listaPagamentos = _mapper.Map<DtoGestaoPagamento[]>(await _gestaoPagamentoService.BuscarComFiltroCliente(filtro));
-
-                //var totalCredito = listaPagamentos.Where(x => x.Tipo.Equals("C")).Sum(x => HelperFuncoes.FormataValorDecimal(x.ValorFormatado));
-                //var totalDebito = listaPagamentos.Where(x => x.Tipo.Equals("D")).Sum(x => HelperFuncoes.FormataValorDecimal(x.ValorFormatado));
-                //var total = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", totalCredito - totalDebito) ;
-
                 return Response( new { listaPagamentos = retornoGestaoPagamento.listaGestaoPagamentos, total = retornoGestaoPagamento.SaldoAtual });
             }
             catch (Exception ex)
@@ -144,6 +113,24 @@ namespace XdPagamentosApi.WebApi.Controllers
                 return Response(ex.Message, false);
             }
         }
+
+        [HttpPost("buscar-relatorio-gestao-pagamento")]
+        [SwaggerGroup("GestaoPagamento")]
+        public async Task<IActionResult> BuscarRelatorioGestaoPagamento(PaginationFilter filtro)
+        {
+            try
+            {
+                var retornoGestaoPagamento = _mapper.Map<DtoGestaoPagamentoPorCliente[]>(await _gestaoPagamentoService.BuscarRelatorioGestaoPagamento(filtro));
+
+                return Response(retornoGestaoPagamento);
+            }
+            catch (Exception ex)
+            {
+
+                return Response(ex.Message, false);
+            }
+        }
+
 
         [HttpPost("inserir")]
         [SwaggerGroup("GestaoPagamento")]
@@ -194,17 +181,7 @@ namespace XdPagamentosApi.WebApi.Controllers
         {
 
             var buscarSaldoCliente = await _gestaoPagamentoService.BuscaSaldoCliente(dto.CliId);
-            /*
-            //Limite de Crecito
-            var dadosCliente = await _clienteService.ObterPorId(dto.CliId);
 
-            var limiteCredito = HelperFuncoes.FormataValorDecimal(buscarSaldoCliente.Limite);
-
-            //Saldo Atual
-            var dadosGeral = await _gestaoPagamentoService.BuscarExpressao(x => x.CliId.Equals(dto.CliId) && x.Grupo.Equals("EC") && x.Status.Equals("AP"));
-
-            var saldoAtual = dadosGeral.Where(x => x.Tipo.Equals("C")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido)) - dadosGeral.Where(x => x.Tipo.Equals("D")).Sum(x => HelperFuncoes.FormataValorDecimal(x.VlLiquido));
-            */
             return HelperFuncoes.FormataValorDecimal(buscarSaldoCliente.SaldoFinal);
         }
 

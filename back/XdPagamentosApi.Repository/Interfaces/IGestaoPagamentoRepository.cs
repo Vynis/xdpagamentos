@@ -15,5 +15,7 @@ namespace XdPagamentosApi.Repository.Interfaces
         Task<GestaoPagamento[]> BuscarComFiltroCliente(PaginationFilter paginationFilter);
 
         Task<VwRelatorioSaldoCliente> BuscaSaldoCliente(int cliId);
+
+        Task<IEnumerable<GestaoPagamentoPorCliente>> BuscarRelatorioGestaoPagamento(PaginationFilter paginationFilter);
     }
 }

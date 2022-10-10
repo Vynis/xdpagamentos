@@ -40,6 +40,9 @@ namespace XdPagamentosApi.WebApi.Dtos
         public string VlLiquidoCliente { get; set; }
         public string NumTerminal { get; set; }
 
+        public int EstId { get; set; }
+        public string Estabelecimento { get; set; }
+
         public string DtHrLancamentoFormatada
         {
             get
@@ -106,6 +109,22 @@ namespace XdPagamentosApi.WebApi.Dtos
                     return "0,00";
 
                 return VlBruto.ToString(CultureInfo.GetCultureInfo("pt-BR"));
+            }
+        }
+
+        public string ValorLucroFormatado
+        {
+            get
+            {
+                if (!CodRef.Contains("ORPID"))
+                    return "0,00";
+
+                var vlLiquidoOperado = decimal.Parse(ValorLiquidoOperadora.Trim().Replace(".", ""), new NumberFormatInfo() { NumberDecimalSeparator = "," });
+                var vlLiquidoLucro = decimal.Parse(VlLiquidoCliente.Trim().Replace(".", ""), new NumberFormatInfo() { NumberDecimalSeparator = "," });
+
+                return string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", vlLiquidoOperado - vlLiquidoLucro);
+
+
             }
         }
 

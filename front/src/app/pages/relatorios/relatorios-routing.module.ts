@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { RelatoriosSolicitacoesComponent } from './relatorios-solicitacoes/relatorios-solicitacoes.component';
 import { RelatorioSaldoClientesComponent } from './relatorio-saldo-clientes/relatorio-saldo-clientes.component';
 import { RelatorioSaldoContaCorrentesComponent } from './relatorio-saldo-conta-correntes/relatorio-saldo-conta-correntes.component';
+import { RelatorioGeralVendasComponent } from './relatorio-geral-vendas/relatorio-geral-vendas.component';
 
 
 const routes: Routes = [
@@ -27,6 +28,10 @@ const routes: Routes = [
       {
         path: 'saldo-conta-correntes',
         component: RelatorioSaldoContaCorrentesComponent
+      },
+      {
+        path: 'geral-vendas',
+        component: RelatorioGeralVendasComponent
       }
     ]   
   }

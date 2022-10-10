@@ -18,6 +18,9 @@ import { FormaPagtoService } from '../../@core/services/forma-pagto.service';
 import localePt from '@angular/common/locales/pt';
 import { ClienteService } from '../../@core/services/cliente.service';
 import { ContaCaixaService } from '../../@core/services/conta-caixa.service';
+import { RelatorioGeralVendasComponent } from './relatorio-geral-vendas/relatorio-geral-vendas.component';
+import { EstabelecimentoService } from '../../@core/services/estabelecimento.service';
+import { GestaoPagamentoService } from '../../@core/services/gestao-pagamento-service';
 
 registerLocaleData(localePt);
 
@@ -47,7 +50,8 @@ registerLocaleData(localePt);
     RelatoriosComponent,
     RelatoriosSolicitacoesComponent,
     RelatorioSaldoClientesComponent, 
-    RelatorioSaldoContaCorrentesComponent
+    RelatorioSaldoContaCorrentesComponent,
+    RelatorioGeralVendasComponent
   ],
   providers: [
     InterceptService,
@@ -66,7 +70,9 @@ registerLocaleData(localePt);
     RelatoriosService,
     FormaPagtoService,
     ClienteService,
-    ContaCaixaService
+    ContaCaixaService,
+    EstabelecimentoService,
+    GestaoPagamentoService
   ]
 })
 export class RelatoriosModule { }

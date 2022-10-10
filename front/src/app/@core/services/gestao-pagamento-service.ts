@@ -37,6 +37,10 @@ export class GestaoPagamentoService {
     buscaSaldoCliente(id: number) {
         return this.http.get<ModeloBase>(`${this.caminhoApi}/saldo-atual-cliente/${id}`);
     }
+
+    buscarRelatorioGestaoPagamento(filtro: PaginationFilterModel) {
+        return this.http.post<ModeloBase>(`${this.caminhoApi}/buscar-relatorio-gestao-pagamento`, filtro);
+    }
     
 
 }
