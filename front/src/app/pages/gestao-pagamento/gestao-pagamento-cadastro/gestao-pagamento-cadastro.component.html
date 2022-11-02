@@ -60,7 +60,7 @@
                 <div [ngClass]="ehAprovacao ? 'col-md-2' : 'col-md-2'" >
                     <div class="form-group">
                         <label for="tipoLancamento"  class="label">*Tipo de Lançamento</label><br>
-                        <nb-select placeholder="" fullWidth [disabled]="ehAprovacao" status="primary" formControlName="tipo" >
+                        <nb-select placeholder="" fullWidth [disabled]="ehAprovacao" status="primary" formControlName="tipo" (selectedChange)="preencheFormaPagto($event)" >
                             <nb-option value="C" >C - Credito</nb-option>
                             <nb-option value="D" >D - Debito</nb-option>
                           </nb-select>

@@ -32,6 +32,7 @@ export class GestaoPagamentoCadastroComponent implements OnInit {
   ehAprovacao: boolean = false;
   saldoFinal;
   carregaSaldoFinal: boolean = false;
+  idCliente: number = 0;
 
   constructor(
     private clienteService: ClienteService,
@@ -54,6 +55,7 @@ export class GestaoPagamentoCadastroComponent implements OnInit {
         //this.authService.validaPermissaoTela(SessoesEnum.ALTERAR_USUARIOS);
         this.tituloPagina = `Aprovar solicitacão do cliente - Nº ${id}`;
         this.buscaPorId(id);
+        this.idCliente = id;
       }
       else {
         this.buscarFormaPagto();
@@ -190,7 +192,7 @@ export class GestaoPagamentoCadastroComponent implements OnInit {
     _model.cliId = controls.cliId.value;
     _model.fopId = controls.fopId.value;
     _model.rceId = controls.rceId.value;
-    _model.vlBruto = '0,00';
+    _model.vlBruto = formatarNumero(controls.vlLiquido.value);
     _model.dtAgendamento = controls.dtAgendamento.value;
     
     if (this.ehAprovacao)
@@ -253,6 +255,17 @@ export class GestaoPagamentoCadastroComponent implements OnInit {
   selecinaCliente(id: number) {
     this.saldoCliente(id);
     this.buscarFormaPagto(id);
+    this.idCliente = id;
+  }
+
+  preencheFormaPagto(valor) {
+    if (valor == 'C') {
+      this.buscarFormaPagto();
+    }
+    else {
+      this.buscarFormaPagto(this.idCliente);
+    }
+
   }
 
 }
