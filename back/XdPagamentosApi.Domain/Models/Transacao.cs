@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace XdPagamentosApi.Domain.Models
@@ -35,6 +36,11 @@ namespace XdPagamentosApi.Domain.Models
         public int EstId { get; set; }
         public string Status { get; set; }
         public int StatusCodigo { get; set; }
+
+        [NotMapped]
+        public string VlBrutoFormatado { get; set; }
+        [NotMapped]
+        public string VlLiquidoFormatado { get; set; }
 
     }
 }

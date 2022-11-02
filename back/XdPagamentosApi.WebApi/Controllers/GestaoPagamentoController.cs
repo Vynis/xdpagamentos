@@ -157,9 +157,10 @@ namespace XdPagamentosApi.WebApi.Controllers
                 dto.DtHrAcaoUsuario = DateTime.Now;
                 dto.Grupo = "EC";
                 dto.CodRef = "LANC-CLIENTE-CRED-DEB";
-                dto.VlBruto = "0,00";
+                dto.VlBruto = HelperFuncoes.ValorMoedaBRString(dto.VlBruto);
                 dto.ValorSolicitadoCliente = "0,00";
                 dto.VlLiquido = HelperFuncoes.ValorMoedaBRString(dto.VlLiquido);
+                dto.VlVenda = HelperFuncoes.ValorMoedaBRString(dto.VlLiquido);
                 dto.Status = "AP";
                 dto.DtHrSolicitacoCliente = DateTime.Now;
 
@@ -217,6 +218,7 @@ namespace XdPagamentosApi.WebApi.Controllers
                 dados.Tipo = dto.Tipo;
                 dados.VlLiquido = HelperFuncoes.ValorMoedaBRString(dto.VlLiquido);
                 dados.VlBruto = HelperFuncoes.ValorMoedaBRString(dto.VlLiquido);
+                dados.VlVenda = HelperFuncoes.ValorMoedaBRString(dto.VlLiquido);
                 dados.FopId = dto.FopId;
                 dados.CliId = dto.CliId;
                 dados.RceId = dto.RceId;

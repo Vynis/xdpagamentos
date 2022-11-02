@@ -7,6 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using XdPagamentoApi.Shared.Helpers;
 using XdPagamentosApi.Domain.Models;
 using XdPagamentosApi.Repository.Interfaces;
 using XdPagamentosApi.Repository.Persistence.Context;
@@ -44,8 +45,16 @@ namespace XdPagamentosApi.Repository.Class
 
                         var tipoValor = await BuscaStatusTransacao(transacao.StatusCodigo);
 
-                        var vlLiquido = tipoValor.Equals("D") ? $"-{transacao.VlLiquido}" : transacao.VlLiquido.ToString();
 
+                        //Busca o tipo de transacao de acordo de quantidade de parcelas
+                        var respostaTipoTransacao = await _mySqlContext.TipoTransacoes.Where(c => c.CliId.Equals(transacao.CliId) && c.QtdParcelas.Equals(transacao.QtdParcelas) && c.Status.Equals("A")).AsNoTracking().FirstOrDefaultAsync();
+
+                        if (respostaTipoTransacao != null)
+                            transacao.TitPercDesconto = respostaTipoTransacao.PercDesconto;
+
+                        transacao.VlLiquidoFormatado = HelperFuncoes.ValorMoedaBRDecimal(HelperFuncoes.FormataValorDecimal(transacao.VlBruto) - (HelperFuncoes.FormataValorDecimal(transacao.VlBruto) * HelperFuncoes.FormataValorDecimal(transacao.TitPercDesconto) / 100));
+
+                        var vlLiquidoFormatado = tipoValor.Equals("D") ? $"-{transacao.VlLiquidoFormatado}" : transacao.VlLiquidoFormatado.ToString();
 
                         //Tabela de Pagamentos
                         var pagamento = new Pagamentos
@@ -60,7 +69,7 @@ namespace XdPagamentosApi.Repository.Class
                             EstId = transacao.EstId,
                             DtEmissao = transacao.DtOperacao,
                             DtCredito = transacao.DtCredito,
-                            Valor = vlLiquido,
+                            Valor = vlLiquidoFormatado,
                             ListaPagamentos = new List<Pagamentos> { pagamento },
                             Status = "NP"
                         };
@@ -76,15 +85,25 @@ namespace XdPagamentosApi.Repository.Class
                             DtHrCredito = parametros.DataLancamentoCredito,
                             Descricao = $"Ordem de pagamento - {ordemPagto.Id}",
                             Tipo = await BuscaStatusTransacao(transacao.StatusCodigo),
-                            VlBruto = "0,00",
-                            VlLiquido = transacao.VlLiquido.Replace("-", ""),
+                            VlBruto = transacao.VlLiquido,
+                            VlLiquido = transacao.VlLiquidoFormatado.Replace("-", ""),
                             ValorSolicitadoCliente = "0,00",
                             Grupo = "EC",
                             FopId = 2,
                             CliId = transacao.CliId,
                             RceId = parametros.IdConta,
                             CodRef = $"ORPID{ordemPagto.Id}",
-                            Status = "AP"
+                            Status = "AP",
+                            VlVenda = transacao.VlBruto,
+                            CodAutorizacao = transacao.CodAutorizacao,
+                            TioDescricao = transacao.Descricao,
+                            MeioCaptura = transacao.MeioCaptura,
+                            QtdParcelas = transacao.QtdParcelas,
+                            NumCartao = transacao.NumCartao,
+                            TaxaComissaoOperador = transacao.TaxaComissaoOperador,
+                            EstId = transacao.EstId,
+                            NumTerminal = transacao.NumTerminal,
+                            TitPercDesconto = transacao.TitPercDesconto,
                         };
 
                         //Salva na tabela de Gestao de Pagamento

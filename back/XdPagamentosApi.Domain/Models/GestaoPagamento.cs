@@ -24,7 +24,7 @@ namespace XdPagamentosApi.Domain.Models
         public string Grupo { get; set; }
         public string UsuNome { get; set; }
         public string UsuCpf { get; set; }
-        public DateTime DtHrAcaoUsuario { get; set; }
+        public DateTime? DtHrAcaoUsuario { get; set; }
         public DateTime DtHrCredito { get; set; }
         public string Status { get; set; }
         public string ValorSolicitadoCliente { get; set; }
@@ -33,6 +33,18 @@ namespace XdPagamentosApi.Domain.Models
         public DateTime? DtAgendamento { get; set; }
 
         public string MeioPagamento { get; set; }
+
+        public string VlVenda { get; set; }
+        public string CodAutorizacao { get; set; }
+        public string TioDescricao { get; set; }
+        public string MeioCaptura { get; set; }
+        public string QtdParcelas { get; set; }
+        public string NumCartao { get; set; }
+        public string TaxaComissaoOperador { get; set; }
+        public int EstId { get; set; }
+        public string NumTerminal { get; set; }
+        public string TitPercDesconto { get; set; }
+
 
         [NotMapped]
         public string VlBrutoTransacao { get; set; }

@@ -86,6 +86,7 @@ namespace XdPagamentosApi.Repository.Class
             transacao.DtCredito = dtoTransactionPagSeguro.EscrowEndDate;
             transacao.VlBruto = HelperFuncoes.ValorMoedaBRDouble(dtoTransactionPagSeguro.GrossAmount);
             transacao.VlLiquido = HelperFuncoes.ValorMoedaBRDouble(dtoTransactionPagSeguro.NetAmount);
+            transacao.VlBrutoFormatado = HelperFuncoes.ValorMoedaBRDouble(dtoTransactionPagSeguro.NetAmount);
             transacao.EstId = Convert.ToInt32(estabelecimento);
             transacao.NumTerminal = dtoTransactionPagSeguro.DeviceInfo?.SerialNumber;
             transacao.NumCartao = $"** ** ** {dtoTransactionPagSeguro.DeviceInfo?.Holder}";
@@ -185,7 +186,10 @@ namespace XdPagamentosApi.Repository.Class
 
                 var tipoValor = await BuscaStatusTransacao(dtoTransactionPagSeguro);
 
-                var vlLiquido = tipoValor.Equals("D") ?  $"-{transacao.VlLiquido}" : transacao.VlLiquido.ToString();
+                transacao.VlLiquidoFormatado = HelperFuncoes.ValorMoedaBRDecimal(HelperFuncoes.FormataValorDecimal(transacao.VlBruto) - (HelperFuncoes.FormataValorDecimal(transacao.VlBruto) * HelperFuncoes.FormataValorDecimal(transacao.TitPercDesconto) / 100));
+
+                var vlLiquidoFormatado = tipoValor.Equals("D") ?  $"-{transacao.VlLiquidoFormatado}" : transacao.VlLiquidoFormatado.ToString();
+                var vlLiquido = tipoValor.Equals("D") ? $"-{transacao.VlLiquido}" : transacao.VlLiquido.ToString();
 
                 var pagamento = new Pagamentos
                 {
@@ -201,7 +205,7 @@ namespace XdPagamentosApi.Repository.Class
                     EstId = transacao.EstId,
                     DtEmissao = transacao.DtOperacao,
                     DtCredito = transacao.DtCredito,
-                    Valor =  vlLiquido ,
+                    Valor = vlLiquidoFormatado,
                     ListaPagamentos = new List<Pagamentos> { pagamento },
                     Status = "NP"
                 };
@@ -226,15 +230,25 @@ namespace XdPagamentosApi.Repository.Class
                     DtHrCredito = transacao.DtCredito,
                     Descricao = $"Ordem de pagamento - {ordemPagto.Id}",
                     Tipo = await BuscaStatusTransacao(dtoTransactionPagSeguro),
-                    VlBruto = "0,00",
-                    VlLiquido = transacao.VlLiquido.Replace("-", ""),
+                    VlBruto = transacao.VlBrutoFormatado,
+                    VlLiquido = transacao.VlLiquidoFormatado.Replace("-", ""),
                     ValorSolicitadoCliente = "0,00",
                     Grupo = "EC",
                     FopId = 2,
                     CliId = transacao.CliId,
                     RceId = await BuscaContaEstabelecimento(transacao.EstId),
                     CodRef = $"ORPID{ordemPagto.Id}",
-                    Status = "AP"
+                    Status = "AP",
+                    VlVenda = transacao.VlBruto,
+                    CodAutorizacao = transacao.CodAutorizacao,
+                    TioDescricao= transacao.Descricao,
+                    MeioCaptura = transacao.MeioCaptura,   
+                    QtdParcelas = transacao.QtdParcelas,   
+                    NumCartao = transacao.NumCartao,    
+                    TaxaComissaoOperador = transacao.TaxaComissaoOperador,  
+                    EstId = transacao.EstId,
+                    NumTerminal = transacao.NumTerminal,
+                    TitPercDesconto = transacao.TitPercDesconto,
                 };
 
                 _mySqlContext.Add(gestaoPagamento);

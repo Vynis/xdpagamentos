@@ -37,6 +37,17 @@ namespace XdPagamentosApi.Repository.Persistence.Mapping
             builder.Property(c => c.DtAgendamento).HasColumnName("gep_dt_agendamento");
             builder.Property(c => c.MeioPagamento).HasColumnName("gep_meio_pagamento");
 
+            builder.Property(c => c.VlVenda).HasColumnName("gep_valor_venda");
+            builder.Property(c => c.CodAutorizacao).HasColumnName("gep_cod_autorizacao");
+            builder.Property(c => c.TioDescricao).HasColumnName("gep_tio_descricao");
+            builder.Property(c => c.MeioCaptura).HasColumnName("gep_meio_captura");
+            builder.Property(c => c.QtdParcelas).HasColumnName("gep_qtd_parcelas");
+            builder.Property(c => c.NumCartao).HasColumnName("gep_num_cartao");
+            builder.Property(c => c.TaxaComissaoOperador).HasColumnName("gep_taxa_comissao_operador");
+            builder.Property(c => c.EstId).HasColumnName("gep_est_id");
+            builder.Property(c => c.NumTerminal).HasColumnName("gep_ter_num_terminal");
+            builder.Property(c => c.TitPercDesconto).HasColumnName("gep_tit_perc_desconto");
+
 
             builder.HasOne(c => c.Cliente).WithMany(c => c.ListaGestaoPagamento).HasForeignKey(c => c.CliId).IsRequired(false);
             builder.HasOne(c => c.FormaPagto).WithMany(c => c.ListaGestaoPagamento).HasForeignKey(c => c.FopId).IsRequired(false);
