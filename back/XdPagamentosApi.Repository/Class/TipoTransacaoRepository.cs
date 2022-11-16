@@ -24,7 +24,7 @@ namespace XdPagamentosApi.Repository.Class
         public async override Task<IEnumerable<TipoTransacao>> BuscarExpressao(Expression<Func<TipoTransacao, bool>> predicado)
         {
 
-            IQueryable<TipoTransacao> query = _mySqlContext.TipoTransacoes.Where(predicado).AsNoTracking();
+            IQueryable<TipoTransacao> query = _mySqlContext.TipoTransacoes.Where(predicado).AsNoTracking().OrderBy(c => c.QtdParcelas);
 
             return await query.AsNoTracking().ToArrayAsync();
         }
