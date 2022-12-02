@@ -120,8 +120,6 @@ namespace XdPagamentosApi.WebApi.Controllers
                 }
 
                 dto.ListaRelContaEstabelecimento.ForEach(x => x.CreditoAutomatico = "S");
-                dto.Token = dados.Token;
-                dto.Email = dados.Email;
 
                 var response = await _estabelecimentoService.Atualizar(_mapper.Map<Estabelecimento>(dto));
 
