@@ -4,12 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using XdPagamentoApi.Shared.Dtos;
 using XdPagamentosApi.Domain.Models;
 using XdPagamentosApi.Services.Interfaces;
+using XdPagamentosApi.Shared;
+using XdPagamentosApi.Shared.Extensions;
 using XdPagamentosApi.WebApi.Configuracao.Swagger;
-using XdPagamentosApi.WebApi.Dtos;
-using XdPagamentosApi.WebApi.Shared;
-using XdPagamentosApi.WebApi.Shared.Extensions;
 
 namespace XdPagamentosApi.WebApi.Controllers
 {

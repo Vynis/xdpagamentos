@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using XdPagamentosApi.Services.Interfaces;
+using XdPagamentosApi.Shared;
 using XdPagamentosApi.WebApi.Configuracao.Swagger;
-using XdPagamentosApi.WebApi.Shared;
 
 namespace XdPagamentosApi.WebApi.Controllers
 {

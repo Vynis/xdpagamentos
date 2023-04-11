@@ -19,8 +19,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using XdPagamentosApi.IOC;
 using XdPagamentosApi.Repository.Persistence.Context;
+using XdPagamentosApi.Shared.Token;
 using XdPagamentosApi.WebApi.Configuracao.Swagger;
-using XdPagamentosApi.WebApi.Configuracao.Token;
 
 namespace XdPagamentosApi.WebApi
 {

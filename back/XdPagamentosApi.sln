@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31205.134
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XdPagamentosApi.WebApi", "XdPagamentosApi.WebApi\XdPagamentosApi.WebApi.csproj", "{3AA0A9DA-4067-44E5-8611-FB810E3FF0F4}"
 EndProject
@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XdPagamentosApi.PagSeguro",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{FE57FCF1-C6D3-4032-A932-A8CF70A4EEF7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XdPagamentoApi.Shared", "XdPagamentoApi.Shared\XdPagamentoApi.Shared.csproj", "{C2C85894-D4DC-41E4-AC5B-6C92749AB3B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XdPagamentoApi.Shared", "XdPagamentoApi.Shared\XdPagamentoApi.Shared.csproj", "{C2C85894-D4DC-41E4-AC5B-6C92749AB3B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XdPagamentosApi.WebApiCliente", "XdPagamentosApi.WebApiCliente\XdPagamentosApi.WebApiCliente.csproj", "{CCCC8EC3-BA3B-46C7-84D7-7C4ED18103FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -127,6 +129,18 @@ Global
 		{C2C85894-D4DC-41E4-AC5B-6C92749AB3B0}.Release|x64.Build.0 = Release|Any CPU
 		{C2C85894-D4DC-41E4-AC5B-6C92749AB3B0}.Release|x86.ActiveCfg = Release|Any CPU
 		{C2C85894-D4DC-41E4-AC5B-6C92749AB3B0}.Release|x86.Build.0 = Release|Any CPU
+		{CCCC8EC3-BA3B-46C7-84D7-7C4ED18103FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCCC8EC3-BA3B-46C7-84D7-7C4ED18103FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCCC8EC3-BA3B-46C7-84D7-7C4ED18103FD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CCCC8EC3-BA3B-46C7-84D7-7C4ED18103FD}.Debug|x64.Build.0 = Debug|Any CPU
+		{CCCC8EC3-BA3B-46C7-84D7-7C4ED18103FD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CCCC8EC3-BA3B-46C7-84D7-7C4ED18103FD}.Debug|x86.Build.0 = Debug|Any CPU
+		{CCCC8EC3-BA3B-46C7-84D7-7C4ED18103FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCCC8EC3-BA3B-46C7-84D7-7C4ED18103FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCCC8EC3-BA3B-46C7-84D7-7C4ED18103FD}.Release|x64.ActiveCfg = Release|Any CPU
+		{CCCC8EC3-BA3B-46C7-84D7-7C4ED18103FD}.Release|x64.Build.0 = Release|Any CPU
+		{CCCC8EC3-BA3B-46C7-84D7-7C4ED18103FD}.Release|x86.ActiveCfg = Release|Any CPU
+		{CCCC8EC3-BA3B-46C7-84D7-7C4ED18103FD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

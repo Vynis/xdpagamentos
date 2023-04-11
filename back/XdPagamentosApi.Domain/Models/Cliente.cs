@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using XdPagamentosApi.Domain.Enums;
+using XdPagamentoApi.Shared.Enums;
 
 namespace XdPagamentosApi.Domain.Models
 {

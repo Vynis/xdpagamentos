@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using XdPagamentosApi.Domain.Enums;
+using XdPagamentoApi.Shared.Enums;
 using XdPagamentosApi.Domain.Models;
 
 namespace XdPagamentosApi.Repository.Persistence.Mapping

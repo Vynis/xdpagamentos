@@ -1,15 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using XdPagamentoApi.Shared.Dtos;
 using XdPagamentoApi.Shared.Helpers;
 using XdPagamentosApi.Domain.Models;
 using XdPagamentosApi.Services.Interfaces;
+using XdPagamentosApi.Shared;
+using XdPagamentosApi.Shared.Extensions;
 using XdPagamentosApi.WebApi.Configuracao.Swagger;
-using XdPagamentosApi.WebApi.Dtos;
-using XdPagamentosApi.WebApi.Shared;
-using XdPagamentosApi.WebApi.Shared.Extensions;
 
 namespace XdPagamentosApi.WebApi.Controllers
 {
@@ -18,10 +19,12 @@ namespace XdPagamentosApi.WebApi.Controllers
     public class RelatoriosController : BaseController
     {
         private readonly IRelatoriosService _relatoriosService;
+        private readonly IMapper _mapper;
 
-        public RelatoriosController(IRelatoriosService relatoriosService)
+        public RelatoriosController(IRelatoriosService relatoriosService, IMapper mapper)
         {
             _relatoriosService = relatoriosService;
+            _mapper = mapper;
         }
 
 
@@ -50,7 +53,7 @@ namespace XdPagamentosApi.WebApi.Controllers
         {
             try
             {
-                var response = await _relatoriosService.BuscaRelatorioSaldoCliente(filtro);
+                var response = _mapper.Map<DtoVwRelatorioSaldoCliente[]>(await  _relatoriosService.BuscaRelatorioSaldoCliente(filtro));
 
                 var dto = new DtoResponseRelatorioSaldoClientes();
 
@@ -74,7 +77,7 @@ namespace XdPagamentosApi.WebApi.Controllers
         {
             try
             {
-                var response = await _relatoriosService.BuscaRelatorioSaldoContaCorrente(filtro);
+                var response = _mapper.Map<DtoVwRelatorioSaldoContaCorrente[]>( await _relatoriosService.BuscaRelatorioSaldoContaCorrente(filtro));
 
                 var dto = new DtoResponseRelatorioContaCorrente();
 
