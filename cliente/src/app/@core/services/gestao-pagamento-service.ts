@@ -20,14 +20,6 @@ export class GestaoPagamentoService extends GestaoPagamentoData {
         return this.http.post<ModeloBase>(`${this.caminhoApi}/buscar-gestao-pagamento-filtro-cliente`, filtro);
     }
 
-    inserir(model : GestaoPagamentoModel) {
-        return this.http.post<ModeloBase>(`${this.caminhoApi}/inserir`, model);
-    }
-
-    remover(id) {
-        return this.http.delete<ModeloBase>(`${this.caminhoApi}/excluir/${id}`);
-    }
-
     saldoAtual() {
         return this.http.get<ModeloBase>(`${this.caminhoApi}/saldo-atual`);
     }

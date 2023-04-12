@@ -36,7 +36,9 @@ namespace XdPagamentosApi.WebApi.Controllers
         {
             try
             {
-                var response = await _clienteService.BuscarExpressao(x => x.Id == Convert.ToInt32(User.Identity.Name.ToString().Descriptar()) && x.Status.Equals("A"));
+                var usuarioLogado = Convert.ToInt32(User.Identity.Name.ToString().Descriptar());
+
+                var response = await _clienteService.BuscarExpressao(x => x.Id == usuarioLogado && x.Status.Equals("A"));
 
                 if (!response.Any())
                     return Response("Usuario não encontrado", false);

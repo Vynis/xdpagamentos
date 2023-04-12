@@ -22,10 +22,6 @@ export class TerminalService {
     return this.http.get<ModeloBase>(`${this.caminhoApi}/buscar-por-id/${id}`);
   }
 
-  inserir(model : TerminalModel) {
-    return this.http.post<ModeloBase>(`${this.caminhoApi}/inserir`, model);
-  }
-
   alterar(model : TerminalModel) {
     return this.http.put<ModeloBase>(`${this.caminhoApi}/alterar`, model);
   }

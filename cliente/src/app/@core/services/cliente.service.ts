@@ -15,40 +15,8 @@ export class ClienteService {
     this.caminhoApi =  `${environment.api}/Cliente`;
   }
 
-  buscar(filtro: PaginationFilterModel) {
-    return this.http.post<ModeloBase>(`${this.caminhoApi}/buscar-cliente-filtro`, filtro);
-  }
-
-  buscaPorId(id: number) {
-    return this.http.get<ModeloBase>(`${this.caminhoApi}/buscar-por-id/${id}`);
-  }
-
   buscarAtivos() {
     return this.http.get<ModeloBase>(`${this.caminhoApi}/buscar-por-ativos`);
-  }
-
-  inserir(model : ClienteModel) {
-    return this.http.post<ModeloBase>(`${this.caminhoApi}/inserir`, model);
-  }
-
-  alterar(model : ClienteModel) {
-    return this.http.put<ModeloBase>(`${this.caminhoApi}/alterar`, model);
-  }
-
-  alterarSenhaPadrao(id: number) {
-    return this.http.put<ModeloBase>(`${this.caminhoApi}/alterar-senha-padrao/${id}`, { id });
-  }
-
-  agrupar(clientes: ClienteModel[]) {
-    return this.http.put<ModeloBase>(`${this.caminhoApi}/agrupar`, clientes);
-  }
-
-  desagrupar(clientes: ClienteModel[]) {
-    return this.http.put<ModeloBase>(`${this.caminhoApi}/desagrupar`, clientes);
-  }
-
-  buscarGrupo() {
-    return this.http.get<ModeloBase>(`${this.caminhoApi}/bucar-grupo-clientes`);
   }
 
   buscaDadosCliente() {
