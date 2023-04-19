@@ -1,3 +1,4 @@
+
 <div class="header-container">
   <div class="logo-container">
     <a (click)="toggleSidebar()" href="#" class="sidebar-toggle">
@@ -10,6 +11,17 @@
 </div>
 
 <div class="header-container">
+  <nb-card class="" style="width: 500px;">
+    <nb-card-body class="estiloCardSaldo">
+    <span class="ocultarSaldo">
+      
+      <label for="cliente" class="label">Cliente</label>
+      <nb-select placeholder="" (selectedChange)="changeCliente($event)" fullWidth size="small"  status="primary" placeholder="Selecione" [(ngModel)]='selectValue' >
+        <nb-option *ngFor="let cli of listaClientes" [value]="cli.id">{{ cli.nome }} - {{ cli.cnpjCpf }}</nb-option>
+      </nb-select>
+    </span>
+    </nb-card-body>
+  </nb-card>
   <nb-card class="estiloCardSaldo">
     <nb-card-body>
     <span class="ocultarSaldo">
@@ -19,8 +31,12 @@
     </nb-card-body>
   </nb-card>
   <div class="ocultarSaldoMobile" style="padding-top: 5px;">
-      <button nbButton status="success" (click)="open(dialog)" size="tiny">Saldo</button>
+
+        <button nbButton status="info" (click)="open(dialog)" size="tiny">Cliente</button> 
+        <button nbButton status="success" (click)="open(dialog)" size="tiny">Saldo</button>
+   
   </div>
+
   &nbsp;&nbsp;
   <nb-actions size="small">
 
@@ -48,3 +64,4 @@
     </nb-card-footer>
   </nb-card>
 </ng-template>
+

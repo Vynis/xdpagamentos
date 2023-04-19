@@ -13,7 +13,7 @@ using XdPagamentosApi.WebApi.Configuracao.Swagger;
 namespace XdPagamentosApi.WebApi.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class TransferenciaTransacaoController : BaseController
     {
         private readonly IVwTransacoesSemOrdemPagtoService _vwTransacoesSemOrdemPagtoService;

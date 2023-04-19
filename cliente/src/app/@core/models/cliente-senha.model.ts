@@ -1,5 +1,5 @@
 export class ClienteSenhaModel {
-    idCliente: string;
+    idUsuario: string;
     senhaAtual: string;
     senhaNova: string;
 }

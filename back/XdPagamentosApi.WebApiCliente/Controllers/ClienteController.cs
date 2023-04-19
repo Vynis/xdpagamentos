@@ -37,7 +37,10 @@ namespace XdPagamentosApi.WebApiCliente.Controllers
         {
             try
             {
-                var response = await _clienteService.BuscarExpressao(x => x.Status.Equals("A"));
+
+                var usuarioLogado = Convert.ToInt32(User.Identity.Name.ToString().Descriptar(tipoSistema: TipoSistema.Cliente));
+
+                var response = await _clienteService.BuscarExpressao(x => x.Status.Equals("A") && x.UscId == usuarioLogado ) ;
 
                 return Response(response.ToList().OrderBy(c => c.Nome));
             }
@@ -49,81 +52,20 @@ namespace XdPagamentosApi.WebApiCliente.Controllers
         }
 
 
-        [HttpGet("buscar-dados-cliente")]
+
+        [HttpGet("buscar-dados-cliente-logado/{id}")]
         [SwaggerGroup("Cliente")]
-        public async Task<IActionResult> BuscarUsuario()
+        public async Task<IActionResult> BuscarDadosClienteLogado(int id)
         {
             try
             {
-
-                var usuarioLogado = Convert.ToInt32(User.Identity.Name.ToString().Descriptar(tipoSistema: TipoSistema.Cliente));
-
-                var response = await _clienteService.BuscarExpressao(x => x.Id == usuarioLogado && x.Status.Equals("A"));
-
-                if (!response.Any())
-                    return Response("Usuario não encontrado", false);
-
-                return Ok(new { name = response.FirstOrDefault().Nome, picture = "" });
-
-            }
-            catch (Exception ex)
-            {
-                return Response(ex.Message, false);
-            }
-        }
-
-
-        [HttpGet("buscar-dados-cliente-logado")]
-        [SwaggerGroup("Cliente")]
-        public async Task<IActionResult> BuscarDadosClienteLogado()
-        {
-            try
-            {
-                var response = await _clienteService.ObterPorId(Convert.ToInt32(User.Identity.Name.ToString().Descriptar(tipoSistema: TipoSistema.Cliente)));
+                var response = await _clienteService.ObterPorId(id);
 
                 return Response(response);
             }
             catch (Exception ex)
             {
 
-                return Response(ex.Message, false);
-            }
-        }
-
-
-        [HttpPut("alterar-senha")]
-        [SwaggerGroup("Cliente")]
-        public async Task<IActionResult> AlterarSenha(DtoAlteracaoSenhaCliente dtoCliente)
-        {
-            try
-            {
-
-                var codClienteLogado = User.Identity.Name.ToString();
-
-                if (codClienteLogado != dtoCliente.IdCliente)
-                    return Response("Erro cliente nao encontrado", false);
-
-                var idClienteFormatado = Convert.ToInt32(dtoCliente.IdCliente.ToString().Descriptar(tipoSistema: TipoSistema.Cliente));
-
-                var cliente = await _clienteService.BuscarExpressao(x => x.Id.Equals(idClienteFormatado) && x.Senha.Equals(SenhaHashService.CalculateMD5Hash(dtoCliente.SenhaAtual)));
-
-                if (!cliente.Any())
-                    return Response("Senha atual invalida", false);
-
-                var usuarioEncontrado = cliente.FirstOrDefault();
-
-                usuarioEncontrado.Senha = SenhaHashService.CalculateMD5Hash(dtoCliente.SenhaNova);
-
-                var response = await _clienteService.Atualizar(usuarioEncontrado);
-
-                if (!response)
-                    return Response("Erro ao alterar", false);
-
-                return Response("Alteração com sucesso!");
-
-            }
-            catch (Exception ex)
-            {
                 return Response(ex.Message, false);
             }
         }
@@ -136,7 +78,7 @@ namespace XdPagamentosApi.WebApiCliente.Controllers
             try
             {
 
-                var clienteLgado = await _clienteService.ObterPorId(Convert.ToInt32(User.Identity.Name.ToString().Descriptar(tipoSistema: TipoSistema.Cliente)));
+                var clienteLgado = await _clienteService.ObterPorId(dtoCliente.Id);
 
                 clienteLgado.BanId = dtoCliente.BanId;
                 clienteLgado.NumAgencia = dtoCliente.NumAgencia;

@@ -118,12 +118,12 @@ namespace XdPagamentosApi.WebApiCliente
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UsePathBase("/api_cliente");
+            app.UsePathBase("/apicliente");
 
             app.Use((context, next) =>
             {
-                context.Request.PathBase = "/api_cliente";
-                return next();  
+                context.Request.PathBase = "/apicliente";
+                return next();
             });
 
             app.UseHttpsRedirection();

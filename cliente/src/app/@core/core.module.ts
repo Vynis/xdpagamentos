@@ -55,6 +55,10 @@ import { SecurityCamerasService } from './mock/security-cameras.service';
 import { MockDataModule } from './mock/mock-data.module';
 import { environment } from '../../environments/environment';
 import { GestaoPagamentoData } from './data/gestao-pagto';
+import { UsuarioClienteData } from './data/usuario-cliente';
+import { UsuarioClienteService } from './services/usuario-cliente.service';
+import { ClienteData } from './data/cliente';
+import { ClienteService } from './services/cliente.service';
 
 const socialLinks = [
   {
@@ -94,7 +98,8 @@ const DATA_SERVICES = [
   { provide: StatsProgressBarData, useClass: StatsProgressBarService },
   { provide: VisitorsAnalyticsData, useClass: VisitorsAnalyticsService },
   { provide: SecurityCamerasData, useClass: SecurityCamerasService },
-  { provide: GestaoPagamentoData, useClass: GestaoPagamentoService}
+  { provide: GestaoPagamentoData, useClass: GestaoPagamentoService},
+  { provide: ClienteData, useClass: ClienteService}
 ];
 
 export class NbSimpleRoleProvider extends NbRoleProvider {
@@ -111,7 +116,7 @@ export const NB_CORE_PROVIDERS = [
 
     strategies: [
       NbPasswordAuthStrategy.setup({
-        name: 'cpf',
+        name: 'email',
         token: {
           class: NbAuthJWTToken,
           key: 'data.token'
@@ -120,7 +125,7 @@ export const NB_CORE_PROVIDERS = [
         login: {
           endpoint: '/Autenticacao/AutenticarCliente',
           method: 'post',
-          defaultErrors: ['CPF/Senha estão incorreto.'],
+          defaultErrors: ['Email/Senha estão incorreto.'],
           defaultMessages: ['Logado com sucesso.'],
         }
       }),
@@ -128,7 +133,7 @@ export const NB_CORE_PROVIDERS = [
     forms: {
       login: {
         socialLinks: null,
-        strategy: 'cpf',
+        strategy: 'email',
         rememberMe: false,
         showMessages: {
           success: true,

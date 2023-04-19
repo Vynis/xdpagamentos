@@ -41,9 +41,11 @@ namespace XdPagamentosApi.Repository.Persistence.Mapping
             builder.Property(c => c.LimiteCredito).HasColumnName("cli_limite_credito");
             builder.Property(c => c.TipoChavePix).HasColumnName("cli_tipo_chave_pix");
             builder.Property(c => c.ChavePix).HasColumnName("cli_chave_pix");
+            builder.Property(c => c.UscId).HasColumnName("cli_usc_id");
 
             builder.HasOne(c => c.Banco).WithMany().HasForeignKey(c => c.BanId).IsRequired(false);
             builder.HasOne(c => c.Estabelecimento).WithMany(c => c.ListaClientes).HasForeignKey(c => c.EstId);
+            builder.HasOne(c => c.UsuarioCliente).WithMany().HasForeignKey(c => c.UscId).IsRequired(false);
 
             builder.Property(c => c.TipoChavePix).HasConversion( v => v.ToString(), v => (TiposChavePix)Enum.Parse(typeof(TiposChavePix),v) );
 

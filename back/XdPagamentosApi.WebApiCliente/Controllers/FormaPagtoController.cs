@@ -27,14 +27,14 @@ namespace XdPagamentosApi.WebApiCliente.Controllers
         }
 
 
-        [HttpGet("buscar-por-ativos-cliente")]
+        [HttpGet("buscar-por-ativos-cliente/{id}")]
         [SwaggerGroup("FormaPagto")]
-        public async Task<IActionResult> BuscarPorAtivosCliente()
+        public async Task<IActionResult> BuscarPorAtivosCliente(int id)
         {
             try
             {
 
-                var clienteLgado = await _clienteService.ObterPorId(Convert.ToInt32(User.Identity.Name.ToString().Descriptar(tipoSistema: TipoSistema.Cliente)));
+                var clienteLgado = await _clienteService.ObterPorId(id);
 
                 IEnumerable<FormaPagto> response = await FormatarFormaPagamento(clienteLgado);
 

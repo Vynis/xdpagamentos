@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using XdPagamentoApi.Shared.Dtos;
+using XdPagamentoApi.Shared.Enums;
 using XdPagamentosApi.Domain.Models;
 using XdPagamentosApi.Services.Class;
 using XdPagamentosApi.Services.Interfaces;
@@ -15,7 +16,7 @@ using XdPagamentosApi.WebApi.Configuracao.Swagger;
 namespace XdPagamentosApi.WebApi.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class UsuarioController : BaseController
     {
         private readonly IUsuarioService _usuarioService;
@@ -32,8 +33,10 @@ namespace XdPagamentosApi.WebApi.Controllers
         public async Task<IActionResult> BuscarUsuario()
         {
             try
+
             {
-                var response = await _usuarioService.BuscarExpressao(x => x.Id == Convert.ToInt32(User.Identity.Name.ToString().Descriptar()));
+                var usuario = User.Identity.Name.ToString().Descriptar();
+                var response = await _usuarioService.BuscarExpressao(x => x.Id == Convert.ToInt32(usuario));
 
                 if (!response.Any())
                     return Response("Usuario não encontrado", false);

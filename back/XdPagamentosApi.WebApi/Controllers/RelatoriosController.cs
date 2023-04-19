@@ -15,7 +15,7 @@ using XdPagamentosApi.WebApi.Configuracao.Swagger;
 namespace XdPagamentosApi.WebApi.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class RelatoriosController : BaseController
     {
         private readonly IRelatoriosService _relatoriosService;

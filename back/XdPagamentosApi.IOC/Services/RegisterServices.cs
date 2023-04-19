@@ -27,6 +27,7 @@ namespace XdPagamentosApi.IOC.Services
             service.AddScoped<IGestaoPagamentoService, GestaoPagamentoService>();
             service.AddScoped<IFormaPagtoService, FormaPagtoService>();
             service.AddScoped<IRelatoriosService, RelatoriosService>();
+            service.AddScoped<IUsuarioClienteService, UsuarioClienteService>();
         }
     }
 }

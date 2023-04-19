@@ -11,6 +11,7 @@ import { formatarNumero } from '../../../@core/utils/funcoes';
 import { FormaPagtoModel } from '../../../@core/models/forma-pagto.model';
 import { FormaPagtoService } from '../../../@core/services/forma-pagto.service';
 import { CustomValidators } from '../../../@core/utils/custom-validator';
+import { GeralEnum } from '../../../@core/enums/geral.enum';
 
 @Component({
   selector: 'ngx-extrato-operacao',
@@ -23,6 +24,7 @@ export class ExtratoOperacaoComponent implements OnInit {
   cliente: ClienteModel;
   listaFormaPagto: FormaPagtoModel[] = [];
   min: Date;
+  cliId = 0;
 
 
   constructor(
@@ -36,6 +38,7 @@ export class ExtratoOperacaoComponent implements OnInit {
     }
 
   ngOnInit(): void {
+    this.cliId = Number(localStorage.getItem(GeralEnum.IDCLIENTE));
     this.buscarFormaPagto();
     this.buscarDadosCliente();
     this.createForm();
@@ -54,7 +57,7 @@ export class ExtratoOperacaoComponent implements OnInit {
   }
 
   buscarDadosCliente() {
-    this.clienteService.buscaDadosCliente().subscribe(
+    this.clienteService.buscaDadosCliente(this.cliId).subscribe(
       res => {
         if (!res.success) {
           this.toastService.showToast(ToastPadrao.DANGER, 'Erro ao buscar dados');
@@ -68,7 +71,7 @@ export class ExtratoOperacaoComponent implements OnInit {
   }
 
   buscarFormaPagto() {
-    this.formaPagtoService.buscarAtivosCliente().subscribe(
+    this.formaPagtoService.buscarAtivosCliente(this.cliId).subscribe(
       res =>  {
         if (!res.success)
          return;
@@ -110,6 +113,7 @@ export class ExtratoOperacaoComponent implements OnInit {
     _model.valorSolicitadoCliente = formatarNumero(this.formulario.controls.valorSolicitadoCliente.value);
     _model.fopId = this.formulario.controls.fopId.value;
     _model.dtAgendamento = this.formulario.controls.dtAgendamento.value;
+    _model.cliId = this.cliId;
 
     this.gestaoPagtoService.solicitarPagto(_model).subscribe(
       res => {

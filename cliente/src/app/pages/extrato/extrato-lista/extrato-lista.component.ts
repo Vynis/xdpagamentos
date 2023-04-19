@@ -9,6 +9,7 @@ import { FiltroItemModel } from '../../../@core/models/configuracao/filtroitem.m
 import { FilterTypeConstants } from '../../../@core/enums/filter-type.enum';
 import { TerminalService } from '../../../@core/services/terminal.service';
 import { TerminalModel } from '../../../@core/models/terminal.model';
+import { GeralEnum } from '../../../@core/enums/geral.enum';
 
 @Component({
   selector: 'ngx-extrato-lista',
@@ -27,6 +28,7 @@ export class ExtratoListaComponent implements OnInit {
   @ViewChild('table') smartTable: Ng2SmartTableComponent;
   total: string = '0,00';
   listaTerminais: TerminalModel[];
+  cliId = 0;
 
   columns = {
     id: {
@@ -86,6 +88,7 @@ export class ExtratoListaComponent implements OnInit {
   constructor(private fb: FormBuilder, private gestaoPagtoService: GestaoPagamentoService, private terminalService: TerminalService) { }
 
   ngOnInit(): void {
+    this.cliId = Number(localStorage.getItem(GeralEnum.IDCLIENTE));
     this.createFormFiltro();
     this.buscarTerminais();
     
@@ -130,6 +133,12 @@ export class ExtratoListaComponent implements OnInit {
     }
 
     var item  = new FiltroItemModel();
+    item.property = 'CliId';
+    item.filterType = FilterTypeConstants.EQUALS;
+    item.value = this.cliId;
+    listaItem.push(item);
+
+    var item  = new FiltroItemModel();
     item.property = 'DtHrLancamento';
     item.filterType = FilterTypeConstants.GREATERTHANEQUALS;
     item.value = new Date(controls.dtInicial.value).toLocaleDateString();
@@ -172,7 +181,7 @@ export class ExtratoListaComponent implements OnInit {
 
   buscarTerminais() {
     this.listaTerminais = [];
-    this.terminalService.bucarTerminaisCliente().subscribe(
+    this.terminalService.bucarTerminaisCliente(this.cliId).subscribe(
       res => {
         if (!res.success)
           return;

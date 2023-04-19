@@ -19,8 +19,8 @@ export class ClienteService {
     return this.http.get<ModeloBase>(`${this.caminhoApi}/buscar-por-ativos`);
   }
 
-  buscaDadosCliente() {
-    return this.http.get<ModeloBase>(`${this.caminhoApi}/buscar-dados-cliente-logado`);
+  buscaDadosCliente(id: number) {
+    return this.http.get<ModeloBase>(`${this.caminhoApi}/buscar-dados-cliente-logado/${id}`);
   }
 
   alterarSenha(cliente: ClienteSenhaModel) {

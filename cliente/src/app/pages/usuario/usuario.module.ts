@@ -15,6 +15,7 @@ import { UsuarioCadastroComponent } from './usuario-cadastro/usuario-cadastro.co
 import { SessaoService } from '../../@core/services/sessao.service';
 import { EstabelecimentoService } from '../../@core/services/estabelecimento.service';
 import { AlterarSenhaComponent } from './alterar-senha/alterar-senha.component';
+import { UsuarioClienteService } from '../../@core/services/usuario-cliente.service';
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import { AlterarSenhaComponent } from './alterar-senha/alterar-senha.component';
     UsuarioService,
     SessaoService,
     EstabelecimentoService,
-    ClienteService
+    ClienteService,
+    UsuarioClienteService
   ]
 })
 export class UsuarioModule { }

@@ -9,7 +9,7 @@ namespace XdPagamentoApi.Shared.Dtos
     public class DtoParamLoginUsuario
     {
         [Required]
-        public string CPF { get; set; }
+        public string Email { get; set; }
         [Required]
         public string Senha { get; set; }
     }

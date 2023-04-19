@@ -7,6 +7,7 @@ import { ClienteModel } from '../../@core/models/cliente.model';
 import { BancoService } from '../../@core/services/banco.service';
 import { ClienteService } from '../../@core/services/cliente.service';
 import { ToastService } from '../../@core/services/toast.service';
+import { GeralEnum } from '../../@core/enums/geral.enum';
 
 @Component({
   selector: 'ngx-pagamento',
@@ -19,10 +20,12 @@ export class PagamentoComponent implements OnInit {
   listaBancos: BancoModel[];
   listaTiposChavePix: any[];
   existeErro: boolean = false;
+  cliId = 0;
 
   constructor(private fb: FormBuilder,  private clienteService: ClienteService,private bancoService: BancoService,private toastService : ToastService) { }
 
   ngOnInit() {
+    this.cliId = Number(localStorage.getItem(GeralEnum.IDCLIENTE));
     this.listaTiposChavePix = TiposChavePix;
     this.buscarListaBancos();
     this.buscarCliente();
@@ -62,7 +65,7 @@ export class PagamentoComponent implements OnInit {
   }
 
   buscarCliente() {
-    this.clienteService.buscaDadosCliente().subscribe(
+    this.clienteService.buscaDadosCliente(this.cliId).subscribe(
       res => {
         if (!res.success) {
           this.toastService.showToast(ToastPadrao.DANGER, 'Erro ao buscar dados');
@@ -90,7 +93,7 @@ export class PagamentoComponent implements OnInit {
     _cliente.tipoConta = controls.tipoConta.value;
     _cliente.tipoChavePix = controls.tipoChavePix.value;
     _cliente.chavePix= controls.chavePix.value;
-    
+    _cliente.id = this.cliId;
 
     return _cliente;
   }

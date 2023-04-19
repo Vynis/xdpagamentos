@@ -28,13 +28,13 @@ namespace XdPagamentosApi.WebApiCliente.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("buscar-grafico-vendas")]
+        [HttpGet("buscar-grafico-vendas/{id}")]
         [SwaggerGroup("Relatorios")]
-        public async Task<IActionResult> BuscaGraficoVendas()
+        public async Task<IActionResult> BuscaGraficoVendas(int id)
         {
             try
             {
-                var response = await _relatoriosService.BuscaGraficoVendas(Convert.ToInt32(User.Identity.Name.ToString().Descriptar(tipoSistema: TipoSistema.Cliente)));
+                var response = await _relatoriosService.BuscaGraficoVendas(id);
 
                 return Response(response);
             }

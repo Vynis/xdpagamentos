@@ -53,7 +53,6 @@ namespace XdPagamentosApi.WebApiCliente.Controllers
                 var listaFiltroPadrao = new List<FiltroItem>();
                 listaFiltroPadrao.AddRange(filtro.Filtro);
                 listaFiltroPadrao.Add(new FiltroItem { FilterType = "equals", Property = "Grupo", Value = "EC" });
-                listaFiltroPadrao.Add(new FiltroItem { FilterType = "equals", Property = "CliId", Value = User.Identity.Name.ToString().Descriptar(tipoSistema: TipoSistema.Cliente) });
 
                 filtro.Filtro = listaFiltroPadrao;
 
@@ -69,28 +68,6 @@ namespace XdPagamentosApi.WebApiCliente.Controllers
         }
 
 
-        [HttpGet("saldo-atual")]
-        [SwaggerGroup("GestaoPagamento")]
-        public async Task<IActionResult> SaldoAtual()
-        {
-            try
-            {
-
-                var buscarSaldoCliente = await _gestaoPagamentoService.BuscaSaldoCliente(Convert.ToInt32(User.Identity.Name.ToString().Descriptar(tipoSistema: TipoSistema.Cliente)));
-
-                return Response(
-                    new { 
-                        saldoCliente = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", buscarSaldoCliente.SaldoAtual),
-                        limiteCliente = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", buscarSaldoCliente.Limite), 
-                        total = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:N}", buscarSaldoCliente.SaldoFinal)  
-                    });
-
-            }
-            catch (Exception ex)
-            {
-                return Response(ex.Message, false);
-            }
-        }
 
         [HttpGet("saldo-atual-cliente/{id}")]
         [SwaggerGroup("GestaoPagamento")]
@@ -130,9 +107,6 @@ namespace XdPagamentosApi.WebApiCliente.Controllers
                 if (dto.DtAgendamento?.Date <= DateTime.Now.Date)
                     return Response("Data agendamento invalida. Informe a data posterior no dia de hoje. ", false);
 
-
-                dto.CliId = Convert.ToInt32(User.Identity.Name.ToString().Descriptar(tipoSistema: TipoSistema.Cliente));
-
                 decimal saldoFinal = await CalculaSaldoFinal(dto);
 
                 if (HelperFuncoes.FormataValorDecimal(dto.ValorSolicitadoCliente) > saldoFinal)
@@ -150,13 +124,12 @@ namespace XdPagamentosApi.WebApiCliente.Controllers
                 dto.DtHrLancamento = DateTime.Now;
                 dto.Tipo = "D";
                 dto.Status = "PE";
-                dto.CliId = Convert.ToInt32(User.Identity.Name.ToString().Descriptar(tipoSistema: TipoSistema.Cliente));
                 dto.RceId = 0;
                 dto.ValorSolicitadoCliente = HelperFuncoes.ValorMoedaBRString(dto.ValorSolicitadoCliente);
 
 
                 var formaPagamentoSelecionado = await _formaPagtoService.ObterPorId(dto.FopId);
-                var clienteLgado = await _clienteService.ObterPorId(Convert.ToInt32(User.Identity.Name.ToString().Descriptar(tipoSistema: TipoSistema.Cliente)));
+                var clienteLgado = await _clienteService.ObterPorId(dto.CliId);
                 var tipoContaTxt = clienteLgado.TipoConta == "P" ? "Poupança" : "Conta Corrente";
 
                 switch (dto.FopId)

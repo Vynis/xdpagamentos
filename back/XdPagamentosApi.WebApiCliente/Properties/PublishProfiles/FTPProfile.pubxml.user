@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAApwzEh/chkk+Kudq1VR2yaAAAAAACAAAAAAAQZgAAAAEAACAAAAB6BH0DOKNn93XkZ4/oO1Ne+AN4YWR1+SZTeJ3spWuEbAAAAAAOgAAAAAIAACAAAACre7e1wDL3JDtBeU1VUAVvYYEQpw/o2a4MObu5Bf6UeCAAAACu893E+0gOOQ/j+LEi7h2K1BR/p8BPlQuPACghQh+BvEAAAAB8gtn4WDJw9VSeAD10t6bzCnGy5pgyBKNoaOKqBNSFhwZlOH8Pcd4uyXwC13TCoSPNVc6LkBYEyjhQFf4FRmCg</EncryptedPassword>
+    <_PublishTargetUrl>ftp://ftp.api.xdpayment.sis-pro.net/www/apicliente</_PublishTargetUrl>
+    <History>True|2023-04-19T20:03:32.4268169Z;</History>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="appsettings.Development.json">
+      <publishTime>04/11/2023 09:28:12</publishTime>
+    </File>
+    <File Include="appsettings.json">
+      <publishTime>04/11/2023 18:01:45</publishTime>
+    </File>
+    <File Include="AutoMapper.dll">
+      <publishTime>10/16/2020 12:36:54</publishTime>
+    </File>
+    <File Include="AutoMapper.Extensions.Microsoft.DependencyInjection.dll">
+      <publishTime>02/05/2021 11:28:34</publishTime>
+    </File>
+    <File Include="Enums.NET.dll">
+      <publishTime>01/29/2021 14:45:00</publishTime>
+    </File>
+    <File Include="FiltrDinamico.Core.dll">
+      <publishTime>04/19/2023 17:02:48</publishTime>
+    </File>
+    <File Include="FiltrDinamico.Core.pdb">
+      <publishTime>04/19/2023 17:02:48</publishTime>
+    </File>
+    <File Include="Microsoft.AspNetCore.Authentication.JwtBearer.dll">
+      <publishTime>03/16/2021 15:08:02</publishTime>
+    </File>
+    <File Include="Microsoft.AspNetCore.JsonPatch.dll">
+      <publishTime>01/18/2020 14:34:02</publishTime>
+    </File>
+    <File Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll">
+      <publishTime>01/18/2020 14:46:02</publishTime>
+    </File>
+    <File Include="Microsoft.Bcl.AsyncInterfaces.dll">
+      <publishTime>04/14/2020 19:39:12</publishTime>
+    </File>
+    <File Include="Microsoft.Bcl.HashCode.dll">
+      <publishTime>11/15/2019 05:38:50</publishTime>
+    </File>
+    <File Include="Microsoft.EntityFrameworkCore.Abstractions.dll">
+      <publishTime>08/20/2020 21:57:42</publishTime>
+    </File>
+    <File Include="Microsoft.EntityFrameworkCore.dll">
+      <publishTime>08/20/2020 21:58:10</publishTime>
+    </File>
+    <File Include="Microsoft.EntityFrameworkCore.Relational.Design.dll">
+      <publishTime>02/17/2017 15:01:04</publishTime>
+    </File>
+    <File Include="Microsoft.EntityFrameworkCore.Relational.dll">
+      <publishTime>08/20/2020 21:58:16</publishTime>
+    </File>
+    <File Include="Microsoft.Extensions.Caching.Abstractions.dll">
+      <publishTime>08/20/2020 20:49:04</publishTime>
+    </File>
+    <File Include="Microsoft.Extensions.Caching.Memory.dll">
+      <publishTime>08/20/2020 20:49:30</publishTime>
+    </File>
+    <File Include="Microsoft.Extensions.Configuration.Abstractions.dll">
+      <publishTime>08/20/2020 20:49:38</publishTime>
+    </File>
+    <File Include="Microsoft.Extensions.Configuration.Binder.dll">
+      <publishTime>08/20/2020 20:50:00</publishTime>
+    </File>
+    <File Include="Microsoft.Extensions.Configuration.dll">
+      <publishTime>08/20/2020 20:49:38</publishTime>
+    </File>
+    <File Include="Microsoft.Extensions.DependencyInjection.Abstractions.dll">
+      <publishTime>08/20/2020 20:49:48</publishTime>
+    </File>
+    <File Include="Microsoft.Extensions.DependencyInjection.dll">
+      <publishTime>08/20/2020 20:49:38</publishTime>
+    </File>
+    <File Include="Microsoft.Extensions.Logging.Abstractions.dll">
+      <publishTime>08/20/2020 20:51:02</publishTime>
+    </File>
+    <File Include="Microsoft.Extensions.Logging.dll">
+      <publishTime>08/20/2020 20:51:08</publishTime>
+    </File>
+    <File Include="Microsoft.Extensions.Options.dll">
+      <publishTime>08/20/2020 20:49:28</publishTime>
+    </File>
+    <File Include="Microsoft.Extensions.Primitives.dll">
+      <publishTime>08/20/2020 20:49:56</publishTime>
+    </File>
+    <File Include="Microsoft.IdentityModel.JsonWebTokens.dll">
+      <publishTime>06/24/2019 16:50:38</publishTime>
+    </File>
+    <File Include="Microsoft.IdentityModel.Logging.dll">
+      <publishTime>06/24/2019 16:53:26</publishTime>
+    </File>
+    <File Include="Microsoft.IdentityModel.Protocols.dll">
+      <publishTime>06/24/2019 16:54:24</publishTime>
+    </File>
+    <File Include="Microsoft.IdentityModel.Protocols.OpenIdConnect.dll">
+      <publishTime>06/24/2019 16:59:32</publishTime>
+    </File>
+    <File Include="Microsoft.IdentityModel.Tokens.dll">
+      <publishTime>06/24/2019 16:56:06</publishTime>
+    </File>
+    <File Include="Microsoft.OpenApi.dll">
+      <publishTime>08/29/2020 17:14:12</publishTime>
+    </File>
+    <File Include="MySqlConnector.dll">
+      <publishTime>08/20/2020 16:28:24</publishTime>
+    </File>
+    <File Include="Newtonsoft.Json.Bson.dll">
+      <publishTime>11/27/2018 21:10:18</publishTime>
+    </File>
+    <File Include="Newtonsoft.Json.dll">
+      <publishTime>04/21/2019 22:06:16</publishTime>
+    </File>
+    <File Include="Pomelo.EntityFrameworkCore.MySql.Design.dll">
+      <publishTime>05/06/2017 09:09:14</publishTime>
+    </File>
+    <File Include="Pomelo.EntityFrameworkCore.MySql.dll">
+      <publishTime>11/02/2020 12:32:14</publishTime>
+    </File>
+    <File Include="Pomelo.JsonObject.dll">
+      <publishTime>11/20/2019 08:56:36</publishTime>
+    </File>
+    <File Include="Swashbuckle.AspNetCore.Swagger.dll">
+      <publishTime>04/09/2021 13:44:32</publishTime>
+    </File>
+    <File Include="Swashbuckle.AspNetCore.SwaggerGen.dll">
+      <publishTime>04/09/2021 13:44:38</publishTime>
+    </File>
+    <File Include="Swashbuckle.AspNetCore.SwaggerUI.dll">
+      <publishTime>04/09/2021 13:44:36</publishTime>
+    </File>
+    <File Include="System.Collections.Immutable.dll">
+      <publishTime>04/14/2020 19:38:40</publishTime>
+    </File>
+    <File Include="System.ComponentModel.Annotations.dll">
+      <publishTime>10/19/2020 15:37:54</publishTime>
+    </File>
+    <File Include="System.Diagnostics.DiagnosticSource.dll">
+      <publishTime>04/14/2020 19:48:06</publishTime>
+    </File>
+    <File Include="System.IdentityModel.Tokens.Jwt.dll">
+      <publishTime>06/24/2019 16:49:50</publishTime>
+    </File>
+    <File Include="web.config">
+      <publishTime>04/19/2023 17:03:02</publishTime>
+    </File>
+    <File Include="XdPagamentoApi.Shared.dll">
+      <publishTime>04/19/2023 17:02:51</publishTime>
+    </File>
+    <File Include="XdPagamentoApi.Shared.pdb">
+      <publishTime>04/19/2023 17:02:51</publishTime>
+    </File>
+    <File Include="XdPagamentosApi.Domain.dll">
+      <publishTime>04/19/2023 17:02:53</publishTime>
+    </File>
+    <File Include="XdPagamentosApi.Domain.pdb">
+      <publishTime>04/19/2023 17:02:53</publishTime>
+    </File>
+    <File Include="XdPagamentosApi.IOC.dll">
+      <publishTime>04/19/2023 17:03:00</publishTime>
+    </File>
+    <File Include="XdPagamentosApi.IOC.pdb">
+      <publishTime>04/19/2023 17:03:00</publishTime>
+    </File>
+    <File Include="XdPagamentosApi.Repository.dll">
+      <publishTime>04/19/2023 17:02:56</publishTime>
+    </File>
+    <File Include="XdPagamentosApi.Repository.pdb">
+      <publishTime>04/19/2023 17:02:56</publishTime>
+    </File>
+    <File Include="XdPagamentosApi.Services.dll">
+      <publishTime>04/19/2023 17:02:59</publishTime>
+    </File>
+    <File Include="XdPagamentosApi.Services.pdb">
+      <publishTime>04/19/2023 17:02:59</publishTime>
+    </File>
+    <File Include="XdPagamentosApi.WebApiCliente.deps.json">
+      <publishTime>04/19/2023 17:03:01</publishTime>
+    </File>
+    <File Include="XdPagamentosApi.WebApiCliente.dll">
+      <publishTime>04/19/2023 17:03:00</publishTime>
+    </File>
+    <File Include="XdPagamentosApi.WebApiCliente.exe">
+      <publishTime>04/19/2023 17:03:00</publishTime>
+    </File>
+    <File Include="XdPagamentosApi.WebApiCliente.pdb">
+      <publishTime>04/19/2023 17:03:00</publishTime>
+    </File>
+    <File Include="XdPagamentosApi.WebApiCliente.runtimeconfig.json">
+      <publishTime>04/19/2023 17:03:01</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

@@ -26,8 +26,8 @@ export class TerminalService {
     return this.http.put<ModeloBase>(`${this.caminhoApi}/alterar`, model);
   }
 
-  bucarTerminaisCliente() {
-    return this.http.get<ModeloBase>(`${this.caminhoApi}/buca-terminais-cliente/`);
+  bucarTerminaisCliente(id: number) {
+    return this.http.get<ModeloBase>(`${this.caminhoApi}/buca-terminais-cliente/${id}`);
   }
 
 }

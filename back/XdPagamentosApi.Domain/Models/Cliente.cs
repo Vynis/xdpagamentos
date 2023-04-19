@@ -37,6 +37,9 @@ namespace XdPagamentosApi.Domain.Models
         public int EstId { get; set; }
         public Estabelecimento Estabelecimento { get; set; }
 
+        public int UscId { get; set; }
+        public UsuarioCliente UsuarioCliente { get; set; }
+
         public List<RelClienteTerminal> ListaRelClienteTerminal { get; set; }
         public List<TipoTransacao> ListaTipoTransacao { get; set; }
         public List<Pagamentos> ListaPagamentos { get; set; }
@@ -44,5 +47,7 @@ namespace XdPagamentosApi.Domain.Models
         public List<GestaoPagamento> ListaGestaoPagamento { get; set; }
 
         public List<VwGestaoPagamentoTransacoes> ListaViewGestaoPagamentoTransacoes { get; set; }
+
+        
     }
 }

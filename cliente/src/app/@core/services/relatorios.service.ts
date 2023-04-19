@@ -12,8 +12,10 @@ export class RelatoriosService {
     this.caminhoApi =  `${environment.api}/Relatorios`;
   }
 
-  buscaGraficoVendas() {
-    return this.http.get<ModeloBase>(`${this.caminhoApi}/buscar-grafico-vendas`);
+  buscaGraficoVendas(id: number) {
+    return this.http.get<ModeloBase>(`${this.caminhoApi}/buscar-grafico-vendas/${id}`);
   }
+
+
 
 }

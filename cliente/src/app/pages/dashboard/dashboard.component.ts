@@ -5,6 +5,7 @@ import { SolarData } from '../../@core/data/solar';
 import { SessoesEnum } from '../../@core/enums/sessoes.enum';
 import { AuthServiceService } from '../../@core/services/auth-service.service';
 import { RelatoriosService } from '../../@core/services/relatorios.service';
+import { GeralEnum } from '../../@core/enums/geral.enum';
 
 interface CardSettings {
   title: string;
@@ -22,6 +23,7 @@ export class DashboardComponent implements OnDestroy {
   listaDatas: string[];
   listaValores: number[];
   loading = false;
+  cliId= 0;
 
   constructor(private themeService: NbThemeService,
               private solarService: SolarData,
@@ -33,7 +35,11 @@ export class DashboardComponent implements OnDestroy {
   }
 
   ngOnInit(): void {
-    this.buscaDadosGraficoVendas();
+    setTimeout(() => {
+      this.cliId = Number(localStorage.getItem(GeralEnum.IDCLIENTE));
+      this.buscaDadosGraficoVendas();
+    }, 3000);
+    
   }
 
   ngOnDestroy() {
@@ -42,7 +48,7 @@ export class DashboardComponent implements OnDestroy {
 
   buscaDadosGraficoVendas() {
     this.loading = true;
-    this.relatorioService.buscaGraficoVendas().subscribe(
+    this.relatorioService.buscaGraficoVendas(this.cliId).subscribe(
       res => {
         if (!res.success)
           return; 

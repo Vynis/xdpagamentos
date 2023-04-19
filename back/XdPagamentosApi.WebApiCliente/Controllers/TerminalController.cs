@@ -89,13 +89,13 @@ namespace XdPagamentosApi.WebApiCliente.Controllers
             }
         }
 
-        [HttpGet("buca-terminais-cliente")]
+        [HttpGet("buca-terminais-cliente/{id}")]
         [SwaggerGroup("Terminal")]
-        public async Task<IActionResult> BuscaTerminaisCliente()
+        public async Task<IActionResult> BuscaTerminaisCliente(int id)
         {
             try
             {
-                return Response(await _terminalService.BuscaTerminalCliente(Convert.ToInt32(User.Identity.Name.ToString().Descriptar(tipoSistema: TipoSistema.Cliente))));
+                return Response(await _terminalService.BuscaTerminalCliente(id));
             }
             catch (Exception ex)
             {

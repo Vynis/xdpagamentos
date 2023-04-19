@@ -12,7 +12,7 @@ export class FormaPagtoService {
     this.caminhoApi =  `${environment.api}/FormaPagto`;
   }
 
-  buscarAtivosCliente() {
-    return this.http.get<ModeloBase>(`${this.caminhoApi}/buscar-por-ativos-cliente`);
+  buscarAtivosCliente(id: number) {
+    return this.http.get<ModeloBase>(`${this.caminhoApi}/buscar-por-ativos-cliente/${id}`);
   }
 }

@@ -41,6 +41,7 @@ import { COSMIC_THEME } from './styles/theme.cosmic';
 import { CORPORATE_THEME } from './styles/theme.corporate';
 import { DARK_THEME } from './styles/theme.dark';
 import { NbDateFnsDateModule, NbDateFnsDateService } from '@nebular/date-fns';
+import { FormsModule } from '@angular/forms';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -55,7 +56,8 @@ const NB_MODULES = [
   NbSelectModule,
   NbIconModule,
   NbEvaIconsModule,
-  NbCardModule
+  NbCardModule,
+  FormsModule
 ];
 const COMPONENTS = [
   HeaderComponent,

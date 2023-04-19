@@ -6,7 +6,11 @@ import { LayoutService } from '../../../@core/utils';
 import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { GestaoPagamentoData } from '../../../@core/data/gestao-pagto';
-import { truncate } from 'fs';
+
+import { ClienteData } from '../../../@core/data/cliente';
+import { ClienteModel } from '../../../@core/models/cliente.model';
+import { GeralEnum } from '../../../@core/enums/geral.enum';
+
 
 @Component({
   selector: 'ngx-header',
@@ -21,6 +25,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   saldo: string = '0,00';
   limite: string = '0,00';
   total: string = '0,00';
+  listaClientes: ClienteModel[];
+  selectValue;
+  cliIdOld=0;
 
   themes = [
     {
@@ -54,13 +61,17 @@ hideMenuOnClick: boolean = false;
               private layoutService: LayoutService,
               private breakpointService: NbMediaBreakpointsService,
               private gestaoPagamentoService: GestaoPagamentoData,
+              private clienteService: ClienteData,
               private dialogService: NbDialogService) {
   }
+
 
   ngOnInit() {
     this.currentTheme = this.themeService.currentTheme;
 
-    this.buscarSaldo();
+    //this.buscarSaldo();
+    this.cliIdOld = Number(localStorage.getItem(GeralEnum.IDCLIENTE));
+    this.buscarCliente();
 
     this.userService.getUsers()
       .pipe(takeUntil(this.destroy$))
@@ -113,8 +124,8 @@ hideMenuOnClick: boolean = false;
     return false;
   }
 
-  buscarSaldo() {
-    this.gestaoPagamentoService.saldoAtual().subscribe(
+  buscarSaldo(id: number) {
+    this.gestaoPagamentoService.saldoAtual(id).subscribe(
       res => {
         if (!res.success)
           return;
@@ -122,12 +133,40 @@ hideMenuOnClick: boolean = false;
         this.saldo = res.data.saldoCliente;
         this.limite = res.data.limiteCliente;
         this.total = res.data.total;
-        console.log(res.data);
+      }
+    )
+  }
+
+  buscarCliente() {
+    this.clienteService.buscarAtivos().subscribe(
+      res => {
+        if (!res.success)
+          return;
+
+        this.listaClientes = res.data;
+
+        if (this.listaClientes.length > 0){
+          if (this.cliIdOld !== 0) {
+            this.selectValue = this.cliIdOld;
+            this.buscarSaldo(this.cliIdOld);
+            return;
+          }
+
+          this.selectValue = this.listaClientes[0].id;
+          this.buscarSaldo(this.listaClientes[0].id);
+          localStorage.setItem(GeralEnum.IDCLIENTE,this.selectValue );
+        }
+         
       }
     )
   }
 
   open(dialog: TemplateRef<any>) {
     this.dialogService.open(dialog);
+  }
+
+  changeCliente(valor) {
+    localStorage.setItem(GeralEnum.IDCLIENTE,valor);
+    location.reload();
   }
 }

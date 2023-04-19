@@ -19,9 +19,9 @@ export class GestaoPagamentoService extends GestaoPagamentoData {
     buscar(filtro: PaginationFilterModel) {
         return this.http.post<ModeloBase>(`${this.caminhoApi}/buscar-gestao-pagamento-filtro-cliente`, filtro);
     }
-
-    saldoAtual() {
-        return this.http.get<ModeloBase>(`${this.caminhoApi}/saldo-atual`);
+    
+    saldoAtual(id: number) {
+        return this.http.get<ModeloBase>(`${this.caminhoApi}/saldo-atual-cliente/${id}`);
     }
 
     solicitarPagto(model: GestaoPagamentoModel) {

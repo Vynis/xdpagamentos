@@ -7,6 +7,7 @@ import { NbDialogRef } from '@nebular/theme';
 import { ToastService } from '../../../@core/services/toast.service';
 import { ToastPadrao } from '../../../@core/enums/toast.enum';
 import { ConfirmPasswordValidator } from '../../../@core/utils/confirm-password.validator';
+import { UsuarioClienteService } from '../../../@core/services/usuario-cliente.service';
 
 @Component({
   selector: 'ngx-alterar-senha',
@@ -24,7 +25,7 @@ export class AlterarSenhaComponent implements OnInit {
     private fb: FormBuilder,
     private toastService : ToastService,
     private authService : NbAuthService,
-    private clienteService: ClienteService
+    private usuarioClienteService: UsuarioClienteService
     ) {
     
       this.authService.onTokenChange().subscribe(
@@ -80,7 +81,7 @@ export class AlterarSenhaComponent implements OnInit {
 
     const control = this.formulario.controls;
 
-    this.clienteService.alterarSenha({ idCliente: this.idUsuario, senhaAtual: control.senhaAtual.value, senhaNova: control.senhaNovo.value }).subscribe(
+    this.usuarioClienteService.alterarSenha({ idUsuario: this.idUsuario, senhaAtual: control.senhaAtual.value, senhaNova: control.senhaNovo.value }).subscribe(
       res => {
 
         if (!res.success) {

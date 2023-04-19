@@ -16,7 +16,7 @@ using XdPagamentosApi.WebApi.Configuracao.Swagger;
 namespace XdPagamentosApi.WebApi.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class LogNotificacoesController : BaseController
     {
         private readonly ILogNotificacoesService _logNotificacoesService;

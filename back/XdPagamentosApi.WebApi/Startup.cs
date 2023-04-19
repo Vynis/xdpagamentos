@@ -119,6 +119,15 @@ namespace XdPagamentosApi.WebApi
                 app.UseDeveloperExceptionPage();
             }
 
+
+            app.UsePathBase("/api");
+
+            app.Use((context, next) =>
+            {
+                context.Request.PathBase = "/api";
+                return next();
+            });
+
             app.UseHttpsRedirection();
 
             app.UseRouting();

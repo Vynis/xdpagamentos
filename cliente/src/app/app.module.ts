@@ -25,6 +25,7 @@ import { AuthGuard } from './@core/utils/auth.guard';
 import { NbAuthJWTInterceptor } from '@nebular/auth';
 import { InterceptService } from './@core/utils/intercept.service';
 import { ReactiveFormsModule } from '@angular/forms';
+import { UsuarioClienteService } from './@core/services/usuario-cliente.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -53,7 +54,8 @@ import { ReactiveFormsModule } from '@angular/forms';
       useClass: InterceptService,
       multi: true,
     },
-    ClienteService
+    ClienteService,
+    UsuarioClienteService
   ],
   bootstrap: [AppComponent],
 })
