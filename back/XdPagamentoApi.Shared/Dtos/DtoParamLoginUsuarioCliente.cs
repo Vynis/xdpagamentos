@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace XdPagamentoApi.Shared.Dtos
 {
-    public class DtoParamLoginUsuario
+    public class DtoParamLoginUsuarioCliente
     {
         [Required]
-        public string CPF { get; set; }
+        public string Email { get; set; }
         [Required]
         public string Senha { get; set; }
     }

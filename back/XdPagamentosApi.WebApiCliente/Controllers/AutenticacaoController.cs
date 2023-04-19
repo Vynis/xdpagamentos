@@ -37,7 +37,7 @@ namespace XdPagamentosApi.WebApiCliente.Controllers
         [HttpPost("AutenticarCliente")]
         [SwaggerGroup("AutenticacaoSistema")]
         [AllowAnonymous]
-        public async Task<IActionResult> AutenticarCliente(DtoParamLoginUsuario param)
+        public async Task<IActionResult> AutenticarCliente(DtoParamLoginUsuarioCliente param)
         {
             try
             {

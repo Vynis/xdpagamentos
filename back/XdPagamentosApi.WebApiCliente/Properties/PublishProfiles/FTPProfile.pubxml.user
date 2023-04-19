@@ -8,7 +8,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAApwzEh/chkk+Kudq1VR2yaAAAAAACAAAAAAAQZgAAAAEAACAAAAB6BH0DOKNn93XkZ4/oO1Ne+AN4YWR1+SZTeJ3spWuEbAAAAAAOgAAAAAIAACAAAACre7e1wDL3JDtBeU1VUAVvYYEQpw/o2a4MObu5Bf6UeCAAAACu893E+0gOOQ/j+LEi7h2K1BR/p8BPlQuPACghQh+BvEAAAAB8gtn4WDJw9VSeAD10t6bzCnGy5pgyBKNoaOKqBNSFhwZlOH8Pcd4uyXwC13TCoSPNVc6LkBYEyjhQFf4FRmCg</EncryptedPassword>
     <_PublishTargetUrl>ftp://ftp.api.xdpayment.sis-pro.net/www/apicliente</_PublishTargetUrl>
-    <History>True|2023-04-19T20:03:32.4268169Z;</History>
+    <History>True|2023-04-19T20:11:21.8951054Z;True|2023-04-19T17:03:32.4268169-03:00;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include="appsettings.Development.json">
@@ -150,49 +150,49 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/24/2019 16:49:50</publishTime>
     </File>
     <File Include="web.config">
-      <publishTime>04/19/2023 17:03:02</publishTime>
+      <publishTime>04/19/2023 17:10:50</publishTime>
     </File>
     <File Include="XdPagamentoApi.Shared.dll">
-      <publishTime>04/19/2023 17:02:51</publishTime>
+      <publishTime>04/19/2023 17:09:46</publishTime>
     </File>
     <File Include="XdPagamentoApi.Shared.pdb">
-      <publishTime>04/19/2023 17:02:51</publishTime>
+      <publishTime>04/19/2023 17:09:46</publishTime>
     </File>
     <File Include="XdPagamentosApi.Domain.dll">
-      <publishTime>04/19/2023 17:02:53</publishTime>
+      <publishTime>04/19/2023 17:09:48</publishTime>
     </File>
     <File Include="XdPagamentosApi.Domain.pdb">
-      <publishTime>04/19/2023 17:02:53</publishTime>
+      <publishTime>04/19/2023 17:09:48</publishTime>
     </File>
     <File Include="XdPagamentosApi.IOC.dll">
-      <publishTime>04/19/2023 17:03:00</publishTime>
+      <publishTime>04/19/2023 17:09:50</publishTime>
     </File>
     <File Include="XdPagamentosApi.IOC.pdb">
-      <publishTime>04/19/2023 17:03:00</publishTime>
+      <publishTime>04/19/2023 17:09:50</publishTime>
     </File>
     <File Include="XdPagamentosApi.Repository.dll">
-      <publishTime>04/19/2023 17:02:56</publishTime>
+      <publishTime>04/19/2023 17:09:49</publishTime>
     </File>
     <File Include="XdPagamentosApi.Repository.pdb">
-      <publishTime>04/19/2023 17:02:56</publishTime>
+      <publishTime>04/19/2023 17:09:49</publishTime>
     </File>
     <File Include="XdPagamentosApi.Services.dll">
-      <publishTime>04/19/2023 17:02:59</publishTime>
+      <publishTime>04/19/2023 17:09:50</publishTime>
     </File>
     <File Include="XdPagamentosApi.Services.pdb">
-      <publishTime>04/19/2023 17:02:59</publishTime>
+      <publishTime>04/19/2023 17:09:50</publishTime>
     </File>
     <File Include="XdPagamentosApi.WebApiCliente.deps.json">
-      <publishTime>04/19/2023 17:03:01</publishTime>
+      <publishTime>04/19/2023 17:10:49</publishTime>
     </File>
     <File Include="XdPagamentosApi.WebApiCliente.dll">
-      <publishTime>04/19/2023 17:03:00</publishTime>
+      <publishTime>04/19/2023 17:10:49</publishTime>
     </File>
     <File Include="XdPagamentosApi.WebApiCliente.exe">
-      <publishTime>04/19/2023 17:03:00</publishTime>
+      <publishTime>04/19/2023 17:10:49</publishTime>
     </File>
     <File Include="XdPagamentosApi.WebApiCliente.pdb">
-      <publishTime>04/19/2023 17:03:00</publishTime>
+      <publishTime>04/19/2023 17:10:49</publishTime>
     </File>
     <File Include="XdPagamentosApi.WebApiCliente.runtimeconfig.json">
       <publishTime>04/19/2023 17:03:01</publishTime>
