@@ -173,6 +173,13 @@
                               </div>
                         </div>
                     </div>
+
+                    <div class="col-sm-3">
+                      <label for="estado" class="label">Usuario Cliente</label><br>
+                      <nb-select placeholder="Selecione" formControlName="uscId">
+                        <nb-option *ngFor="let usu of listaUsuarioClientes" [value]="usu.id" >{{usu.nome}}</nb-option>
+                      </nb-select>
+                  </div>
                     </div>
 
                 </nb-tab>

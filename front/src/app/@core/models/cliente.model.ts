@@ -30,6 +30,7 @@ export class ClienteModel {
     limiteCredito: string;
     tipoChavePix: string;
     chavePix: string;
+    uscId: number;
 
     /**
      *

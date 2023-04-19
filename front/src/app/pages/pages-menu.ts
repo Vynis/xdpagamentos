@@ -16,22 +16,27 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: '/pages/cliente',
       },
       {
-        title: 'POS/Terminais',
-        link: '/pages/terminal',
+        title: 'Contas Caixa',
+        pathMatch: 'prefix',
+        link: '/pages/conta',
       },
       {
         title: 'Estabelecimentos',
         link: '/pages/estabelecimento',
       },
       {
+        title: 'POS/Terminais',
+        link: '/pages/terminal',
+      },
+      {
         title: 'Usuários do Sistema',
         link: '/pages/usuario',
       },
       {
-        title: 'Contas Caixa',
-        pathMatch: 'prefix',
-        link: '/pages/conta',
-      },
+        title: 'Usuários de Clientes',
+        link: '/pages/usuario-cliente',
+      }
+
     ],
   },
   {

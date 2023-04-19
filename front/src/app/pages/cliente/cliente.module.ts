@@ -16,6 +16,7 @@ import { InterceptService } from '../../@core/utils/intercept.service';
 import { BancoService } from '../../@core/services/banco.service';
 import { OrderModule } from 'ngx-order-pipe';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
+import { UsuarioClienteService } from '../../@core/services/usuario-cliente.service';
 
 
 @NgModule({
@@ -50,7 +51,8 @@ import { CurrencyMaskModule } from 'ng2-currency-mask';
     ClienteService,
     EstabelecimentoService,
     BancoService,
-    TipoTransacaoService
+    TipoTransacaoService,
+    UsuarioClienteService
   ]
 })
 export class ClienteModule { }

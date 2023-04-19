@@ -18,6 +18,8 @@ import { SessoesEnum } from '../../../@core/enums/sessoes.enum';
 import { OrderPipe } from 'ngx-order-pipe';
 import { formatarNumero, formatarNumeroUS } from '../../../@core/utils/funcoes';
 import { GenericValidator } from '../../../@core/utils/generic-validator';
+import { UsuarioClienteService } from '../../../@core/services/usuario-cliente.service';
+import { UsuarioClienteModel } from '../../../@core/models/usuario-cliente.model';
 
 @Component({
   selector: 'ngx-cliente-cadastro',
@@ -35,6 +37,7 @@ export class ClienteCadastroComponent implements OnInit {
   listaBancos: BancoModel[];
   listaTaxas: TipoTransacaoModel[];
   listaTiposChavePix: any[];
+  listaUsuarioClientes: UsuarioClienteModel[];
 
   get taxas(): FormArray{
     return <FormArray>this.formulario.get('taxas');
@@ -50,7 +53,8 @@ export class ClienteCadastroComponent implements OnInit {
     private tipoTransacaoService: TipoTransacaoService,
     private toastService : ToastService,
     private authService: AuthServiceService,
-    private orderPipe: OrderPipe
+    private orderPipe: OrderPipe,
+    private usuarioClienteService: UsuarioClienteService
     ) { }
 
   ngOnInit(): void {
@@ -58,6 +62,7 @@ export class ClienteCadastroComponent implements OnInit {
     this.listaTiposChavePix = TiposChavePix;
     this.buscarListaEstabelecimentos();
     this.buscarListaBancos();
+    this.buscarListaUsuarioClientes();
 
     this.activatedRoute.params.subscribe(params => {
       const id = params.id;
@@ -104,7 +109,9 @@ export class ClienteCadastroComponent implements OnInit {
       limiteCredito: [_cliente.limiteCredito, Validators.required],
       tipoChavePix: [_cliente.tipoChavePix],
       chavePix: [_cliente.chavePix],
-      taxas: this.fb.array([this.criaGrupoTaxa()])
+      uscId: [_cliente.uscId],
+      taxas: this.fb.array([this.criaGrupoTaxa()]
+      )
     });
 
     console.log(_cliente.tipoChavePix);
@@ -176,6 +183,24 @@ export class ClienteCadastroComponent implements OnInit {
         (<TipoTransacaoModel[]>res.data).forEach(taxa => {
           this.taxas.push(this.criaGrupoTaxa(taxa));
         })
+      }
+    )
+  }
+
+  buscarListaUsuarioClientes() {
+    this.usuarioClienteService.buscarTodosAtivos().subscribe(
+      res => {
+        if (!res.success) {
+          this.toastService.showToast(ToastPadrao.DANGER, 'Erro ao buscar dados');
+          console.log(res.data);
+          return;
+        }
+
+        this.listaUsuarioClientes = res.data;
+      },
+      error => {
+        console.log(error);
+        this.toastService.showToast(ToastPadrao.DANGER, 'Erro ao buscar dados');
       }
     )
   }
@@ -270,6 +295,7 @@ export class ClienteCadastroComponent implements OnInit {
     _cliente.email = controls.email.value;
     _cliente.status = controls.status.value;
     _cliente.limiteCredito = formatarNumero(controls.limiteCredito.value);
+    _cliente.uscId = controls.uscId.value;
 
     controls.taxas.value.forEach(taxa => {
       _cliente.listaTipoTransacao.push({id: 0, percDesconto: taxa.percDesconto, qtdParcelas: taxa.qtdParcelas, status: taxa.status, cliId: _cliente.id})

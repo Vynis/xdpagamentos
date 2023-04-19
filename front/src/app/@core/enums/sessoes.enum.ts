@@ -31,5 +31,9 @@ export enum SessoesEnum {
     CADASTRO_TRANSFERENCIA_TRANSACAO = 'cadtransftransacoes',
     RELATORIO_SOLICITACOES = 'relsolicitacoes',
     REALTORIO_SALDO_CLIENTES = 'reslsaldoclientes',
-    RELATORIO_SALDO_CONTA_CORRENTES = 'reslsaldocontacorrentes'
+    RELATORIO_SALDO_CONTA_CORRENTES = 'reslsaldocontacorrentes',
+    LISTA_USUARIOS_CLIENTES = 'listausuariosclientes',
+    EXCLUIR_USUARIOS_CLIENTES = 'excusuariosclientes',
+    ALTERAR_USUARIOS_CLIENTES = 'altusuariosclientes',
+    CADASTRO_USUARIOS_CLIENTES = 'cadusuariosclientes'
 }
