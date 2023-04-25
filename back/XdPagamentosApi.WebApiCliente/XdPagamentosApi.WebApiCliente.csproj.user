@@ -5,6 +5,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <ActiveDebugProfile>XdPagamentosApi.WebApiCliente</ActiveDebugProfile>
-    <NameOfLastUsedPublishProfile>C:\Users\vynis\Documents\www\xdpagamentos\back\XdPagamentosApi.WebApiCliente\Properties\PublishProfiles\FTPProfile.pubxml</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>C:\Users\vynis\Documents\www\xdpagamentos\.github\workflows\back.yml</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>

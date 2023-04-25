@@ -10,6 +10,6 @@
 
 export const environment = {
   production: false,
-  api: 'http://localhost:5001/apicliente'
-  //api: 'http://api.xdpayment.sis-pro.net/api'
+  //api: 'http://localhost:5001/apicliente'
+  api: 'http://api.xdpayment.sis-pro.net/apicliente'
 };

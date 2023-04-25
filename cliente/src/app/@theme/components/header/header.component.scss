@@ -76,6 +76,8 @@ nb-select{
 
 .estiloCardSaldo {padding-top: 27px;}
 
+.estiloCardSaldo2 {padding-top: 15px; }
+
 .ocultarSaldo{ color: black; }
 
 @media screen and (max-width:600px) {
@@ -87,5 +89,6 @@ nb-select{
 @media screen and (min-width:100px) and (max-width:600px) {
   .ocultarSaldoMobile{ display: block; }
   .estiloCardSaldo{ padding: 0;}
+  .estiloCardSaldo2{ padding: 0;}
   nb-card-body{ padding: 0;  }
 }

@@ -62,7 +62,8 @@ hideMenuOnClick: boolean = false;
               private breakpointService: NbMediaBreakpointsService,
               private gestaoPagamentoService: GestaoPagamentoData,
               private clienteService: ClienteData,
-              private dialogService: NbDialogService) {
+              private dialogService: NbDialogService,
+              ) {
   }
 
 
@@ -163,6 +164,10 @@ hideMenuOnClick: boolean = false;
 
   open(dialog: TemplateRef<any>) {
     this.dialogService.open(dialog);
+  }
+
+  close() {
+    
   }
 
   changeCliente(valor) {

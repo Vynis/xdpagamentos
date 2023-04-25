@@ -31,6 +31,8 @@ namespace XdPagamentoApi.Shared.Dtos
         public string NomeAgrupamento { get; set; }
         public string LimiteCredito { get; set; }
 
+        public int UscId { get; set; }
+
         public TiposChavePix? TipoChavePix { get; set; }
         public string ChavePix { get; set; }
 

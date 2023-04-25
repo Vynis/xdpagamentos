@@ -11,8 +11,8 @@
 </div>
 
 <div class="header-container">
-  <nb-card class="" style="width: 500px;">
-    <nb-card-body class="estiloCardSaldo">
+  <nb-card class="estiloCardSaldo2" >
+    <nb-card-body>
     <span class="ocultarSaldo">
       
       <label for="cliente" class="label">Cliente</label>
@@ -32,7 +32,7 @@
   </nb-card>
   <div class="ocultarSaldoMobile" style="padding-top: 5px;">
 
-        <button nbButton status="info" (click)="open(dialog)" size="tiny">Cliente</button> 
+        <button nbButton status="info" (click)="open(dialog2)" size="tiny">Cliente</button> 
         <button nbButton status="success" (click)="open(dialog)" size="tiny">Saldo</button>
    
   </div>
@@ -59,6 +59,21 @@
   <nb-card>
     <nb-card-header>Saldo + Limite = Saldo Total</nb-card-header>
     <nb-card-body style="padding-left: 10px;"><span style="font-size: 9pt;"><b>R$ {{saldo}}</b> + <b>R$ {{limite}}</b> = <b>R$ {{total}}</b>  </span> </nb-card-body>
+    <nb-card-footer>
+      <button nbButton size="tiny" (click)="ref.close()">Fechar</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+
+<ng-template #dialog2 let-data let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header>Cliente</nb-card-header>
+    <nb-card-body style="padding-left: 10px;">
+      <nb-select placeholder="" (selectedChange)="changeCliente($event)" fullWidth size="small"  status="primary" placeholder="Selecione" [(ngModel)]='selectValue' >
+        <nb-option *ngFor="let cli of listaClientes" [value]="cli.id">{{ cli.nome }} - {{ cli.cnpjCpf }}</nb-option>
+      </nb-select>
+    </nb-card-body>
     <nb-card-footer>
       <button nbButton size="tiny" (click)="ref.close()">Fechar</button>
     </nb-card-footer>
