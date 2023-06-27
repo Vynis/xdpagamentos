@@ -45,9 +45,11 @@ namespace XdPagamentosApi.Repository.Persistence.Context
         public DbSet<VwRelatorioSolicitacao> VwRelatorioSolicitacoes  { get; set; }
         public DbSet<VwRelatorioSaldoCliente> VwRelatorioSaldoClientes { get; set; }
         public DbSet<VwRelatorioSaldoContaCorrente> VwRelatorioSaldoContaCorrentes { get; set; }
-
         public DbSet<VwGestaoPagamentoTransacoes> VwGestaoPagamentoTransacao { get; set; }
         public DbSet<UsuarioCliente> UsuarioClientes { get; set; }
+        public DbSet<CentroCusto> CentroCustos { get; set; }
+        public DbSet<ContaPagar> ContaPagars { get; set; }
+        public DbSet<ContaReceber> ContaRecers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -91,6 +93,9 @@ namespace XdPagamentosApi.Repository.Persistence.Context
             modelBuilder.ApplyConfiguration(new VwRelatorioSaldoContaCorrenteMap());
             modelBuilder.ApplyConfiguration(new VwGestaoPagamentoTransacoesMap());
             modelBuilder.ApplyConfiguration(new UsuarioClienteMap());
+            modelBuilder.ApplyConfiguration(new CentroCustoMap());
+            modelBuilder.ApplyConfiguration(new ContaPagarMap());
+            modelBuilder.ApplyConfiguration(new ContaReceberMap());
 
         }
     }
