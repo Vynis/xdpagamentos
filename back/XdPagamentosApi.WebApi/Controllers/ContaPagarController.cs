@@ -11,23 +11,22 @@ namespace XdPagamentosApi.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class CentroCustoController : BaseController
+    public class ContaPagarController : BaseController
     {
-        private readonly ICentroCustoService _centroCustoService;
+        private readonly IContaPagarService _contaPagarService;
 
-        public CentroCustoController(ICentroCustoService centroCustoService)
+        public ContaPagarController(IContaPagarService contaPagarService)
         {
-            _centroCustoService = centroCustoService;
+            _contaPagarService = contaPagarService;
         }
 
-
         [HttpGet("buscar-todos")]
-        [SwaggerGroup("CentroCusto")]
+        [SwaggerGroup("ContaPagar")]
         public async Task<IActionResult> BuscarTodos()
         {
             try
             {
-                var response = await _centroCustoService.ObterTodos();
+                var response = await _contaPagarService.ObterTodos();
 
                 return Response(response.ToList().OrderBy(c => c.Descricao));
             }
@@ -39,12 +38,12 @@ namespace XdPagamentosApi.WebApi.Controllers
         }
 
         [HttpPost("inserir")]
-        [SwaggerGroup("CentroCusto")]
-        public async Task<IActionResult> Inserir(CentroCusto model)
+        [SwaggerGroup("ContaPagar")]
+        public async Task<IActionResult> Inserir(ContaPagar model)
         {
             try
             {
-                var response = await _centroCustoService.Adicionar(model);
+                var response = await _contaPagarService.Adicionar(model);
 
                 if (!response)
                     return Response("Erro ao cadastrar", false);
@@ -59,13 +58,13 @@ namespace XdPagamentosApi.WebApi.Controllers
         }
 
         [HttpPut("alterar")]
-        [SwaggerGroup("CentroCusto")]
-        public async Task<IActionResult> Alterar(CentroCusto model)
+        [SwaggerGroup("ContaPagar")]
+        public async Task<IActionResult> Alterar(ContaPagar model)
         {
             try
             {
 
-                var response = await _centroCustoService.Atualizar(model);
+                var response = await _contaPagarService.Atualizar(model);
 
                 if (!response)
                     return Response("Erro ao alterar", false);
@@ -80,15 +79,15 @@ namespace XdPagamentosApi.WebApi.Controllers
         }
 
         [HttpDelete("deletar/{id}")]
-        [SwaggerGroup("CentroCusto")]
+        [SwaggerGroup("ContaPagar")]
         public async Task<IActionResult> Deletar(int id)
         {
             try
             {
-                var response = await _centroCustoService.ExcluirComValidacao(id);
+                //var response = await _contaPagarService.Excluir(id);
 
-                if (response.Count() > 0)
-                    return Response(response, false);
+                //if (response.Count() > 0)
+                //    return Response(response, false);
 
                 return Response("Exclusão com sucesso!");
             }
@@ -98,13 +97,13 @@ namespace XdPagamentosApi.WebApi.Controllers
             }
         }
 
-        [HttpGet("buscar-por-id/{id}")]
-        [SwaggerGroup("CentroCusto")]
-        public async Task<IActionResult> BuscarPorId(int id)
+        [HttpPost("buscar-com-filtro")]
+        [SwaggerGroup("ContaPagar")]
+        public async Task<IActionResult> BuscarFiltro(PaginationFilter filtro)
         {
             try
             {
-                return Response(await _centroCustoService.ObterPorId(id));
+                return Response(await _contaPagarService.BuscarComFiltro(filtro));
             }
             catch (Exception ex)
             {

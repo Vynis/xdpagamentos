@@ -67,6 +67,18 @@ const routes: Routes = [{
       loadChildren: () => import('./miscellaneous/miscellaneous.module').then(m => m.MiscellaneousModule)
     },
     {
+      path: 'centro-custo',
+      loadChildren: () => import('./centro-custo/centro-custo.module').then(m => m.CentroCustoModule)
+    },
+    {
+      path: 'conta-pagar',
+      loadChildren: () => import('./conta-pagar/conta-pagar.module').then(m => m.ContaPagarModule)
+    },
+    {
+      path: 'conta-receber',
+      loadChildren: () => import('./conta-receber/conta-receber.module').then(m => m.ContaReceberModule)
+    },
+    {
       path: '',
       redirectTo: 'dashboard',
       pathMatch: 'full',

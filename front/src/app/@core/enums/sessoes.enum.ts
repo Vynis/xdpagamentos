@@ -35,5 +35,9 @@ export enum SessoesEnum {
     LISTA_USUARIOS_CLIENTES = 'listausuariosclientes',
     EXCLUIR_USUARIOS_CLIENTES = 'excusuariosclientes',
     ALTERAR_USUARIOS_CLIENTES = 'altusuariosclientes',
-    CADASTRO_USUARIOS_CLIENTES = 'cadusuariosclientes'
+    CADASTRO_USUARIOS_CLIENTES = 'cadusuariosclientes',
+    LISTA_CENTRO_CUSTO = 'listacentrocusto',
+    CADASTRO_CENTRO_CUSTO = 'cadcentrocusto',
+    ALTERAR_CENTRO_CUSTO = 'altcentrocusto',
+    EXCLUIR_CENTRO_CUSTO = 'exccentrocusto'
 }
