@@ -1,0 +1,88 @@
+<nb-card >
+  <nb-card-header>
+      Filtro
+  </nb-card-header>
+  <nb-card-body>
+      <nb-alert *ngIf="existeErro" status="danger" closable>Favor preencher todos os campos obrigatorios!</nb-alert>
+
+      <div  [formGroup]="formularioFiltro">
+          <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                    <label for="descricao" class="label">Descrição</label><br>    
+                    <input type="text" nbInput fullWidth placeholder="" formControlName="descricao">      
+                </div>
+              </div>
+              <div class="col-md-4">
+                  <div class="form-group">
+                      <label for="centroCusto" class="label">Centro Custo</label><br>
+                      <nb-select placeholder="" fullWidth  status="primary" formControlName="centroCusto" >
+                          <nb-option value="0">Todos</nb-option>
+                          <nb-option *ngFor="let centroCusto of listaCentroCusto" [value]="centroCusto.id" >{{centroCusto.descricao}}</nb-option>
+                        </nb-select>
+                  </div>
+              </div>
+
+              <div class="col-md-4">
+                  <label for="status" class="label">Status</label><br>
+                  <nb-select placeholder="" fullWidth  status="primary" formControlName="status" >
+                      <nb-option value="0">Todos</nb-option>
+                      <nb-option value="PG">PG - Pago</nb-option>
+                      <nb-option value="NP">NP - Não Pago</nb-option>
+                    </nb-select>
+              </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <label for="centroCusto" class="label">Pesquisar por</label><br>
+              <nb-select placeholder="" fullWidth  status="primary" formControlName="tipoPeriodo" >
+                  <nb-option value="1">Período de Vencimento</nb-option>
+                  <nb-option value="2">Período de Emissão</nb-option>
+                </nb-select>
+          </div>
+            <div class="col-md-2">
+              <div class="form-group">
+                  <label for="dtInicial" class="label">*Dt. Inicial</label><br>
+                  <input nbInput placeholder="" fullWidth formControlName="dtInicial" [nbDatepicker]="dtInicial">
+                  <nb-datepicker #dtInicial [min]="min" [max]="max" format="dd/MM/yyyy"></nb-datepicker>
+              </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="dtFinal" class="label">*Dt. Final</label><br>
+                    <input nbInput placeholder="" fullWidth formControlName="dtFinal" [nbDatepicker]="dtFinal">
+                    <nb-datepicker #dtFinal [min]="min" [max]="max" format="dd/MM/yyyy"></nb-datepicker>
+                </div>
+            </div>
+          </div>
+      </div>
+
+  </nb-card-body>
+  <nb-card-footer>
+      <button (click)="pesquisar()" type="submit" nbButton status="primary">Filtrar</button>
+  </nb-card-footer>
+</nb-card>
+
+<nb-card  >
+  <nb-card-header>
+      <div class="row">
+          <div class="col-sm-10" style="padding-top: 15px;">
+              Lista de Contas a Receber
+          </div>
+          <div  class="col-sm-2" style="text-align: right">
+              <a  nbButton status="primary" routerLink="../cadastro/add" >Novo</a>
+          </div>
+      </div>
+    
+  </nb-card-header>
+
+  <nb-card-body>
+    <ng2-smart-table 
+    #table
+    [settings]="settings" 
+    [source]="source" 
+    (custom)="onCustom($event)"
+    >
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>

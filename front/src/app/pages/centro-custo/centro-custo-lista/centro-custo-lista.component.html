@@ -1,0 +1,23 @@
+<nb-card *ngIf="carregaPagina">
+  <nb-card-header>
+      <div class="row">
+          <div class="col-sm-10" style="padding-top: 15px;">
+              Lista de Centro Custo
+          </div>
+          <div *ngIf="validaNovo" class="col-sm-2" style="text-align: right">
+              <a  nbButton status="primary" routerLink="../cadastro/add" >Novo</a>
+          </div>
+      </div>
+    
+  </nb-card-header>
+
+  <nb-card-body>
+    <ng2-smart-table 
+    [settings]="settings" 
+    [source]="source" 
+    (custom)="onCustom($event)"
+    >
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>
+

@@ -11,5 +11,7 @@ namespace XdPagamentosApi.Domain.Models
         public string Status { get; set; }
 
         public List<RelContaEstabelecimento> ListaRelContaEstabelecimento { get; set; }
+
+        public List<FluxoCaixa> ListaFluxoCaixa { get; set; }
     }
 }

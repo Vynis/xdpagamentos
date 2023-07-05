@@ -1,0 +1,200 @@
+<div class="row">
+    <div class="col-md-6">
+        <nb-card *ngIf="contaPagar">
+            <nb-card-header>Detalhes da conta a pagar</nb-card-header>
+            <nb-card-body>
+                    <div class="row ">
+              
+                        <div class="col-md-12">
+                          <div class="form-group">
+                              <label for="descricao" class="label">*Descrição</label><br>    
+                              <input class="form-control" readonly value="{{contaPagar.descricao}}"
+                              type="text" nbInput fullWidth placeholder="" >     
+                          </div>
+                       </div>
+               
+                    </div>
+    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="dataEmissao" class="label">*Data Emissão</label><br>
+                                <input class="form-control" readonly value="{{  contaPagar.dataEmissao | date: 'dd/MM/yyyy' }}"
+                                nbInput placeholder="" fullWidth  >  
+                            </div>
+                        </div>
+              
+                        <div class="col-md-6">
+                          <div class="form-group">
+                              <label for="dataVencimento" class="label">*Data Vencimento</label><br>
+                              <input class="form-control" readonly value="{{contaPagar.dataVencimento | date: 'dd/MM/yyyy' }}"
+                              nbInput placeholder="" fullWidth >
+                          </div>
+                      </div>
+                    </div>
+              
+                    <div class="row">
+              
+                      <div class="col-md-12">
+                          <div class="form-group">
+                              <label for="cliente" class="label">*Centro Custo</label><br>
+                              <input class="form-control" readonly value="{{contaPagar.centroCusto.descricao}}"
+                              type="text" nbInput fullWidth placeholder="" >
+                          </div>
+                      </div>
+              
+                    </div>
+    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="status" class="label">Valor</label><br>    
+                                <input class="form-control" readonly value="{{contaPagar.valor}}"
+                                type="text" nbInput fullWidth placeholder="" >      
+                            </div>
+                        </div>
+                
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="status" class="label">*Valor Previsto</label><br>    
+                                <input class="form-control" readonly value="{{contaPagar.valorPrevisto}}"
+                                type="text" nbInput fullWidth placeholder="">      
+                            </div>
+                        </div>
+                    </div>
+              
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="status" class="label">Observação</label><br>    
+                            <textarea class="form-control"
+                            type="text" nbInput fullWidth placeholder=""  cols="40" rows="5" readonly >{{contaPagar.obs}} </textarea>
+                        </div>
+                    </div>
+                    </div>
+              
+            </nb-card-body>
+          </nb-card>
+    </div>
+    <div class="col-md-6">
+        <nb-card>
+            <nb-card-header>Baixa de Conta a Pagar</nb-card-header>
+            <nb-card-body>
+                <nb-alert *ngIf="existeErro" status="danger" closable>{{messageAlert}}</nb-alert>
+                <form [formGroup]="formularioBaixa">
+                <div class="row">
+                    <div class="col-md-12">
+                        <nb-radio-group formControlName="tipoBaixa">
+                            <nb-radio value="N">Baixa Normal</nb-radio>
+                            <nb-radio value="P">Baixa Parcial</nb-radio>
+                          </nb-radio-group>
+                    </div>
+                </div> <br />
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <h6>Sub total - Valor Real: {{valorContaTxt}} - {{valorFluxoTxt}} = {{valorResultadoTxt}}</h6>
+                    </div>
+                </div><br />
+
+                <div  class="row ">
+                    <div class="col-md-12">
+                        <label for="cocId" class="label">*Conta Caixa</label><br>
+                        <nb-select id="cocId" placeholder="Selecione" formControlName="cocId">
+                          <nb-option *ngFor="let conta of listaContaCaixa" [value]="conta.id">{{conta.descricao}}</nb-option> 
+                        </nb-select>
+                    </div>
+                </div> <br />
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="dtLancamento" class="label">*Data do lançamento</label><br>
+                            <input class="form-control"
+                            [ngClass]="{'is-invalid': formularioBaixa.get('dtLancamento').errors  && formularioBaixa.get('dtLancamento').touched}"
+                             nbInput placeholder="" fullWidth formControlName="dtLancamento" [nbDatepicker]="dtLancamento">
+                            <nb-datepicker #dtLancamento format="dd/MM/yyyy"></nb-datepicker>
+                            <div *ngIf="formularioBaixa.get('dtLancamento').hasError('required')  && formularioBaixa.get('dtLancamento').touched" class="invalid-feedback">
+                                Campo é obrigatório.
+                              </div>  
+                        </div>
+                      </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="valor" class="label">*Valor Pago</label><br>    
+                            <input class="form-control" 
+                            [ngClass]="{'is-invalid': formularioBaixa.get('valor').errors  && formularioBaixa.get('valor').touched}"
+                            type="text" nbInput fullWidth placeholder="" formControlName="valor" currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', align: 'left'  }">      
+                            <div *ngIf="formularioBaixa.get('valor').hasError('required')  && formularioBaixa.get('valor').touched" class="invalid-feedback">
+                                Campo é obrigatório.
+                              </div>  
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="descricao" class="label">Observação</label><br>    
+                            <input class="form-control" 
+                            type="text" nbInput fullWidth placeholder="" formControlName="descricao">     
+                        </div>
+                     </div>
+                </div>
+
+                <div  class="row ">
+                    <div class="col-md-12">
+                        <label for="cocId" class="label">*Plano de Contas</label><br>
+                        <nb-select id="cocId" placeholder="Selecione" formControlName="pcoId">
+                           <nb-option *ngFor="let plano of listaPlanoConta" [value]="plano.id">{{plano.referencia}} - {{plano.descricao}}</nb-option> 
+                        </nb-select>
+                    </div>
+                </div> <br />
+
+                <div *ngIf="calculoAcrescimo || calculoDesconto"  class="row ">
+                    <div class="col-md-12">
+                        <nb-card>
+                            <nb-card-header>{{tituloCardAcDc}}</nb-card-header>
+                            <nb-card-body>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="valor" class="label">Valor</label><br>    
+                                            <input class="form-control"  readonly
+                                            type="text" nbInput fullWidth placeholder="" formControlName="valorAcDc" currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', align: 'left'  }">      
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="cocId" class="label">*Plano de Contas</label><br>
+                                        <nb-select  placeholder="Selecione" formControlName="pcoIdAcDc">
+                                           <nb-option *ngFor="let plano of listaPlanoContaGeneric" [value]="plano.id">{{plano.referencia}} - {{plano.descricao}}</nb-option> 
+                                        </nb-select>
+                                    </div>
+                                </div>
+                            </nb-card-body>
+                        </nb-card>
+                    </div>
+                </div>
+            </form>
+            </nb-card-body>
+            <nb-card-footer>
+                <div class="row">
+                    <div *ngIf="!efetuouCalculo && formularioBaixa.controls.tipoBaixa.value == 'N'"  class="col-sm-3">
+                        <button nbButton (click)="calcularBaixa()"  status="success" >Calcular</button>
+                    </div>
+                    <div *ngIf="efetuouCalculo" class="col-sm-3">
+                        <button nbButton  (click)="corrigirBaixa()" status="info" >Corrigir</button>
+                    </div>
+                    <div *ngIf="efetuouCalculo || formularioBaixa.controls.tipoBaixa.value == 'P'" class="col-sm-3">
+                        <button nbButton (click)="submit()"  status="success" >Baixar</button>
+                    </div>
+                    <div class="col-sm-3">
+                        <button nbButton (click)="voltar()" >Voltar</button>
+                    </div>
+                </div>
+            </nb-card-footer>
+        </nb-card>
+    </div>
+</div>
+

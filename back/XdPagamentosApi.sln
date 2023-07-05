@@ -21,7 +21,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{FE57FC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XdPagamentoApi.Shared", "XdPagamentoApi.Shared\XdPagamentoApi.Shared.csproj", "{C2C85894-D4DC-41E4-AC5B-6C92749AB3B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XdPagamentosApi.WebApiCliente", "XdPagamentosApi.WebApiCliente\XdPagamentosApi.WebApiCliente.csproj", "{CCCC8EC3-BA3B-46C7-84D7-7C4ED18103FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XdPagamentosApi.WebApiCliente", "XdPagamentosApi.WebApiCliente\XdPagamentosApi.WebApiCliente.csproj", "{CCCC8EC3-BA3B-46C7-84D7-7C4ED18103FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XdPagamentosApi.Testes", "XdPagamentosApi.Testes\XdPagamentosApi.Testes.csproj", "{B1C0E949-BC5F-475E-B784-D0947503BF47}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -141,6 +143,18 @@ Global
 		{CCCC8EC3-BA3B-46C7-84D7-7C4ED18103FD}.Release|x64.Build.0 = Release|Any CPU
 		{CCCC8EC3-BA3B-46C7-84D7-7C4ED18103FD}.Release|x86.ActiveCfg = Release|Any CPU
 		{CCCC8EC3-BA3B-46C7-84D7-7C4ED18103FD}.Release|x86.Build.0 = Release|Any CPU
+		{B1C0E949-BC5F-475E-B784-D0947503BF47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1C0E949-BC5F-475E-B784-D0947503BF47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1C0E949-BC5F-475E-B784-D0947503BF47}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B1C0E949-BC5F-475E-B784-D0947503BF47}.Debug|x64.Build.0 = Debug|Any CPU
+		{B1C0E949-BC5F-475E-B784-D0947503BF47}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B1C0E949-BC5F-475E-B784-D0947503BF47}.Debug|x86.Build.0 = Debug|Any CPU
+		{B1C0E949-BC5F-475E-B784-D0947503BF47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1C0E949-BC5F-475E-B784-D0947503BF47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1C0E949-BC5F-475E-B784-D0947503BF47}.Release|x64.ActiveCfg = Release|Any CPU
+		{B1C0E949-BC5F-475E-B784-D0947503BF47}.Release|x64.Build.0 = Release|Any CPU
+		{B1C0E949-BC5F-475E-B784-D0947503BF47}.Release|x86.ActiveCfg = Release|Any CPU
+		{B1C0E949-BC5F-475E-B784-D0947503BF47}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

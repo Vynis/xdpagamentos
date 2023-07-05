@@ -1,0 +1,30 @@
+:host {
+::ng-deep {
+  ng2-st-tbody-edit-delete {
+    display: none;
+    height: 0 !important;
+  }
+
+  ng2-st-tbody-custom {
+    display: flex;
+    text-align: center;
+  }
+
+  ng2-smart-table { font-size: medium; }
+
+  tr, td {
+    font-size: small !important;
+  }
+
+
+  tr.remove i.nb-trash {display:none;}
+  tr.baixa i.nb-checkmark {display:none;}
+  tr.edit i.nb-edit {display:none;}
+  tr.restaurar i.nb-shuffle {display:none;}
+}
+
+nb-select{ 
+  max-width: 100% !important;
+  width: 100%; 
+}
+}

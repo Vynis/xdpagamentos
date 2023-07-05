@@ -1,0 +1,44 @@
+<nb-card> 
+  <nb-card-header>{{tituloPagina}} </nb-card-header>
+  <nb-card-body *ngIf="centroCustoOld">
+      <nb-alert *ngIf="existeErro" status="danger" closable>Favor preencher todos os campos obrigatorios!</nb-alert>
+      <form  [formGroup]="formulario">
+
+            <div  class="row ">
+
+                <div class="col-sm-8">
+                    <div class="form-group">
+                        <label for="descricao" class="label">*Nome Centro Custo</label>
+                        <input type="text" class="form-control" maxlength="60"
+                        [ngClass]="{'is-invalid': formulario.get('descricao').errors  && formulario.get('descricao').touched}"
+                          nbInput fullWidth placeholder="Centro Custo" formControlName="descricao" />
+                          <div *ngIf="formulario.get('descricao').hasError('required')  && formulario.get('descricao').touched" class="invalid-feedback">
+                            Campo é obrigatório.
+                          </div>
+                      </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <label for="status" class="label">*Status</label><br>
+                    <nb-select id="status" placeholder="Selecione" formControlName="status"  selected="A">
+                      <nb-option value="A">Ativo</nb-option>
+                      <nb-option value="I">Inativo</nb-option>
+                    </nb-select>
+                </div>
+            </div>
+
+      </form>
+  </nb-card-body>
+
+  <nb-card-footer>
+      <div class="row">
+          <div class="col-sm-1">
+              <button nbButton (click)="submit()" status="success" >Salvar</button>
+          </div>
+          <div class="col-sm-1">
+              <button nbButton (click)="voltar()" >Voltar</button>
+          </div>
+      </div>
+  </nb-card-footer>
+  
+</nb-card>
