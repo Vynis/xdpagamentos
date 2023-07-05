@@ -1,0 +1,13 @@
+{{this.idConta.value.fluxoCaixa}} <br /> <br />
+
+<table class="table" *ngIf="idConta.value.listaFluxoCaixa.length > 0" >
+  <tbody>
+    <tr *ngFor="let lista of idConta.value.listaFluxoCaixa">
+      <td>{{lista.dtLancamento | date: 'dd/MM/yyyy' }}</td>
+      <td>{{lista.planoConta.referencia}} - {{lista.planoConta.descricao}}</td>
+      <td>{{lista.valor}}</td>
+      <td>{{lista.contaCaixa.descricao}}</td>
+      <td>{{lista.descricao}}</td>
+  </tr>
+  </tbody>
+</table>

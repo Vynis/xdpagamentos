@@ -18,6 +18,7 @@ import { ContaCaixaService } from '../../@core/services/conta-caixa.service';
 import { FluxoCaixaService } from '../../@core/services/fluxo-caixa.service';
 import { PlanoContaService } from '../../@core/services/plano-conta.service';
 import localePt from '@angular/common/locales/pt';
+import { ContaReceberItensFluxoCaixaComponent } from './conta-receber-itens-fluxo-caixa/conta-receber-itens-fluxo-caixa.component';
 
 registerLocaleData(localePt);
 
@@ -44,7 +45,8 @@ registerLocaleData(localePt);
     ContaReceberComponent,
     ContaReceberListaComponent,
     ContaReceberCadastroComponent,
-    ContaReceberBaixaComponent
+    ContaReceberBaixaComponent,
+    ContaReceberItensFluxoCaixaComponent
   ],
   providers: [
     InterceptService,
