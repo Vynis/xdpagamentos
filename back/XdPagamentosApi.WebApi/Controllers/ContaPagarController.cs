@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using XdPagamentoApi.Shared.Dtos;
 using XdPagamentosApi.Domain.Models;
 using XdPagamentosApi.Services.Interfaces;
 using XdPagamentosApi.Shared;
@@ -14,10 +16,12 @@ namespace XdPagamentosApi.WebApi.Controllers
     public class ContaPagarController : BaseController
     {
         private readonly IContaPagarService _contaPagarService;
+        private readonly IMapper _mapper;
 
-        public ContaPagarController(IContaPagarService contaPagarService)
+        public ContaPagarController(IContaPagarService contaPagarService, IMapper mapper)
         {
             _contaPagarService = contaPagarService;
+            _mapper = mapper;
         }
 
         [HttpGet("buscar-todos")]
@@ -37,12 +41,33 @@ namespace XdPagamentosApi.WebApi.Controllers
             }
         }
 
+
+        [HttpGet("buscar-por-id/{id}")]
+        [SwaggerGroup("ContaPagar")]
+        public async Task<IActionResult> BuscarPorId(int id)
+        {
+            try
+            {
+                var response = await _contaPagarService.ObterPorId(id);
+
+                return Response(response);
+            }
+            catch (Exception ex)
+            {
+
+                return Response(ex.Message, false);
+            }
+        }
+
         [HttpPost("inserir")]
         [SwaggerGroup("ContaPagar")]
         public async Task<IActionResult> Inserir(ContaPagar model)
         {
             try
             {
+                model.Status = "NP";
+                model.DataCadastro = DateTime.Now;
+
                 var response = await _contaPagarService.Adicionar(model);
 
                 if (!response)
@@ -63,6 +88,11 @@ namespace XdPagamentosApi.WebApi.Controllers
         {
             try
             {
+
+                var modelOld = await _contaPagarService.ObterPorId(model.Id);
+
+                model.Status = modelOld.Status;
+                model.DataCadastro = modelOld.DataCadastro;
 
                 var response = await _contaPagarService.Atualizar(model);
 
@@ -103,7 +133,7 @@ namespace XdPagamentosApi.WebApi.Controllers
         {
             try
             {
-                return Response(await _contaPagarService.BuscarComFiltro(filtro));
+                return Response(_mapper.Map<DtoContaPagar[]>( await _contaPagarService.BuscarComFiltro(filtro)));
             }
             catch (Exception ex)
             {

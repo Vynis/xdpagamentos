@@ -20,6 +20,22 @@ namespace XdPagamentosApi.WebApi.Controllers
             _centroCustoService = centroCustoService;
         }
 
+        [HttpGet("buscar-por-ativos")]
+        [SwaggerGroup("CentroCusto")]
+        public async Task<IActionResult> BuscarPorAtivos()
+        {
+            try
+            {
+                var response = await _centroCustoService.BuscarExpressao(x => x.Status.Equals("A"));
+
+                return Response(response.ToList().OrderBy(c => c.Descricao));
+            }
+            catch (Exception ex)
+            {
+
+                return Response(ex.Message, false);
+            }
+        }
 
         [HttpGet("buscar-todos")]
         [SwaggerGroup("CentroCusto")]

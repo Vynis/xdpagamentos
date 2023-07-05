@@ -32,4 +32,8 @@ export class CentroCustoService {
   buscaPorId(id: number) {
     return this.http.get<ModeloBase>(`${this.caminhoApi}/buscar-por-id/${id}`);
   }
+
+  buscarAtivos() {
+    return this.http.get<ModeloBase>(`${this.caminhoApi}/buscar-por-ativos`);
+  }
 }

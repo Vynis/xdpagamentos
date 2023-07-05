@@ -18,11 +18,13 @@ namespace XdPagamentosApi.Repository.Persistence.Mapping
             builder.Property(c => c.Id).HasColumnName("cpa_id");
             builder.Property(c => c.Descricao).HasColumnName("cpa_descricao");
             builder.Property(c => c.Valor).HasColumnName("cpa_valor");
-            builder.Property(c => c.Data).HasColumnName("cpa_data");
+            builder.Property(c => c.DataVencimento).HasColumnName("cpa_data_vencimento");
+            builder.Property(c => c.DataEmissao).HasColumnName("cpa_data_emissao");
             builder.Property(c => c.Status).HasColumnName("cpa_status");
             builder.Property(c => c.Obs).HasColumnName("cpa_observacoes");
             builder.Property(c => c.DataCadastro).HasColumnName("cpa_dt_cadastro");
             builder.Property(c => c.CecId).HasColumnName("cpa_cec_id");
+            builder.Property(c => c.ValorPrevisto).HasColumnName("cpa_valor_previsto");
 
             builder.HasOne(c => c.CentroCusto).WithMany(c => c.ListContaPagar).HasForeignKey(c => c.CecId);
         }

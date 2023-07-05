@@ -50,6 +50,9 @@ namespace XdPagamentosApi.Repository.Persistence.Context
         public DbSet<CentroCusto> CentroCustos { get; set; }
         public DbSet<ContaPagar> ContaPagars { get; set; }
         public DbSet<ContaReceber> ContaRecers { get; set; }
+        public DbSet<PlanoConta> PlanoContas { get; set; }
+
+        public DbSet<FluxoCaixa> FluxoCaixas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -96,6 +99,8 @@ namespace XdPagamentosApi.Repository.Persistence.Context
             modelBuilder.ApplyConfiguration(new CentroCustoMap());
             modelBuilder.ApplyConfiguration(new ContaPagarMap());
             modelBuilder.ApplyConfiguration(new ContaReceberMap());
+            modelBuilder.ApplyConfiguration(new PlanoContaMap());
+            modelBuilder.ApplyConfiguration(new FluxoCaixaMap());
 
         }
     }

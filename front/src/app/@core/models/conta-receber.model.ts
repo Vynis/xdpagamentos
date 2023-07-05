@@ -4,7 +4,9 @@ export class ContaReceberModel {
     id: number;
     descricao: string;
     valor: string;
-    data: Date;
+    valorPrevisto: string;
+    dataEmissao: Date;
+    dataVencimento: Date;
     status: string;
     obs: string;
     dataCadastro: Date;

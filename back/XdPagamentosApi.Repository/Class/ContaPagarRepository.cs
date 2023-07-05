@@ -30,14 +30,22 @@ namespace XdPagamentosApi.Repository.Class
             if (paginationFilter.Filtro.Count() > 0)
                 expressionDynamic = _filtroDinamico.FromFiltroItemList<ContaPagar>(paginationFilter.Filtro.ToList());
             else
-                return await _mySqlContext.ContaPagars.Include(c => c.CentroCusto).ToArrayAsync();
+                return await _mySqlContext.ContaPagars.Include(c => c.CentroCusto).Include(c => c.ListaFluxoCaixa).Include("ListaFluxoCaixa.PlanoConta").Include("ListaFluxoCaixa.ContaCaixa").ToArrayAsync();
 
-            IQueryable<ContaPagar> query = _mySqlContext.ContaPagars.Where(expressionDynamic).Include(c => c.CentroCusto);
+            IQueryable<ContaPagar> query = _mySqlContext.ContaPagars.Where(expressionDynamic).Include(c => c.CentroCusto).Include(c => c.ListaFluxoCaixa).Include("ListaFluxoCaixa.PlanoConta").Include("ListaFluxoCaixa.ContaCaixa");
 
             if (paginationFilter.Filtro.Count() > 0)
                 return await query.AsNoTracking().ToArrayAsync();
 
             return await query.AsNoTracking().OrderBy(c => c.Descricao).ToArrayAsync();
+        }
+
+        public async override Task<ContaPagar> ObterPorId(int Id)
+        {
+            IQueryable<ContaPagar> query = _mySqlContext.ContaPagars.Where(c => c.Id.Equals(Id)).Include(c => c.CentroCusto);
+
+            return await query.AsNoTracking().FirstOrDefaultAsync();
+
         }
     }
 }

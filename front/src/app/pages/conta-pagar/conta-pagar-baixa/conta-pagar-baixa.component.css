@@ -1,0 +1,9 @@
+nb-radio-group {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  nb-select{ 
+    max-width: 100% !important;
+    width: 100%; 
+  }

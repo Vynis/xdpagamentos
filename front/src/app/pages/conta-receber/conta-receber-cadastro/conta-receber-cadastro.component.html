@@ -1,3 +1,112 @@
-<p>
-  conta-receber-cadastro works!
-</p>
+<nb-card> 
+  <nb-card-header>{{tituloPagina}} </nb-card-header>
+  <nb-card-body *ngIf="contasReceberOld">
+      <nb-alert *ngIf="existeErro" status="danger" closable>Favor preencher todos os campos obrigatorios!</nb-alert>
+      <form [formGroup]="formulario">
+          <div class="row ">
+
+              <div class="col-md-8">
+                <div class="form-group">
+                    <label for="descricao" class="label">*Descrição</label><br>    
+                    <input class="form-control" 
+                    [ngClass]="{'is-invalid': formulario.get('descricao').errors  && formulario.get('descricao').touched}"
+                    type="text" nbInput fullWidth placeholder="" formControlName="descricao">  
+                    <div *ngIf="formulario.get('descricao').hasError('required')  && formulario.get('descricao').touched" class="invalid-feedback">
+                        Campo é obrigatório.
+                      </div>    
+                </div>
+             </div>
+
+              <div class="col-md-2">
+                  <div class="form-group">
+                      <label for="dataEmissao" class="label">*Data Emissão</label><br>
+                      <input class="form-control"
+                      [ngClass]="{'is-invalid': formulario.get('dataEmissao').errors  && formulario.get('dataEmissao').touched}"
+                      nbInput placeholder="" fullWidth formControlName="dataEmissao" [nbDatepicker]="dtEmissao">
+                      <nb-datepicker #dtEmissao format="dd/MM/yyyy"></nb-datepicker>
+                      <div *ngIf="formulario.get('dataEmissao').hasError('required')  && formulario.get('dataEmissao').touched" class="invalid-feedback">
+                          Campo é obrigatório.
+                        </div>  
+                  </div>
+              </div>
+
+              <div class="col-md-2">
+                <div class="form-group">
+                    <label for="dataVencimento" class="label">*Data Vencimento</label><br>
+                    <input class="form-control"
+                    [ngClass]="{'is-invalid': formulario.get('dataVencimento').errors  && formulario.get('dataVencimento').touched}"
+                    nbInput placeholder="" fullWidth formControlName="dataVencimento" [nbDatepicker]="dataCadastro">
+                    <nb-datepicker #dataCadastro format="dd/MM/yyyy"></nb-datepicker>
+                    <div *ngIf="formulario.get('dataVencimento').hasError('required')  && formulario.get('dataVencimento').touched" class="invalid-feedback">
+                        Campo é obrigatório.
+                      </div>  
+                </div>
+            </div>
+
+
+          </div>
+
+          <div class="row">
+
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label for="cliente" class="label">*Centro Custo</label><br>
+                    <nb-select 
+                    placeholder=""  fullWidth  status="primary" formControlName="centroCusto" >
+                        <nb-option *ngFor="let centro of listaCentroCusto" [value]="centro.id" >{{centro.descricao}}</nb-option>
+                      </nb-select>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="status" class="label">Valor</label><br>    
+                    <input class="form-control"
+                    [ngClass]="{'is-invalid': formulario.get('valor').errors  && formulario.get('valor').touched}"
+                    type="text" nbInput fullWidth placeholder="" formControlName="valor" currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', align: 'left'  }">  
+                    <div *ngIf="formulario.get('valor').hasError('required')  && formulario.get('valor').touched" class="invalid-feedback">
+                        Campo é obrigatório.
+                      </div>      
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="status" class="label">*Valor Previsto</label><br>    
+                    <input class="form-control"
+                    [ngClass]="{'is-invalid': formulario.get('valorPrevisto').errors  && formulario.get('valorPrevisto').touched}"
+                    type="text" nbInput fullWidth placeholder="" formControlName="valorPrevisto" currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', align: 'left'  }">  
+                    <div *ngIf="formulario.get('valorPrevisto').hasError('required')  && formulario.get('valorPrevisto').touched" class="invalid-feedback">
+                        Campo é obrigatório.
+                      </div>      
+                </div>
+            </div>
+
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                  <label for="status" class="label">Observação</label><br>    
+                  <textarea class="form-control"
+                  [ngClass]="{'is-invalid': formulario.get('obs').errors  && formulario.get('obs').touched}"
+                  type="text" nbInput fullWidth placeholder="" formControlName="obs" cols="40" rows="5" > </textarea>
+              </div>
+          </div>
+          </div>
+
+      </form>
+  </nb-card-body>
+
+  
+  <nb-card-footer>
+      <div class="row">
+          <div class="col-sm-1">
+              <button nbButton (click)="submit()" status="success" >Salvar</button>
+          </div>
+          <div class="col-sm-1">
+              <button nbButton (click)="voltar()" >Voltar</button>
+          </div>
+      </div>
+  </nb-card-footer>
+</nb-card>

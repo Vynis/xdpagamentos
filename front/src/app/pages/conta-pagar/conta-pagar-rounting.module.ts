@@ -3,6 +3,7 @@ import { ContaPagarComponent } from "./conta-pagar.component";
 import { ContaPagarListaComponent } from "./conta-pagar-lista/conta-pagar-lista.component";
 import { ContaPagarCadastroComponent } from "./conta-pagar-cadastro/conta-pagar-cadastro.component";
 import { NgModule } from "@angular/core";
+import { ContaPagarBaixaComponent } from "./conta-pagar-baixa/conta-pagar-baixa.component";
 
 const routes: Routes = [
     { 
@@ -26,6 +27,10 @@ const routes: Routes = [
           path: 'cadastro/edit/:id',
           component: ContaPagarCadastroComponent
         },
+        {
+          path: 'baixa/:id',
+          component: ContaPagarBaixaComponent
+        }
       ]
     }
   ];

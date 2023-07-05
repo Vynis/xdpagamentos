@@ -30,14 +30,21 @@ namespace XdPagamentosApi.Repository.Class
             if (paginationFilter.Filtro.Count() > 0)
                 expressionDynamic = _filtroDinamico.FromFiltroItemList<ContaReceber>(paginationFilter.Filtro.ToList());
             else
-                return await _mySqlContext.ContaRecers.Include(c => c.CentroCusto).ToArrayAsync();
+                return await _mySqlContext.ContaRecers.Include(c => c.CentroCusto).Include(c => c.ListaFluxoCaixa).ToArrayAsync();
 
-            IQueryable<ContaReceber> query = _mySqlContext.ContaRecers.Where(expressionDynamic).Include(c => c.CentroCusto);
+            IQueryable<ContaReceber> query = _mySqlContext.ContaRecers.Where(expressionDynamic).Include(c => c.CentroCusto).Include(c => c.ListaFluxoCaixa);
 
             if (paginationFilter.Filtro.Count() > 0)
                 return await query.AsNoTracking().ToArrayAsync();
 
             return await query.AsNoTracking().OrderBy(c => c.Descricao).ToArrayAsync();
+        }
+
+        public async override Task<ContaReceber> ObterPorId(int Id)
+        {
+            IQueryable<ContaReceber> query = _mySqlContext.ContaRecers.Where(c => c.Id.Equals(Id)).Include(c => c.CentroCusto);
+
+            return await query.AsNoTracking().FirstOrDefaultAsync();
         }
     }
 }

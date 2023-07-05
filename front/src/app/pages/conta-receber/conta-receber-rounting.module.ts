@@ -3,6 +3,7 @@ import { ContaReceberComponent } from "./conta-receber.component";
 import { ContaReceberListaComponent } from "./conta-receber-lista/conta-receber-lista.component";
 import { ContaReceberCadastroComponent } from "./conta-receber-cadastro/conta-receber-cadastro.component";
 import { NgModule } from "@angular/core";
+import { ContaReceberBaixaComponent } from "./conta-receber-baixa/conta-receber-baixa.component";
 
 const routes: Routes = [
     { 
@@ -26,6 +27,10 @@ const routes: Routes = [
           path: 'cadastro/edit/:id',
           component: ContaReceberCadastroComponent
         },
+        {
+          path: 'baixa/:id',
+          component: ContaReceberBaixaComponent
+        }
       ]
     }
   ];
