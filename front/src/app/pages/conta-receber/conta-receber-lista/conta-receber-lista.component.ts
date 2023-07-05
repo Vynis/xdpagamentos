@@ -15,6 +15,7 @@ import { FiltroItemModel } from '../../../@core/models/configuracao/filtroitem.m
 import { FilterTypeConstants } from '../../../@core/enums/filter-type.enum';
 import { FluxoCaixaService } from '../../../@core/services/fluxo-caixa.service';
 import { SweetAlertIcons } from '../../../@core/enums/sweet-alert-icons-enum';
+import { ContaReceberItensFluxoCaixaComponent } from '../conta-receber-itens-fluxo-caixa/conta-receber-itens-fluxo-caixa.component';
 
 @Component({
   selector: 'ngx-conta-receber-lista',
@@ -51,10 +52,17 @@ export class ContaReceberListaComponent implements OnInit {
       title: 'Dt. Vencimento',
       type: 'string',
     }, 
-    fluxoCaixa: {
+    fluxoCaixaFormatado: {
       title: 'Fluxo Caixa',
-      type: 'string',
-    },   
+      type: 'custom',
+      renderComponent: ContaReceberItensFluxoCaixaComponent,
+      valuePrepareFunction: (value, row, cell) => { 
+        return row;
+      },
+      onComponentInitFunction: (i) => {
+        i.idConta = i
+      }, 
+    }, 
     status: {
       title: 'Status',
       type: 'string',
